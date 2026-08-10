@@ -35,9 +35,11 @@ function BerichtPage() {
               <h2 className="text-base font-extrabold">Überblick</h2>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                 {sorted.length} dokumentierte {sorted.length === 1 ? "Situation" : "Situationen"} zwischen{" "}
-                {formatDate(sorted[0].date || sorted[0].createdAt.slice(0, 10))} und{" "}
+                {formatDate(sorted[0]?.date || sorted[0]?.createdAt.slice(0, 10) || "")} und{" "}
                 {formatDate(
-                  sorted[sorted.length - 1].date || sorted[sorted.length - 1].createdAt.slice(0, 10),
+                  sorted[sorted.length - 1]?.date ||
+                    sorted[sorted.length - 1]?.createdAt.slice(0, 10) ||
+                    "",
                 )}
                 .
               </p>
