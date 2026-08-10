@@ -1,39 +1,40 @@
-import { Link, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import type { ReactNode } from "react";
 
 export function AppHeader({
+  title,
   subtitle,
-  back = false,
-  title = "standUp",
+  back = true,
+  right,
 }: {
+  title: string;
   subtitle?: ReactNode;
   back?: boolean;
-  title?: string;
+  right?: ReactNode;
 }) {
   const router = useRouter();
 
   return (
-    <header className="bg-primary px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))] text-primary-foreground rounded-b-[2rem]">
-      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2">
+    <header className="sticky top-0 z-20 border-b border-border/70 bg-background/90 px-5 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur">
+      <div className="mx-auto grid max-w-md grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
         {back ? (
           <button
             type="button"
             aria-label="Zurück"
             onClick={() => router.history.back()}
-            className="-ml-2 grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary-foreground/15"
+            className="-ml-2 grid h-11 w-11 shrink-0 place-items-center rounded-full bg-primary-soft text-primary"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
         ) : (
-          <span className="h-10 w-0" />
+          <span className="h-11 w-0" />
         )}
-        <Link to="/" className="min-w-0 truncate text-2xl font-extrabold tracking-tight">
-          {title}
-        </Link>
+        <h1 className="min-w-0 truncate text-center text-lg font-extrabold tracking-tight">{title}</h1>
+        <span className="grid h-11 min-w-11 place-items-center">{right}</span>
       </div>
       {subtitle ? (
-        <p className="mt-3 text-lg font-medium text-primary-foreground/90">{subtitle}</p>
+        <p className="mx-auto mt-1 max-w-md text-center text-sm text-muted-foreground">{subtitle}</p>
       ) : null}
     </header>
   );

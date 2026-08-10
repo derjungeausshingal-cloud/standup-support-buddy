@@ -10,29 +10,83 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as BeratungsstellenRouteImport } from './routes/beratungsstellen'
-import { Route as HilfeRouteImport } from './routes/hilfe'
-import { Route as NaechsteSchritteRouteImport } from './routes/naechste-schritte'
+import { Route as BeratungRouteImport } from './routes/beratung'
+import { Route as BerichtRouteImport } from './routes/bericht'
+import { Route as EinstellungenRouteImport } from './routes/einstellungen'
+import { Route as HelfenRouteImport } from './routes/helfen'
+import { Route as InfosRouteImport } from './routes/infos'
+import { Route as IstDasMobbingRouteImport } from './routes/ist-das-mobbing'
+import { Route as NachrichtRouteImport } from './routes/nachricht'
+import { Route as NotfallRouteImport } from './routes/notfall'
+import { Route as RechteRouteImport } from './routes/rechte'
+import { Route as TagebuchRouteImport } from './routes/tagebuch'
+import { Route as VertrauenspersonRouteImport } from './routes/vertrauensperson'
 import { Route as VorfallRouteImport } from './routes/vorfall'
+import { Route as TagebuchIndexRouteImport } from './routes/tagebuch.index'
+import { Route as TagebuchIdRouteImport } from './routes/tagebuch.$id'
+import { Route as VorfallIndexRouteImport } from './routes/vorfall.index'
+import { Route as VorfallBeweiseRouteImport } from './routes/vorfall.beweise'
+import { Route as VorfallHilfeRouteImport } from './routes/vorfall.hilfe'
+import { Route as VorfallSpeichernRouteImport } from './routes/vorfall.speichern'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BeratungsstellenRoute = BeratungsstellenRouteImport.update({
-  id: '/beratungsstellen',
-  path: '/beratungsstellen',
+const BeratungRoute = BeratungRouteImport.update({
+  id: '/beratung',
+  path: '/beratung',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HilfeRoute = HilfeRouteImport.update({
-  id: '/hilfe',
-  path: '/hilfe',
+const BerichtRoute = BerichtRouteImport.update({
+  id: '/bericht',
+  path: '/bericht',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NaechsteSchritteRoute = NaechsteSchritteRouteImport.update({
-  id: '/naechste-schritte',
-  path: '/naechste-schritte',
+const EinstellungenRoute = EinstellungenRouteImport.update({
+  id: '/einstellungen',
+  path: '/einstellungen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelfenRoute = HelfenRouteImport.update({
+  id: '/helfen',
+  path: '/helfen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfosRoute = InfosRouteImport.update({
+  id: '/infos',
+  path: '/infos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IstDasMobbingRoute = IstDasMobbingRouteImport.update({
+  id: '/ist-das-mobbing',
+  path: '/ist-das-mobbing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NachrichtRoute = NachrichtRouteImport.update({
+  id: '/nachricht',
+  path: '/nachricht',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotfallRoute = NotfallRouteImport.update({
+  id: '/notfall',
+  path: '/notfall',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RechteRoute = RechteRouteImport.update({
+  id: '/rechte',
+  path: '/rechte',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TagebuchRoute = TagebuchRouteImport.update({
+  id: '/tagebuch',
+  path: '/tagebuch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VertrauenspersonRoute = VertrauenspersonRouteImport.update({
+  id: '/vertrauensperson',
+  path: '/vertrauensperson',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VorfallRoute = VorfallRouteImport.update({
@@ -40,50 +94,177 @@ const VorfallRoute = VorfallRouteImport.update({
   path: '/vorfall',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TagebuchIndexRoute = TagebuchIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TagebuchRoute,
+} as any)
+const TagebuchIdRoute = TagebuchIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => TagebuchRoute,
+} as any)
+const VorfallIndexRoute = VorfallIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VorfallRoute,
+} as any)
+const VorfallBeweiseRoute = VorfallBeweiseRouteImport.update({
+  id: '/beweise',
+  path: '/beweise',
+  getParentRoute: () => VorfallRoute,
+} as any)
+const VorfallHilfeRoute = VorfallHilfeRouteImport.update({
+  id: '/hilfe',
+  path: '/hilfe',
+  getParentRoute: () => VorfallRoute,
+} as any)
+const VorfallSpeichernRoute = VorfallSpeichernRouteImport.update({
+  id: '/speichern',
+  path: '/speichern',
+  getParentRoute: () => VorfallRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/beratungsstellen': typeof BeratungsstellenRoute
-  '/hilfe': typeof HilfeRoute
-  '/naechste-schritte': typeof NaechsteSchritteRoute
-  '/vorfall': typeof VorfallRoute
+  '/beratung': typeof BeratungRoute
+  '/bericht': typeof BerichtRoute
+  '/einstellungen': typeof EinstellungenRoute
+  '/helfen': typeof HelfenRoute
+  '/infos': typeof InfosRoute
+  '/ist-das-mobbing': typeof IstDasMobbingRoute
+  '/nachricht': typeof NachrichtRoute
+  '/notfall': typeof NotfallRoute
+  '/rechte': typeof RechteRoute
+  '/tagebuch': typeof TagebuchRouteWithChildren
+  '/vertrauensperson': typeof VertrauenspersonRoute
+  '/vorfall': typeof VorfallRouteWithChildren
+  '/tagebuch/$id': typeof TagebuchIdRoute
+  '/vorfall/beweise': typeof VorfallBeweiseRoute
+  '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/tagebuch/': typeof TagebuchIndexRoute
+  '/vorfall/': typeof VorfallIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/beratungsstellen': typeof BeratungsstellenRoute
-  '/hilfe': typeof HilfeRoute
-  '/naechste-schritte': typeof NaechsteSchritteRoute
-  '/vorfall': typeof VorfallRoute
+  '/beratung': typeof BeratungRoute
+  '/bericht': typeof BerichtRoute
+  '/einstellungen': typeof EinstellungenRoute
+  '/helfen': typeof HelfenRoute
+  '/infos': typeof InfosRoute
+  '/ist-das-mobbing': typeof IstDasMobbingRoute
+  '/nachricht': typeof NachrichtRoute
+  '/notfall': typeof NotfallRoute
+  '/rechte': typeof RechteRoute
+  '/vertrauensperson': typeof VertrauenspersonRoute
+  '/tagebuch/$id': typeof TagebuchIdRoute
+  '/vorfall/beweise': typeof VorfallBeweiseRoute
+  '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/tagebuch': typeof TagebuchIndexRoute
+  '/vorfall': typeof VorfallIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/beratungsstellen': typeof BeratungsstellenRoute
-  '/hilfe': typeof HilfeRoute
-  '/naechste-schritte': typeof NaechsteSchritteRoute
-  '/vorfall': typeof VorfallRoute
+  '/beratung': typeof BeratungRoute
+  '/bericht': typeof BerichtRoute
+  '/einstellungen': typeof EinstellungenRoute
+  '/helfen': typeof HelfenRoute
+  '/infos': typeof InfosRoute
+  '/ist-das-mobbing': typeof IstDasMobbingRoute
+  '/nachricht': typeof NachrichtRoute
+  '/notfall': typeof NotfallRoute
+  '/rechte': typeof RechteRoute
+  '/tagebuch': typeof TagebuchRouteWithChildren
+  '/vertrauensperson': typeof VertrauenspersonRoute
+  '/vorfall': typeof VorfallRouteWithChildren
+  '/tagebuch/$id': typeof TagebuchIdRoute
+  '/vorfall/beweise': typeof VorfallBeweiseRoute
+  '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/tagebuch/': typeof TagebuchIndexRoute
+  '/vorfall/': typeof VorfallIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/beratungsstellen' | '/hilfe' | '/naechste-schritte' | '/vorfall'
+    | '/'
+    | '/beratung'
+    | '/bericht'
+    | '/einstellungen'
+    | '/helfen'
+    | '/infos'
+    | '/ist-das-mobbing'
+    | '/nachricht'
+    | '/notfall'
+    | '/rechte'
+    | '/tagebuch'
+    | '/vertrauensperson'
+    | '/vorfall'
+    | '/tagebuch/$id'
+    | '/vorfall/beweise'
+    | '/vorfall/hilfe'
+    | '/vorfall/speichern'
+    | '/tagebuch/'
+    | '/vorfall/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/beratungsstellen' | '/hilfe' | '/naechste-schritte' | '/vorfall'
+  to:
+    | '/'
+    | '/beratung'
+    | '/bericht'
+    | '/einstellungen'
+    | '/helfen'
+    | '/infos'
+    | '/ist-das-mobbing'
+    | '/nachricht'
+    | '/notfall'
+    | '/rechte'
+    | '/vertrauensperson'
+    | '/tagebuch/$id'
+    | '/vorfall/beweise'
+    | '/vorfall/hilfe'
+    | '/vorfall/speichern'
+    | '/tagebuch'
+    | '/vorfall'
   id:
     | '__root__'
     | '/'
-    | '/beratungsstellen'
-    | '/hilfe'
-    | '/naechste-schritte'
+    | '/beratung'
+    | '/bericht'
+    | '/einstellungen'
+    | '/helfen'
+    | '/infos'
+    | '/ist-das-mobbing'
+    | '/nachricht'
+    | '/notfall'
+    | '/rechte'
+    | '/tagebuch'
+    | '/vertrauensperson'
     | '/vorfall'
+    | '/tagebuch/$id'
+    | '/vorfall/beweise'
+    | '/vorfall/hilfe'
+    | '/vorfall/speichern'
+    | '/tagebuch/'
+    | '/vorfall/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BeratungsstellenRoute: typeof BeratungsstellenRoute
-  HilfeRoute: typeof HilfeRoute
-  NaechsteSchritteRoute: typeof NaechsteSchritteRoute
-  VorfallRoute: typeof VorfallRoute
+  BeratungRoute: typeof BeratungRoute
+  BerichtRoute: typeof BerichtRoute
+  EinstellungenRoute: typeof EinstellungenRoute
+  HelfenRoute: typeof HelfenRoute
+  InfosRoute: typeof InfosRoute
+  IstDasMobbingRoute: typeof IstDasMobbingRoute
+  NachrichtRoute: typeof NachrichtRoute
+  NotfallRoute: typeof NotfallRoute
+  RechteRoute: typeof RechteRoute
+  TagebuchRoute: typeof TagebuchRouteWithChildren
+  VertrauenspersonRoute: typeof VertrauenspersonRoute
+  VorfallRoute: typeof VorfallRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -95,25 +276,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/beratungsstellen': {
-      id: '/beratungsstellen'
-      path: '/beratungsstellen'
-      fullPath: '/beratungsstellen'
-      preLoaderRoute: typeof BeratungsstellenRouteImport
+    '/beratung': {
+      id: '/beratung'
+      path: '/beratung'
+      fullPath: '/beratung'
+      preLoaderRoute: typeof BeratungRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/hilfe': {
-      id: '/hilfe'
-      path: '/hilfe'
-      fullPath: '/hilfe'
-      preLoaderRoute: typeof HilfeRouteImport
+    '/bericht': {
+      id: '/bericht'
+      path: '/bericht'
+      fullPath: '/bericht'
+      preLoaderRoute: typeof BerichtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/naechste-schritte': {
-      id: '/naechste-schritte'
-      path: '/naechste-schritte'
-      fullPath: '/naechste-schritte'
-      preLoaderRoute: typeof NaechsteSchritteRouteImport
+    '/einstellungen': {
+      id: '/einstellungen'
+      path: '/einstellungen'
+      fullPath: '/einstellungen'
+      preLoaderRoute: typeof EinstellungenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/helfen': {
+      id: '/helfen'
+      path: '/helfen'
+      fullPath: '/helfen'
+      preLoaderRoute: typeof HelfenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/infos': {
+      id: '/infos'
+      path: '/infos'
+      fullPath: '/infos'
+      preLoaderRoute: typeof InfosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ist-das-mobbing': {
+      id: '/ist-das-mobbing'
+      path: '/ist-das-mobbing'
+      fullPath: '/ist-das-mobbing'
+      preLoaderRoute: typeof IstDasMobbingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nachricht': {
+      id: '/nachricht'
+      path: '/nachricht'
+      fullPath: '/nachricht'
+      preLoaderRoute: typeof NachrichtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notfall': {
+      id: '/notfall'
+      path: '/notfall'
+      fullPath: '/notfall'
+      preLoaderRoute: typeof NotfallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rechte': {
+      id: '/rechte'
+      path: '/rechte'
+      fullPath: '/rechte'
+      preLoaderRoute: typeof RechteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tagebuch': {
+      id: '/tagebuch'
+      path: '/tagebuch'
+      fullPath: '/tagebuch'
+      preLoaderRoute: typeof TagebuchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vertrauensperson': {
+      id: '/vertrauensperson'
+      path: '/vertrauensperson'
+      fullPath: '/vertrauensperson'
+      preLoaderRoute: typeof VertrauenspersonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/vorfall': {
@@ -123,26 +360,97 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VorfallRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tagebuch/': {
+      id: '/tagebuch/'
+      path: '/'
+      fullPath: '/tagebuch/'
+      preLoaderRoute: typeof TagebuchIndexRouteImport
+      parentRoute: typeof TagebuchRoute
+    }
+    '/tagebuch/$id': {
+      id: '/tagebuch/$id'
+      path: '/$id'
+      fullPath: '/tagebuch/$id'
+      preLoaderRoute: typeof TagebuchIdRouteImport
+      parentRoute: typeof TagebuchRoute
+    }
+    '/vorfall/': {
+      id: '/vorfall/'
+      path: '/'
+      fullPath: '/vorfall/'
+      preLoaderRoute: typeof VorfallIndexRouteImport
+      parentRoute: typeof VorfallRoute
+    }
+    '/vorfall/beweise': {
+      id: '/vorfall/beweise'
+      path: '/beweise'
+      fullPath: '/vorfall/beweise'
+      preLoaderRoute: typeof VorfallBeweiseRouteImport
+      parentRoute: typeof VorfallRoute
+    }
+    '/vorfall/hilfe': {
+      id: '/vorfall/hilfe'
+      path: '/hilfe'
+      fullPath: '/vorfall/hilfe'
+      preLoaderRoute: typeof VorfallHilfeRouteImport
+      parentRoute: typeof VorfallRoute
+    }
+    '/vorfall/speichern': {
+      id: '/vorfall/speichern'
+      path: '/speichern'
+      fullPath: '/vorfall/speichern'
+      preLoaderRoute: typeof VorfallSpeichernRouteImport
+      parentRoute: typeof VorfallRoute
+    }
   }
 }
 
+interface TagebuchRouteChildren {
+  TagebuchIdRoute: typeof TagebuchIdRoute
+  TagebuchIndexRoute: typeof TagebuchIndexRoute
+}
+
+const TagebuchRouteChildren: TagebuchRouteChildren = {
+  TagebuchIdRoute: TagebuchIdRoute,
+  TagebuchIndexRoute: TagebuchIndexRoute,
+}
+
+const TagebuchRouteWithChildren = TagebuchRoute._addFileChildren(
+  TagebuchRouteChildren,
+)
+
+interface VorfallRouteChildren {
+  VorfallBeweiseRoute: typeof VorfallBeweiseRoute
+  VorfallHilfeRoute: typeof VorfallHilfeRoute
+  VorfallSpeichernRoute: typeof VorfallSpeichernRoute
+  VorfallIndexRoute: typeof VorfallIndexRoute
+}
+
+const VorfallRouteChildren: VorfallRouteChildren = {
+  VorfallBeweiseRoute: VorfallBeweiseRoute,
+  VorfallHilfeRoute: VorfallHilfeRoute,
+  VorfallSpeichernRoute: VorfallSpeichernRoute,
+  VorfallIndexRoute: VorfallIndexRoute,
+}
+
+const VorfallRouteWithChildren =
+  VorfallRoute._addFileChildren(VorfallRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BeratungsstellenRoute: BeratungsstellenRoute,
-  HilfeRoute: HilfeRoute,
-  NaechsteSchritteRoute: NaechsteSchritteRoute,
-  VorfallRoute: VorfallRoute,
+  BeratungRoute: BeratungRoute,
+  BerichtRoute: BerichtRoute,
+  EinstellungenRoute: EinstellungenRoute,
+  HelfenRoute: HelfenRoute,
+  InfosRoute: InfosRoute,
+  IstDasMobbingRoute: IstDasMobbingRoute,
+  NachrichtRoute: NachrichtRoute,
+  NotfallRoute: NotfallRoute,
+  RechteRoute: RechteRoute,
+  TagebuchRoute: TagebuchRouteWithChildren,
+  VertrauenspersonRoute: VertrauenspersonRoute,
+  VorfallRoute: VorfallRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -1,0 +1,15 @@
+{
+  "name": "StandUp – Du bist nicht allein",
+  "short_name": "StandUp",
+  "description": "Unterstützung bei Mobbing, Diskriminierung, Beleidigungen und Bedrohungen.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6C43E0",
+  "icons": [
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
