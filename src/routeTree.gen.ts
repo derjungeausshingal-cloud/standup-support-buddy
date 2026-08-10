@@ -10,33 +10,96 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VorfallRouteImport } from './routes/vorfall'
+import { Route as VorfallIndexRouteImport } from './routes/vorfall.index'
+import { Route as VorfallBeweiseRouteImport } from './routes/vorfall.beweise'
+import { Route as VorfallHilfeRouteImport } from './routes/vorfall.hilfe'
+import { Route as VorfallSpeichernRouteImport } from './routes/vorfall.speichern'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VorfallRoute = VorfallRouteImport.update({
+  id: '/vorfall',
+  path: '/vorfall',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VorfallIndexRoute = VorfallIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VorfallRoute,
+} as any)
+const VorfallBeweiseRoute = VorfallBeweiseRouteImport.update({
+  id: '/beweise',
+  path: '/beweise',
+  getParentRoute: () => VorfallRoute,
+} as any)
+const VorfallHilfeRoute = VorfallHilfeRouteImport.update({
+  id: '/hilfe',
+  path: '/hilfe',
+  getParentRoute: () => VorfallRoute,
+} as any)
+const VorfallSpeichernRoute = VorfallSpeichernRouteImport.update({
+  id: '/speichern',
+  path: '/speichern',
+  getParentRoute: () => VorfallRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/vorfall': typeof VorfallRouteWithChildren
+  '/vorfall/beweise': typeof VorfallBeweiseRoute
+  '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/vorfall/': typeof VorfallIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/vorfall/beweise': typeof VorfallBeweiseRoute
+  '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/vorfall': typeof VorfallIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/vorfall': typeof VorfallRouteWithChildren
+  '/vorfall/beweise': typeof VorfallBeweiseRoute
+  '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/vorfall/': typeof VorfallIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/vorfall'
+    | '/vorfall/beweise'
+    | '/vorfall/hilfe'
+    | '/vorfall/speichern'
+    | '/vorfall/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/vorfall/beweise'
+    | '/vorfall/hilfe'
+    | '/vorfall/speichern'
+    | '/vorfall'
+  id:
+    | '__root__'
+    | '/'
+    | '/vorfall'
+    | '/vorfall/beweise'
+    | '/vorfall/hilfe'
+    | '/vorfall/speichern'
+    | '/vorfall/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  VorfallRoute: typeof VorfallRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +111,64 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vorfall': {
+      id: '/vorfall'
+      path: '/vorfall'
+      fullPath: '/vorfall'
+      preLoaderRoute: typeof VorfallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vorfall/': {
+      id: '/vorfall/'
+      path: '/'
+      fullPath: '/vorfall/'
+      preLoaderRoute: typeof VorfallIndexRouteImport
+      parentRoute: typeof VorfallRoute
+    }
+    '/vorfall/beweise': {
+      id: '/vorfall/beweise'
+      path: '/beweise'
+      fullPath: '/vorfall/beweise'
+      preLoaderRoute: typeof VorfallBeweiseRouteImport
+      parentRoute: typeof VorfallRoute
+    }
+    '/vorfall/hilfe': {
+      id: '/vorfall/hilfe'
+      path: '/hilfe'
+      fullPath: '/vorfall/hilfe'
+      preLoaderRoute: typeof VorfallHilfeRouteImport
+      parentRoute: typeof VorfallRoute
+    }
+    '/vorfall/speichern': {
+      id: '/vorfall/speichern'
+      path: '/speichern'
+      fullPath: '/vorfall/speichern'
+      preLoaderRoute: typeof VorfallSpeichernRouteImport
+      parentRoute: typeof VorfallRoute
+    }
   }
 }
 
+interface VorfallRouteChildren {
+  VorfallBeweiseRoute: typeof VorfallBeweiseRoute
+  VorfallHilfeRoute: typeof VorfallHilfeRoute
+  VorfallSpeichernRoute: typeof VorfallSpeichernRoute
+  VorfallIndexRoute: typeof VorfallIndexRoute
+}
+
+const VorfallRouteChildren: VorfallRouteChildren = {
+  VorfallBeweiseRoute: VorfallBeweiseRoute,
+  VorfallHilfeRoute: VorfallHilfeRoute,
+  VorfallSpeichernRoute: VorfallSpeichernRoute,
+  VorfallIndexRoute: VorfallIndexRoute,
+}
+
+const VorfallRouteWithChildren =
+  VorfallRoute._addFileChildren(VorfallRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  VorfallRoute: VorfallRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
