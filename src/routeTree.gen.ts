@@ -10,10 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BeratungRouteImport } from './routes/beratung'
+import { Route as BerichtRouteImport } from './routes/bericht'
 import { Route as EinstellungenRouteImport } from './routes/einstellungen'
 import { Route as HelfenRouteImport } from './routes/helfen'
 import { Route as InfosRouteImport } from './routes/infos'
+import { Route as IstDasMobbingRouteImport } from './routes/ist-das-mobbing'
+import { Route as NachrichtRouteImport } from './routes/nachricht'
+import { Route as NotfallRouteImport } from './routes/notfall'
+import { Route as RechteRouteImport } from './routes/rechte'
 import { Route as TagebuchRouteImport } from './routes/tagebuch'
+import { Route as VertrauenspersonRouteImport } from './routes/vertrauensperson'
 import { Route as VorfallRouteImport } from './routes/vorfall'
 import { Route as TagebuchIndexRouteImport } from './routes/tagebuch.index'
 import { Route as TagebuchIdRouteImport } from './routes/tagebuch.$id'
@@ -25,6 +32,16 @@ import { Route as VorfallSpeichernRouteImport } from './routes/vorfall.speichern
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeratungRoute = BeratungRouteImport.update({
+  id: '/beratung',
+  path: '/beratung',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BerichtRoute = BerichtRouteImport.update({
+  id: '/bericht',
+  path: '/bericht',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EinstellungenRoute = EinstellungenRouteImport.update({
@@ -42,9 +59,34 @@ const InfosRoute = InfosRouteImport.update({
   path: '/infos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IstDasMobbingRoute = IstDasMobbingRouteImport.update({
+  id: '/ist-das-mobbing',
+  path: '/ist-das-mobbing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NachrichtRoute = NachrichtRouteImport.update({
+  id: '/nachricht',
+  path: '/nachricht',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotfallRoute = NotfallRouteImport.update({
+  id: '/notfall',
+  path: '/notfall',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RechteRoute = RechteRouteImport.update({
+  id: '/rechte',
+  path: '/rechte',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TagebuchRoute = TagebuchRouteImport.update({
   id: '/tagebuch',
   path: '/tagebuch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VertrauenspersonRoute = VertrauenspersonRouteImport.update({
+  id: '/vertrauensperson',
+  path: '/vertrauensperson',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VorfallRoute = VorfallRouteImport.update({
@@ -85,10 +127,17 @@ const VorfallSpeichernRoute = VorfallSpeichernRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/beratung': typeof BeratungRoute
+  '/bericht': typeof BerichtRoute
   '/einstellungen': typeof EinstellungenRoute
   '/helfen': typeof HelfenRoute
   '/infos': typeof InfosRoute
+  '/ist-das-mobbing': typeof IstDasMobbingRoute
+  '/nachricht': typeof NachrichtRoute
+  '/notfall': typeof NotfallRoute
+  '/rechte': typeof RechteRoute
   '/tagebuch': typeof TagebuchRouteWithChildren
+  '/vertrauensperson': typeof VertrauenspersonRoute
   '/vorfall': typeof VorfallRouteWithChildren
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
@@ -99,9 +148,16 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/beratung': typeof BeratungRoute
+  '/bericht': typeof BerichtRoute
   '/einstellungen': typeof EinstellungenRoute
   '/helfen': typeof HelfenRoute
   '/infos': typeof InfosRoute
+  '/ist-das-mobbing': typeof IstDasMobbingRoute
+  '/nachricht': typeof NachrichtRoute
+  '/notfall': typeof NotfallRoute
+  '/rechte': typeof RechteRoute
+  '/vertrauensperson': typeof VertrauenspersonRoute
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
@@ -112,10 +168,17 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/beratung': typeof BeratungRoute
+  '/bericht': typeof BerichtRoute
   '/einstellungen': typeof EinstellungenRoute
   '/helfen': typeof HelfenRoute
   '/infos': typeof InfosRoute
+  '/ist-das-mobbing': typeof IstDasMobbingRoute
+  '/nachricht': typeof NachrichtRoute
+  '/notfall': typeof NotfallRoute
+  '/rechte': typeof RechteRoute
   '/tagebuch': typeof TagebuchRouteWithChildren
+  '/vertrauensperson': typeof VertrauenspersonRoute
   '/vorfall': typeof VorfallRouteWithChildren
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
@@ -128,10 +191,17 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/beratung'
+    | '/bericht'
     | '/einstellungen'
     | '/helfen'
     | '/infos'
+    | '/ist-das-mobbing'
+    | '/nachricht'
+    | '/notfall'
+    | '/rechte'
     | '/tagebuch'
+    | '/vertrauensperson'
     | '/vorfall'
     | '/tagebuch/$id'
     | '/vorfall/beweise'
@@ -142,9 +212,16 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/beratung'
+    | '/bericht'
     | '/einstellungen'
     | '/helfen'
     | '/infos'
+    | '/ist-das-mobbing'
+    | '/nachricht'
+    | '/notfall'
+    | '/rechte'
+    | '/vertrauensperson'
     | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
@@ -154,10 +231,17 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/beratung'
+    | '/bericht'
     | '/einstellungen'
     | '/helfen'
     | '/infos'
+    | '/ist-das-mobbing'
+    | '/nachricht'
+    | '/notfall'
+    | '/rechte'
     | '/tagebuch'
+    | '/vertrauensperson'
     | '/vorfall'
     | '/tagebuch/$id'
     | '/vorfall/beweise'
@@ -169,10 +253,17 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BeratungRoute: typeof BeratungRoute
+  BerichtRoute: typeof BerichtRoute
   EinstellungenRoute: typeof EinstellungenRoute
   HelfenRoute: typeof HelfenRoute
   InfosRoute: typeof InfosRoute
+  IstDasMobbingRoute: typeof IstDasMobbingRoute
+  NachrichtRoute: typeof NachrichtRoute
+  NotfallRoute: typeof NotfallRoute
+  RechteRoute: typeof RechteRoute
   TagebuchRoute: typeof TagebuchRouteWithChildren
+  VertrauenspersonRoute: typeof VertrauenspersonRoute
   VorfallRoute: typeof VorfallRouteWithChildren
 }
 
@@ -183,6 +274,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beratung': {
+      id: '/beratung'
+      path: '/beratung'
+      fullPath: '/beratung'
+      preLoaderRoute: typeof BeratungRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bericht': {
+      id: '/bericht'
+      path: '/bericht'
+      fullPath: '/bericht'
+      preLoaderRoute: typeof BerichtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/einstellungen': {
@@ -206,11 +311,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InfosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ist-das-mobbing': {
+      id: '/ist-das-mobbing'
+      path: '/ist-das-mobbing'
+      fullPath: '/ist-das-mobbing'
+      preLoaderRoute: typeof IstDasMobbingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nachricht': {
+      id: '/nachricht'
+      path: '/nachricht'
+      fullPath: '/nachricht'
+      preLoaderRoute: typeof NachrichtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notfall': {
+      id: '/notfall'
+      path: '/notfall'
+      fullPath: '/notfall'
+      preLoaderRoute: typeof NotfallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rechte': {
+      id: '/rechte'
+      path: '/rechte'
+      fullPath: '/rechte'
+      preLoaderRoute: typeof RechteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tagebuch': {
       id: '/tagebuch'
       path: '/tagebuch'
       fullPath: '/tagebuch'
       preLoaderRoute: typeof TagebuchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vertrauensperson': {
+      id: '/vertrauensperson'
+      path: '/vertrauensperson'
+      fullPath: '/vertrauensperson'
+      preLoaderRoute: typeof VertrauenspersonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/vorfall': {
@@ -298,10 +438,17 @@ const VorfallRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BeratungRoute: BeratungRoute,
+  BerichtRoute: BerichtRoute,
   EinstellungenRoute: EinstellungenRoute,
   HelfenRoute: HelfenRoute,
   InfosRoute: InfosRoute,
+  IstDasMobbingRoute: IstDasMobbingRoute,
+  NachrichtRoute: NachrichtRoute,
+  NotfallRoute: NotfallRoute,
+  RechteRoute: RechteRoute,
   TagebuchRoute: TagebuchRouteWithChildren,
+  VertrauenspersonRoute: VertrauenspersonRoute,
   VorfallRoute: VorfallRouteWithChildren,
 }
 export const routeTree = rootRouteImport
