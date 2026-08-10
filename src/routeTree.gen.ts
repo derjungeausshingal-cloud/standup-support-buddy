@@ -10,33 +10,80 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BeratungsstellenRouteImport } from './routes/beratungsstellen'
+import { Route as HilfeRouteImport } from './routes/hilfe'
+import { Route as NaechsteSchritteRouteImport } from './routes/naechste-schritte'
+import { Route as VorfallRouteImport } from './routes/vorfall'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BeratungsstellenRoute = BeratungsstellenRouteImport.update({
+  id: '/beratungsstellen',
+  path: '/beratungsstellen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HilfeRoute = HilfeRouteImport.update({
+  id: '/hilfe',
+  path: '/hilfe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NaechsteSchritteRoute = NaechsteSchritteRouteImport.update({
+  id: '/naechste-schritte',
+  path: '/naechste-schritte',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VorfallRoute = VorfallRouteImport.update({
+  id: '/vorfall',
+  path: '/vorfall',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/beratungsstellen': typeof BeratungsstellenRoute
+  '/hilfe': typeof HilfeRoute
+  '/naechste-schritte': typeof NaechsteSchritteRoute
+  '/vorfall': typeof VorfallRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/beratungsstellen': typeof BeratungsstellenRoute
+  '/hilfe': typeof HilfeRoute
+  '/naechste-schritte': typeof NaechsteSchritteRoute
+  '/vorfall': typeof VorfallRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/beratungsstellen': typeof BeratungsstellenRoute
+  '/hilfe': typeof HilfeRoute
+  '/naechste-schritte': typeof NaechsteSchritteRoute
+  '/vorfall': typeof VorfallRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/beratungsstellen' | '/hilfe' | '/naechste-schritte' | '/vorfall'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/beratungsstellen' | '/hilfe' | '/naechste-schritte' | '/vorfall'
+  id:
+    | '__root__'
+    | '/'
+    | '/beratungsstellen'
+    | '/hilfe'
+    | '/naechste-schritte'
+    | '/vorfall'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BeratungsstellenRoute: typeof BeratungsstellenRoute
+  HilfeRoute: typeof HilfeRoute
+  NaechsteSchritteRoute: typeof NaechsteSchritteRoute
+  VorfallRoute: typeof VorfallRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +95,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/beratungsstellen': {
+      id: '/beratungsstellen'
+      path: '/beratungsstellen'
+      fullPath: '/beratungsstellen'
+      preLoaderRoute: typeof BeratungsstellenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hilfe': {
+      id: '/hilfe'
+      path: '/hilfe'
+      fullPath: '/hilfe'
+      preLoaderRoute: typeof HilfeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/naechste-schritte': {
+      id: '/naechste-schritte'
+      path: '/naechste-schritte'
+      fullPath: '/naechste-schritte'
+      preLoaderRoute: typeof NaechsteSchritteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vorfall': {
+      id: '/vorfall'
+      path: '/vorfall'
+      fullPath: '/vorfall'
+      preLoaderRoute: typeof VorfallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BeratungsstellenRoute: BeratungsstellenRoute,
+  HilfeRoute: HilfeRoute,
+  NaechsteSchritteRoute: NaechsteSchritteRoute,
+  VorfallRoute: VorfallRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
