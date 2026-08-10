@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { AlertTriangle, MessageSquare, ShieldAlert, Users, MoreHorizontal, ChevronRight } from "lucide-react";
+import { AlertTriangle, MessageSquare, ShieldAlert, Users, MoreHorizontal, ChevronRight, Check } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 
@@ -36,7 +36,8 @@ function VorfallPage() {
         <h1 className="mt-7 text-2xl font-extrabold">Mir ist was passiert</h1>
 
         <h2 className="mt-6 text-lg font-bold">1. Was ist passiert?</h2>
-        <div className="mt-3 grid gap-3">
+        <p className="mt-1 text-sm text-muted-foreground">Wähle die Art des Vorfalls aus.</p>
+        <div className="mt-3 grid grid-cols-2 gap-3">
           {arten.map((a) => {
             const active = selected === a.key;
             return (
@@ -45,21 +46,27 @@ function VorfallPage() {
                 type="button"
                 onClick={() => setSelected(a.key)}
                 aria-pressed={active}
-                className={`card-tile grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 p-4 text-left ${
+                className={`card-tile relative flex h-full flex-col items-start gap-3 p-4 text-left ${
                   active ? "border-primary bg-primary-soft" : ""
                 }`}
               >
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary-soft text-primary">
                   <a.icon className="h-5 w-5" />
                 </span>
+                {active && (
+                  <span className="absolute right-3 top-3 grid h-6 w-6 place-items-center rounded-full bg-primary text-primary-foreground">
+                    <Check className="h-4 w-4" />
+                  </span>
+                )}
                 <span className="min-w-0">
-                  <span className="block text-lg font-bold leading-tight">{a.label}</span>
-                  <span className="block text-sm text-muted-foreground">{a.hint}</span>
+                  <span className="block text-base font-bold leading-tight">{a.label}</span>
+                  <span className="mt-1 block text-sm leading-snug text-muted-foreground">{a.hint}</span>
                 </span>
               </button>
             );
           })}
         </div>
+
 
         <h2 className="mt-7 text-lg font-bold">2. Beschreibe, was passiert ist</h2>
         <p className="mt-1 text-sm text-muted-foreground">Du entscheidest, was du aufschreibst.</p>
