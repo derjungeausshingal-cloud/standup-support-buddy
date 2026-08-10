@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
@@ -29,36 +29,48 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
-  --shadow-card: 0 2px 10px -2px oklch(0.55 0.14 250 / 0.12);
-  --shadow-lift: 0 10px 28px -12px oklch(0.55 0.14 250 / 0.28);
+  --font-sans: "Nunito Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --shadow-card: 0 1px 2px oklch(0.5 0.12 291 / 0.06), 0 8px 24px -14px oklch(0.5 0.12 291 / 0.35);
+  --shadow-lift: 0 12px 30px -14px oklch(0.5 0.12 291 / 0.45);
 }
 
 :root {
   --radius: 1.25rem;
-  --background: oklch(0.985 0.005 250);
-  --foreground: oklch(0.24 0.03 258);
+  --background: oklch(0.995 0.002 291);
+  --foreground: oklch(0.22 0.03 285);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.03 258);
+  --card-foreground: oklch(0.22 0.03 285);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.03 258);
-  --primary: oklch(0.53 0.17 255);
-  --primary-foreground: oklch(0.99 0.005 250);
-  --primary-soft: oklch(0.95 0.03 253);
-  --secondary: oklch(0.96 0.01 250);
-  --secondary-foreground: oklch(0.3 0.04 258);
-  --muted: oklch(0.965 0.008 250);
-  --muted-foreground: oklch(0.53 0.025 258);
-  --accent: oklch(0.94 0.035 253);
-  --accent-foreground: oklch(0.35 0.09 255);
+  --popover-foreground: oklch(0.22 0.03 285);
+  --primary: oklch(0.5 0.221 291);
+  --primary-foreground: oklch(0.995 0.002 291);
+  --primary-soft: oklch(0.943 0.032 291);
+  --secondary: oklch(0.968 0.008 291);
+  --secondary-foreground: oklch(0.3 0.05 288);
+  --muted: oklch(0.972 0.006 291);
+  --muted-foreground: oklch(0.52 0.025 288);
+  --accent: oklch(0.943 0.032 291);
+  --accent-foreground: oklch(0.38 0.15 291);
   --destructive: oklch(0.58 0.2 22);
   --destructive-foreground: oklch(0.99 0.005 250);
-  --border: oklch(0.92 0.012 250);
-  --input: oklch(0.92 0.012 250);
-  --ring: oklch(0.53 0.17 255);
+  --success: oklch(0.56 0.14 158);
+  --success-soft: oklch(0.945 0.045 158);
+  --warning: oklch(0.63 0.16 55);
+  --warning-soft: oklch(0.95 0.05 65);
+  --info: oklch(0.56 0.15 250);
+  --info-soft: oklch(0.945 0.04 250);
+  --border: oklch(0.925 0.008 291);
+  --input: oklch(0.925 0.008 291);
+  --ring: oklch(0.5 0.221 291);
 }
 
 @layer base {
@@ -71,6 +83,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -84,7 +97,59 @@
     box-shadow 0.2s ease;
 
   &:active {
-    transform: scale(0.985);
-    box-shadow: var(--shadow-lift);
+    transform: scale(0.988);
+  }
+}
+
+@utility field-input {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  outline: none;
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+  }
+}
+
+@utility btn-primary {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary);
+  padding: 1rem 1.25rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-primary-foreground);
+  box-shadow: var(--shadow-lift);
+
+  &:active {
+    transform: scale(0.988);
+  }
+}
+
+@utility btn-ghost {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  padding: 0.9rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-foreground);
+
+  &:active {
+    transform: scale(0.988);
   }
 }
