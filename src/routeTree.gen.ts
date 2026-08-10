@@ -10,7 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EinstellungenRouteImport } from './routes/einstellungen'
+import { Route as HelfenRouteImport } from './routes/helfen'
+import { Route as InfosRouteImport } from './routes/infos'
+import { Route as TagebuchRouteImport } from './routes/tagebuch'
 import { Route as VorfallRouteImport } from './routes/vorfall'
+import { Route as TagebuchIndexRouteImport } from './routes/tagebuch.index'
+import { Route as TagebuchIdRouteImport } from './routes/tagebuch.$id'
 import { Route as VorfallIndexRouteImport } from './routes/vorfall.index'
 import { Route as VorfallBeweiseRouteImport } from './routes/vorfall.beweise'
 import { Route as VorfallHilfeRouteImport } from './routes/vorfall.hilfe'
@@ -21,10 +27,40 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EinstellungenRoute = EinstellungenRouteImport.update({
+  id: '/einstellungen',
+  path: '/einstellungen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelfenRoute = HelfenRouteImport.update({
+  id: '/helfen',
+  path: '/helfen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfosRoute = InfosRouteImport.update({
+  id: '/infos',
+  path: '/infos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TagebuchRoute = TagebuchRouteImport.update({
+  id: '/tagebuch',
+  path: '/tagebuch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VorfallRoute = VorfallRouteImport.update({
   id: '/vorfall',
   path: '/vorfall',
   getParentRoute: () => rootRouteImport,
+} as any)
+const TagebuchIndexRoute = TagebuchIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TagebuchRoute,
+} as any)
+const TagebuchIdRoute = TagebuchIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => TagebuchRoute,
 } as any)
 const VorfallIndexRoute = VorfallIndexRouteImport.update({
   id: '/',
@@ -49,56 +85,94 @@ const VorfallSpeichernRoute = VorfallSpeichernRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/einstellungen': typeof EinstellungenRoute
+  '/helfen': typeof HelfenRoute
+  '/infos': typeof InfosRoute
+  '/tagebuch': typeof TagebuchRouteWithChildren
   '/vorfall': typeof VorfallRouteWithChildren
+  '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/tagebuch/': typeof TagebuchIndexRoute
   '/vorfall/': typeof VorfallIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/einstellungen': typeof EinstellungenRoute
+  '/helfen': typeof HelfenRoute
+  '/infos': typeof InfosRoute
+  '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/tagebuch': typeof TagebuchIndexRoute
   '/vorfall': typeof VorfallIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/einstellungen': typeof EinstellungenRoute
+  '/helfen': typeof HelfenRoute
+  '/infos': typeof InfosRoute
+  '/tagebuch': typeof TagebuchRouteWithChildren
   '/vorfall': typeof VorfallRouteWithChildren
+  '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/tagebuch/': typeof TagebuchIndexRoute
   '/vorfall/': typeof VorfallIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/einstellungen'
+    | '/helfen'
+    | '/infos'
+    | '/tagebuch'
     | '/vorfall'
+    | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
     | '/vorfall/speichern'
+    | '/tagebuch/'
     | '/vorfall/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/einstellungen'
+    | '/helfen'
+    | '/infos'
+    | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
     | '/vorfall/speichern'
+    | '/tagebuch'
     | '/vorfall'
   id:
     | '__root__'
     | '/'
+    | '/einstellungen'
+    | '/helfen'
+    | '/infos'
+    | '/tagebuch'
     | '/vorfall'
+    | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
     | '/vorfall/speichern'
+    | '/tagebuch/'
     | '/vorfall/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EinstellungenRoute: typeof EinstellungenRoute
+  HelfenRoute: typeof HelfenRoute
+  InfosRoute: typeof InfosRoute
+  TagebuchRoute: typeof TagebuchRouteWithChildren
   VorfallRoute: typeof VorfallRouteWithChildren
 }
 
@@ -111,12 +185,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/einstellungen': {
+      id: '/einstellungen'
+      path: '/einstellungen'
+      fullPath: '/einstellungen'
+      preLoaderRoute: typeof EinstellungenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/helfen': {
+      id: '/helfen'
+      path: '/helfen'
+      fullPath: '/helfen'
+      preLoaderRoute: typeof HelfenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/infos': {
+      id: '/infos'
+      path: '/infos'
+      fullPath: '/infos'
+      preLoaderRoute: typeof InfosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tagebuch': {
+      id: '/tagebuch'
+      path: '/tagebuch'
+      fullPath: '/tagebuch'
+      preLoaderRoute: typeof TagebuchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vorfall': {
       id: '/vorfall'
       path: '/vorfall'
       fullPath: '/vorfall'
       preLoaderRoute: typeof VorfallRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/tagebuch/': {
+      id: '/tagebuch/'
+      path: '/'
+      fullPath: '/tagebuch/'
+      preLoaderRoute: typeof TagebuchIndexRouteImport
+      parentRoute: typeof TagebuchRoute
+    }
+    '/tagebuch/$id': {
+      id: '/tagebuch/$id'
+      path: '/$id'
+      fullPath: '/tagebuch/$id'
+      preLoaderRoute: typeof TagebuchIdRouteImport
+      parentRoute: typeof TagebuchRoute
     }
     '/vorfall/': {
       id: '/vorfall/'
@@ -149,6 +265,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface TagebuchRouteChildren {
+  TagebuchIdRoute: typeof TagebuchIdRoute
+  TagebuchIndexRoute: typeof TagebuchIndexRoute
+}
+
+const TagebuchRouteChildren: TagebuchRouteChildren = {
+  TagebuchIdRoute: TagebuchIdRoute,
+  TagebuchIndexRoute: TagebuchIndexRoute,
+}
+
+const TagebuchRouteWithChildren = TagebuchRoute._addFileChildren(
+  TagebuchRouteChildren,
+)
+
 interface VorfallRouteChildren {
   VorfallBeweiseRoute: typeof VorfallBeweiseRoute
   VorfallHilfeRoute: typeof VorfallHilfeRoute
@@ -168,6 +298,10 @@ const VorfallRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EinstellungenRoute: EinstellungenRoute,
+  HelfenRoute: HelfenRoute,
+  InfosRoute: InfosRoute,
+  TagebuchRoute: TagebuchRouteWithChildren,
   VorfallRoute: VorfallRouteWithChildren,
 }
 export const routeTree = rootRouteImport
