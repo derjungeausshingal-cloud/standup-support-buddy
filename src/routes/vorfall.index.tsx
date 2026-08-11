@@ -31,6 +31,7 @@ const kinds: { key: IncidentKind; hint: string; icon: typeof Users }[] = [
 function VorfallPage() {
   const { draft, setDraft } = useIncidents();
   const navigate = useNavigate();
+  const { modus } = Route.useSearch();
 
   return (
     <div className="min-h-screen pb-32">
@@ -38,7 +39,22 @@ function VorfallPage() {
       <Stepper current={draft.kind ? 2 : 1} />
 
       <main className="mx-auto max-w-md px-5">
+        {modus === "gemeinsam" ? (
+          <section className="card-tile mt-5 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 border-info/30 bg-info-soft p-4">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-info text-primary-foreground">
+              <Users className="h-5 w-5" />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-sm font-extrabold">Gemeinsam dokumentieren</span>
+              <span className="mt-1 block text-sm leading-snug">
+                Achte darauf, dass die betroffene Person damit einverstanden ist, was gespeichert wird.
+              </span>
+            </span>
+          </section>
+        ) : null}
+
         <h2 className="mt-6 text-lg font-extrabold">1. Was ist passiert?</h2>
+
         <p className="mt-1 text-sm text-muted-foreground">
           Wenn du möchtest, kannst du eine Art auswählen. Du kannst das später ändern.
         </p>
