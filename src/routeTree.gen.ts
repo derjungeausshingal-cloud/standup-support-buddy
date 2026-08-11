@@ -22,6 +22,11 @@ import { Route as RechteRouteImport } from './routes/rechte'
 import { Route as TagebuchRouteImport } from './routes/tagebuch'
 import { Route as VertrauenspersonRouteImport } from './routes/vertrauensperson'
 import { Route as VorfallRouteImport } from './routes/vorfall'
+import { Route as HelfenIndexRouteImport } from './routes/helfen.index'
+import { Route as HelfenDokumentierenRouteImport } from './routes/helfen.dokumentieren'
+import { Route as HelfenErnstNehmenRouteImport } from './routes/helfen.ernst-nehmen'
+import { Route as HelfenZuhoerenRouteImport } from './routes/helfen.zuhoeren'
+import { Route as HelfenZustimmungRouteImport } from './routes/helfen.zustimmung'
 import { Route as TagebuchIndexRouteImport } from './routes/tagebuch.index'
 import { Route as TagebuchIdRouteImport } from './routes/tagebuch.$id'
 import { Route as VorfallIndexRouteImport } from './routes/vorfall.index'
@@ -94,6 +99,31 @@ const VorfallRoute = VorfallRouteImport.update({
   path: '/vorfall',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HelfenIndexRoute = HelfenIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HelfenRoute,
+} as any)
+const HelfenDokumentierenRoute = HelfenDokumentierenRouteImport.update({
+  id: '/dokumentieren',
+  path: '/dokumentieren',
+  getParentRoute: () => HelfenRoute,
+} as any)
+const HelfenErnstNehmenRoute = HelfenErnstNehmenRouteImport.update({
+  id: '/ernst-nehmen',
+  path: '/ernst-nehmen',
+  getParentRoute: () => HelfenRoute,
+} as any)
+const HelfenZuhoerenRoute = HelfenZuhoerenRouteImport.update({
+  id: '/zuhoeren',
+  path: '/zuhoeren',
+  getParentRoute: () => HelfenRoute,
+} as any)
+const HelfenZustimmungRoute = HelfenZustimmungRouteImport.update({
+  id: '/zustimmung',
+  path: '/zustimmung',
+  getParentRoute: () => HelfenRoute,
+} as any)
 const TagebuchIndexRoute = TagebuchIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -130,7 +160,7 @@ export interface FileRoutesByFullPath {
   '/beratung': typeof BeratungRoute
   '/bericht': typeof BerichtRoute
   '/einstellungen': typeof EinstellungenRoute
-  '/helfen': typeof HelfenRoute
+  '/helfen': typeof HelfenRouteWithChildren
   '/infos': typeof InfosRoute
   '/ist-das-mobbing': typeof IstDasMobbingRoute
   '/nachricht': typeof NachrichtRoute
@@ -139,10 +169,15 @@ export interface FileRoutesByFullPath {
   '/tagebuch': typeof TagebuchRouteWithChildren
   '/vertrauensperson': typeof VertrauenspersonRoute
   '/vorfall': typeof VorfallRouteWithChildren
+  '/helfen/dokumentieren': typeof HelfenDokumentierenRoute
+  '/helfen/ernst-nehmen': typeof HelfenErnstNehmenRoute
+  '/helfen/zuhoeren': typeof HelfenZuhoerenRoute
+  '/helfen/zustimmung': typeof HelfenZustimmungRoute
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/helfen/': typeof HelfenIndexRoute
   '/tagebuch/': typeof TagebuchIndexRoute
   '/vorfall/': typeof VorfallIndexRoute
 }
@@ -151,17 +186,21 @@ export interface FileRoutesByTo {
   '/beratung': typeof BeratungRoute
   '/bericht': typeof BerichtRoute
   '/einstellungen': typeof EinstellungenRoute
-  '/helfen': typeof HelfenRoute
   '/infos': typeof InfosRoute
   '/ist-das-mobbing': typeof IstDasMobbingRoute
   '/nachricht': typeof NachrichtRoute
   '/notfall': typeof NotfallRoute
   '/rechte': typeof RechteRoute
   '/vertrauensperson': typeof VertrauenspersonRoute
+  '/helfen/dokumentieren': typeof HelfenDokumentierenRoute
+  '/helfen/ernst-nehmen': typeof HelfenErnstNehmenRoute
+  '/helfen/zuhoeren': typeof HelfenZuhoerenRoute
+  '/helfen/zustimmung': typeof HelfenZustimmungRoute
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/helfen': typeof HelfenIndexRoute
   '/tagebuch': typeof TagebuchIndexRoute
   '/vorfall': typeof VorfallIndexRoute
 }
@@ -171,7 +210,7 @@ export interface FileRoutesById {
   '/beratung': typeof BeratungRoute
   '/bericht': typeof BerichtRoute
   '/einstellungen': typeof EinstellungenRoute
-  '/helfen': typeof HelfenRoute
+  '/helfen': typeof HelfenRouteWithChildren
   '/infos': typeof InfosRoute
   '/ist-das-mobbing': typeof IstDasMobbingRoute
   '/nachricht': typeof NachrichtRoute
@@ -180,10 +219,15 @@ export interface FileRoutesById {
   '/tagebuch': typeof TagebuchRouteWithChildren
   '/vertrauensperson': typeof VertrauenspersonRoute
   '/vorfall': typeof VorfallRouteWithChildren
+  '/helfen/dokumentieren': typeof HelfenDokumentierenRoute
+  '/helfen/ernst-nehmen': typeof HelfenErnstNehmenRoute
+  '/helfen/zuhoeren': typeof HelfenZuhoerenRoute
+  '/helfen/zustimmung': typeof HelfenZustimmungRoute
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
+  '/helfen/': typeof HelfenIndexRoute
   '/tagebuch/': typeof TagebuchIndexRoute
   '/vorfall/': typeof VorfallIndexRoute
 }
@@ -203,10 +247,15 @@ export interface FileRouteTypes {
     | '/tagebuch'
     | '/vertrauensperson'
     | '/vorfall'
+    | '/helfen/dokumentieren'
+    | '/helfen/ernst-nehmen'
+    | '/helfen/zuhoeren'
+    | '/helfen/zustimmung'
     | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
     | '/vorfall/speichern'
+    | '/helfen/'
     | '/tagebuch/'
     | '/vorfall/'
   fileRoutesByTo: FileRoutesByTo
@@ -215,17 +264,21 @@ export interface FileRouteTypes {
     | '/beratung'
     | '/bericht'
     | '/einstellungen'
-    | '/helfen'
     | '/infos'
     | '/ist-das-mobbing'
     | '/nachricht'
     | '/notfall'
     | '/rechte'
     | '/vertrauensperson'
+    | '/helfen/dokumentieren'
+    | '/helfen/ernst-nehmen'
+    | '/helfen/zuhoeren'
+    | '/helfen/zustimmung'
     | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
     | '/vorfall/speichern'
+    | '/helfen'
     | '/tagebuch'
     | '/vorfall'
   id:
@@ -243,10 +296,15 @@ export interface FileRouteTypes {
     | '/tagebuch'
     | '/vertrauensperson'
     | '/vorfall'
+    | '/helfen/dokumentieren'
+    | '/helfen/ernst-nehmen'
+    | '/helfen/zuhoeren'
+    | '/helfen/zustimmung'
     | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
     | '/vorfall/speichern'
+    | '/helfen/'
     | '/tagebuch/'
     | '/vorfall/'
   fileRoutesById: FileRoutesById
@@ -256,7 +314,7 @@ export interface RootRouteChildren {
   BeratungRoute: typeof BeratungRoute
   BerichtRoute: typeof BerichtRoute
   EinstellungenRoute: typeof EinstellungenRoute
-  HelfenRoute: typeof HelfenRoute
+  HelfenRoute: typeof HelfenRouteWithChildren
   InfosRoute: typeof InfosRoute
   IstDasMobbingRoute: typeof IstDasMobbingRoute
   NachrichtRoute: typeof NachrichtRoute
@@ -360,6 +418,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VorfallRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/helfen/': {
+      id: '/helfen/'
+      path: '/'
+      fullPath: '/helfen/'
+      preLoaderRoute: typeof HelfenIndexRouteImport
+      parentRoute: typeof HelfenRoute
+    }
+    '/helfen/dokumentieren': {
+      id: '/helfen/dokumentieren'
+      path: '/dokumentieren'
+      fullPath: '/helfen/dokumentieren'
+      preLoaderRoute: typeof HelfenDokumentierenRouteImport
+      parentRoute: typeof HelfenRoute
+    }
+    '/helfen/ernst-nehmen': {
+      id: '/helfen/ernst-nehmen'
+      path: '/ernst-nehmen'
+      fullPath: '/helfen/ernst-nehmen'
+      preLoaderRoute: typeof HelfenErnstNehmenRouteImport
+      parentRoute: typeof HelfenRoute
+    }
+    '/helfen/zuhoeren': {
+      id: '/helfen/zuhoeren'
+      path: '/zuhoeren'
+      fullPath: '/helfen/zuhoeren'
+      preLoaderRoute: typeof HelfenZuhoerenRouteImport
+      parentRoute: typeof HelfenRoute
+    }
+    '/helfen/zustimmung': {
+      id: '/helfen/zustimmung'
+      path: '/zustimmung'
+      fullPath: '/helfen/zustimmung'
+      preLoaderRoute: typeof HelfenZustimmungRouteImport
+      parentRoute: typeof HelfenRoute
+    }
     '/tagebuch/': {
       id: '/tagebuch/'
       path: '/'
@@ -405,6 +498,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface HelfenRouteChildren {
+  HelfenDokumentierenRoute: typeof HelfenDokumentierenRoute
+  HelfenErnstNehmenRoute: typeof HelfenErnstNehmenRoute
+  HelfenZuhoerenRoute: typeof HelfenZuhoerenRoute
+  HelfenZustimmungRoute: typeof HelfenZustimmungRoute
+  HelfenIndexRoute: typeof HelfenIndexRoute
+}
+
+const HelfenRouteChildren: HelfenRouteChildren = {
+  HelfenDokumentierenRoute: HelfenDokumentierenRoute,
+  HelfenErnstNehmenRoute: HelfenErnstNehmenRoute,
+  HelfenZuhoerenRoute: HelfenZuhoerenRoute,
+  HelfenZustimmungRoute: HelfenZustimmungRoute,
+  HelfenIndexRoute: HelfenIndexRoute,
+}
+
+const HelfenRouteWithChildren =
+  HelfenRoute._addFileChildren(HelfenRouteChildren)
+
 interface TagebuchRouteChildren {
   TagebuchIdRoute: typeof TagebuchIdRoute
   TagebuchIndexRoute: typeof TagebuchIndexRoute
@@ -441,7 +553,7 @@ const rootRouteChildren: RootRouteChildren = {
   BeratungRoute: BeratungRoute,
   BerichtRoute: BerichtRoute,
   EinstellungenRoute: EinstellungenRoute,
-  HelfenRoute: HelfenRoute,
+  HelfenRoute: HelfenRouteWithChildren,
   InfosRoute: InfosRoute,
   IstDasMobbingRoute: IstDasMobbingRoute,
   NachrichtRoute: NachrichtRoute,
