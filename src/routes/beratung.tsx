@@ -1,14 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Clock, Globe, Phone, Search } from "lucide-react";
+import { Clock, Globe, MapPin, Phone, Search, X } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
+import { sucheStellen, themen, type Stelle, type Thema } from "@/lib/beratung";
 
 export const Route = createFileRoute("/beratung")({
   head: () => ({
     meta: [
       { title: "Beratung & Hilfe finden – StandUp" },
-      { name: "description", content: "Professionelle Beratungsstellen und Anlaufstellen bei Mobbing, Diskriminierung und Gewalt – nach Ort und Thema filtern." },
+      { name: "description", content: "Beratungsstellen in ganz Deutschland nach Stadt oder Postleitzahl suchen und nach Themen wie Mobbing, Diskriminierung oder Gewalt filtern." },
       { property: "og:title", content: "Beratung & Hilfe finden – StandUp" },
       { property: "og:description", content: "Anlaufstellen finden, die zu deiner Situation passen." },
     ],
@@ -16,84 +17,61 @@ export const Route = createFileRoute("/beratung")({
   component: BeratungPage,
 });
 
-type Stelle = {
-  name: string;
-  ort: string;
-  themen: string[];
-  tel: string;
-  zeiten: string;
-  beschreibung: string;
-};
-
-const stellen: Stelle[] = [
-  {
-    name: "Nummer gegen Kummer (Kinder- und Jugendtelefon)",
-    ort: "Bundesweit / Telefon",
-    themen: ["Mobbing", "Schule", "Krise"],
-    tel: "116 111",
-    zeiten: "Mo–Sa 14–20 Uhr",
-    beschreibung: "Kostenlose und anonyme Beratung für Kinder und Jugendliche.",
-  },
-  {
-    name: "Telefonseelsorge",
-    ort: "Bundesweit / Telefon",
-    themen: ["Krise", "Belastung"],
-    tel: "0800 111 0 111",
-    zeiten: "Rund um die Uhr",
-    beschreibung: "Vertrauliche Gespräche, wenn dir etwas schwer auf der Seele liegt.",
-  },
-  {
-    name: "Antidiskriminierungsstelle des Bundes",
-    ort: "Bundesweit / Online",
-    themen: ["Diskriminierung", "Arbeit", "Recht"],
-    tel: "0800 546 546 5",
-    zeiten: "Mo–Do 9–15 Uhr",
-    beschreibung: "Erstberatung zu Diskriminierung und rechtlichen Möglichkeiten.",
-  },
-  {
-    name: "Hilfetelefon Gewalt gegen Frauen",
-    ort: "Bundesweit / Telefon",
-    themen: ["Gewalt", "Bedrohung"],
-    tel: "116 016",
-    zeiten: "Rund um die Uhr",
-    beschreibung: "Beratung in vielen Sprachen, anonym und kostenfrei.",
-  },
-  {
-    name: "Schulpsychologische Beratungsstelle",
-    ort: "Vor Ort",
-    themen: ["Mobbing", "Schule"],
-    tel: "Über deine Schule erreichbar",
-    zeiten: "Nach Vereinbarung",
-    beschreibung: "Unterstützung bei Konflikten in der Schule – auch gemeinsam mit deinen Eltern.",
-  },
-  {
-    name: "Weisser Ring – Opferhilfe",
-    ort: "Bundesweit / Vor Ort",
-    themen: ["Gewalt", "Bedrohung", "Recht"],
-    tel: "116 006",
-    zeiten: "Täglich 7–22 Uhr",
-    beschreibung: "Begleitung nach Straftaten, auf Wunsch auch bei Behördengängen.",
-  },
-];
-
-const themen = ["Mobbing", "Diskriminierung", "Gewalt", "Bedrohung", "Schule", "Arbeit", "Recht", "Krise"];
+function StelleCard({ s }: { s: Stelle }) {
+  const anrufbar = /^[\d\s]+$/.test(s.tel);
+  return (
+    <li className="card-tile p-4">
+      <h3 className="text-base font-extrabold leading-tight">{s.name}</h3>
+      <p className="mt-1 text-sm leading-snug text-muted-foreground">{s.beschreibung}</p>
+      <div className="mt-3 grid gap-1.5 text-sm">
+        <span className="flex items-center gap-2">
+          {s.art === "lokal" ? (
+            <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+          ) : (
+            <Globe className="h-4 w-4 shrink-0 text-muted-foreground" />
+          )}
+          {s.ort}
+        </span>
+        <span className="flex items-center gap-2">
+          <Clock className="h-4 w-4 shrink-0 text-muted-foreground" /> {s.zeiten}
+        </span>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {s.themen.map((t) => (
+          <span key={t} className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-bold text-primary">
+            {t}
+          </span>
+        ))}
+      </div>
+      {anrufbar ? (
+        <a href={`tel:${s.tel.replace(/\s/g, "")}`} className="btn-primary mt-4">
+          <Phone className="h-5 w-5" />
+          {s.tel} anrufen
+        </a>
+      ) : (
+        <p className="mt-4 text-sm font-bold">{s.tel}</p>
+      )}
+      {s.web ? (
+        <a
+          href={s.web}
+          target="_blank"
+          rel="noreferrer"
+          className="btn-ghost mt-2"
+        >
+          <Globe className="h-5 w-5" />
+          Website öffnen
+        </a>
+      ) : null}
+    </li>
+  );
+}
 
 function BeratungPage() {
   const [query, setQuery] = useState("");
-  const [thema, setThema] = useState<string | null>(null);
+  const [thema, setThema] = useState<Thema | null>(null);
 
-  const results = useMemo(
-    () =>
-      stellen.filter((s) => {
-        const q = query.trim().toLowerCase();
-        const matchQuery =
-          !q ||
-          s.name.toLowerCase().includes(q) ||
-          s.ort.toLowerCase().includes(q) ||
-          s.beschreibung.toLowerCase().includes(q);
-        const matchThema = !thema || s.themen.includes(thema);
-        return matchQuery && matchThema;
-      }),
+  const { ort, lokal, bundesweit, unbekannterOrt } = useMemo(
+    () => sucheStellen(query, thema),
     [query, thema],
   );
 
@@ -106,11 +84,22 @@ function BeratungPage() {
           <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <input
             type="search"
+            inputMode="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ort oder Stichwort suchen"
-            className="field-input pl-12"
+            placeholder="Ort, Stadt oder PLZ (z. B. Köln, 04109)"
+            className="field-input pl-12 pr-11"
           />
+          {query ? (
+            <button
+              type="button"
+              aria-label="Suche löschen"
+              onClick={() => setQuery("")}
+              className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full bg-muted text-muted-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          ) : null}
         </div>
 
         <div className="mt-3 flex flex-wrap gap-2">
@@ -132,46 +121,62 @@ function BeratungPage() {
           })}
         </div>
 
-        <p className="mt-4 text-sm text-muted-foreground">
-          {results.length} {results.length === 1 ? "Anlaufstelle" : "Anlaufstellen"} gefunden
-        </p>
+        {ort ? (
+          <section className="card-tile mt-4 border-primary/30 bg-primary-soft p-4">
+            <p className="text-sm font-extrabold text-primary">{ort.label}</p>
+            <p className="mt-1 text-sm leading-snug">
+              Region: {ort.region} · {ort.land}
+            </p>
+          </section>
+        ) : null}
 
-        <ul className="mt-3 grid gap-3">
-          {results.map((s) => (
-            <li key={s.name} className="card-tile p-4">
-              <h2 className="text-base font-extrabold leading-tight">{s.name}</h2>
-              <p className="mt-1 text-sm leading-snug text-muted-foreground">{s.beschreibung}</p>
-              <div className="mt-3 grid gap-1.5 text-sm">
-                <span className="flex items-center gap-2">
-                  <Globe className="h-4 w-4 shrink-0 text-muted-foreground" /> {s.ort}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 shrink-0 text-muted-foreground" /> {s.zeiten}
-                </span>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {s.themen.map((t) => (
-                  <span key={t} className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-bold text-primary">
-                    {t}
-                  </span>
-                ))}
-              </div>
-              {/^[\d\s]+$/.test(s.tel) ? (
-                <a href={`tel:${s.tel.replace(/\s/g, "")}`} className="btn-primary mt-4">
-                  <Phone className="h-5 w-5" />
-                  {s.tel} anrufen
-                </a>
-              ) : (
-                <p className="mt-4 text-sm font-bold">{s.tel}</p>
-              )}
-            </li>
-          ))}
-        </ul>
-
-        {results.length === 0 ? (
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            Keine Treffer. Du kannst die Filter zurücksetzen oder anders suchen.
+        {unbekannterOrt ? (
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            Zu „{query}“ konnten wir keinen Ort zuordnen. Versuch es mit einer Postleitzahl (z. B. 20095) oder
+            einer größeren Stadt in der Nähe. Bundesweite Angebote findest du unten.
           </p>
+        ) : null}
+
+        {ort ? (
+          <>
+            <h2 className="mt-6 text-sm font-extrabold uppercase tracking-wide text-muted-foreground">
+              In der Region ({lokal.length})
+            </h2>
+            {lokal.length > 0 ? (
+              <ul className="mt-3 grid gap-3">
+                {lokal.map((s) => (
+                  <StelleCard key={s.id} s={s} />
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-3 text-sm text-muted-foreground">
+                Für dieses Thema haben wir vor Ort keine passende Stelle gefunden. Die bundesweiten Angebote
+                helfen dir aber auch weiter.
+              </p>
+            )}
+          </>
+        ) : null}
+
+        <h2 className="mt-6 text-sm font-extrabold uppercase tracking-wide text-muted-foreground">
+          Bundesweit erreichbar ({bundesweit.length})
+        </h2>
+        {bundesweit.length > 0 ? (
+          <ul className="mt-3 grid gap-3">
+            {bundesweit.map((s) => (
+              <StelleCard key={s.id} s={s} />
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-3 text-sm text-muted-foreground">
+            Für dieses Thema gibt es hier gerade keinen bundesweiten Eintrag. Du kannst den Themenfilter
+            zurücksetzen.
+          </p>
+        )}
+
+        {thema ? (
+          <button type="button" onClick={() => setThema(null)} className="btn-ghost mt-4">
+            Themenfilter zurücksetzen
+          </button>
         ) : null}
       </main>
 
