@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { IncidentProvider } from "@/lib/incidents";
+import { PreferencesProvider } from "@/lib/preferences";
 
 function NotFoundComponent() {
   return (
@@ -126,9 +127,11 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <IncidentProvider>
-        <Outlet />
-      </IncidentProvider>
+      <PreferencesProvider>
+        <IncidentProvider>
+          <Outlet />
+        </IncidentProvider>
+      </PreferencesProvider>
     </QueryClientProvider>
   );
 }

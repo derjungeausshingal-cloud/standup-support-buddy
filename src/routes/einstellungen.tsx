@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Accessibility, Database, Globe, Info, Lock, Trash2 } from "lucide-react";
+import { Accessibility, Database, Globe, Info, Lock, Palette, Trash2 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { useIncidents } from "@/lib/incidents";
+import { usePreferences, type ThemeMode } from "@/lib/preferences";
 
 export const Route = createFileRoute("/einstellungen")({
   head: () => ({
@@ -41,6 +42,7 @@ function Section({
 
 function EinstellungenPage() {
   const { incidents, clearAll } = useIncidents();
+  const { prefs, setPrefs } = usePreferences();
   const [confirm, setConfirm] = useState(false);
   const evidenceCount = incidents.reduce((n, i) => n + i.evidence.length, 0);
 
@@ -49,6 +51,27 @@ function EinstellungenPage() {
       <AppHeader title="Einstellungen" back={false} />
 
       <main className="mx-auto max-w-md grid gap-3 px-5 pt-5">
+        <Section icon={Palette} title="Darstellung">
+          Wähle, wie StandUp aussehen soll.
+          <div className="mt-3 flex flex-wrap gap-2">
+            {([
+              ["system", "System"],
+              ["light", "Hell"],
+              ["dark", "Dunkel"],
+            ] as [ThemeMode, string][]).map(([mode, label]) => (
+              <button
+                key={mode}
+                type="button"
+                aria-pressed={prefs.theme === mode}
+                onClick={() => setPrefs({ theme: mode })}
+                className={prefs.theme === mode ? "chip-active" : "chip"}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </Section>
+
         <Section icon={Lock} title="Datenschutz">
           In dieser Prototyp-Version bleiben deine Einträge lokal in deinem Browser. Es findet keine
           Übertragung an einen Server statt und es ist noch keine Verschlüsselung eingebaut. Teile Angaben
