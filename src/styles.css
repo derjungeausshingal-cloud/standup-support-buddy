@@ -153,3 +153,73 @@
     transform: scale(0.988);
   }
 }
+
+.dark {
+  --background: oklch(0.18 0.015 288);
+  --foreground: oklch(0.96 0.005 291);
+  --card: oklch(0.225 0.018 288);
+  --card-foreground: oklch(0.96 0.005 291);
+  --popover: oklch(0.225 0.018 288);
+  --popover-foreground: oklch(0.96 0.005 291);
+  --primary: oklch(0.72 0.15 291);
+  --primary-foreground: oklch(0.17 0.02 288);
+  --primary-soft: oklch(0.3 0.06 291);
+  --secondary: oklch(0.27 0.02 288);
+  --secondary-foreground: oklch(0.94 0.01 291);
+  --muted: oklch(0.27 0.02 288);
+  --muted-foreground: oklch(0.75 0.015 288);
+  --accent: oklch(0.3 0.06 291);
+  --accent-foreground: oklch(0.9 0.06 291);
+  --destructive: oklch(0.68 0.17 22);
+  --destructive-foreground: oklch(0.17 0.02 288);
+  --success: oklch(0.74 0.13 158);
+  --success-soft: oklch(0.3 0.05 158);
+  --warning: oklch(0.79 0.14 65);
+  --warning-soft: oklch(0.32 0.05 65);
+  --info: oklch(0.74 0.12 250);
+  --info-soft: oklch(0.3 0.05 250);
+  --border: oklch(0.32 0.02 288);
+  --input: oklch(0.32 0.02 288);
+  --ring: oklch(0.72 0.15 291);
+  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.4), 0 8px 24px -14px oklch(0 0 0 / 0.6);
+  --shadow-lift: 0 12px 30px -14px oklch(0 0 0 / 0.7);
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-primary-soft);
+  }
+}
+
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-muted-foreground);
+  min-height: 2.5rem;
+}
+
+@utility chip-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-primary-foreground);
+  min-height: 2.5rem;
+}
