@@ -112,7 +112,12 @@ const zonen: Record<string, Zone> = {};
 function zone(von: number, bis: number, region: string, land: string) {
   for (let i = von; i <= bis; i++) zonen[String(i).padStart(2, "0")] = { region, land };
 }
-zone(1, 9, "Dresden und Umgebung", "Sachsen");
+zone(1, 2, "Dresden und Umgebung", "Sachsen");
+zone(3, 3, "Cottbus und Lausitz", "Brandenburg");
+zone(4, 4, "Leipzig und Umgebung", "Sachsen");
+zone(6, 6, "Halle und Südliches Sachsen-Anhalt", "Sachsen-Anhalt");
+zone(7, 7, "Gera und Jena", "Thüringen");
+zone(8, 9, "Chemnitz und Zwickau", "Sachsen");
 zone(10, 16, "Berlin und Brandenburg", "Berlin/Brandenburg");
 zone(17, 19, "Mecklenburg-Vorpommern", "Mecklenburg-Vorpommern");
 zone(20, 25, "Hamburg und Schleswig-Holstein", "Hamburg/Schleswig-Holstein");
