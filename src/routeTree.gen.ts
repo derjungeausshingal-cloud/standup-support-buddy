@@ -35,6 +35,7 @@ import { Route as TagebuchIdRouteImport } from './routes/tagebuch.$id'
 import { Route as VorfallIndexRouteImport } from './routes/vorfall.index'
 import { Route as VorfallBeweiseRouteImport } from './routes/vorfall.beweise'
 import { Route as VorfallHilfeRouteImport } from './routes/vorfall.hilfe'
+import { Route as VorfallSchnellRouteImport } from './routes/vorfall.schnell'
 import { Route as VorfallSpeichernRouteImport } from './routes/vorfall.speichern'
 
 const IndexRoute = IndexRouteImport.update({
@@ -167,6 +168,11 @@ const VorfallHilfeRoute = VorfallHilfeRouteImport.update({
   path: '/hilfe',
   getParentRoute: () => VorfallRoute,
 } as any)
+const VorfallSchnellRoute = VorfallSchnellRouteImport.update({
+  id: '/schnell',
+  path: '/schnell',
+  getParentRoute: () => VorfallRoute,
+} as any)
 const VorfallSpeichernRoute = VorfallSpeichernRouteImport.update({
   id: '/speichern',
   path: '/speichern',
@@ -197,6 +203,7 @@ export interface FileRoutesByFullPath {
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/schnell': typeof VorfallSchnellRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
   '/helfen/': typeof HelfenIndexRoute
   '/tagebuch/': typeof TagebuchIndexRoute
@@ -223,6 +230,7 @@ export interface FileRoutesByTo {
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/schnell': typeof VorfallSchnellRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
   '/helfen': typeof HelfenIndexRoute
   '/tagebuch': typeof TagebuchIndexRoute
@@ -253,6 +261,7 @@ export interface FileRoutesById {
   '/tagebuch/$id': typeof TagebuchIdRoute
   '/vorfall/beweise': typeof VorfallBeweiseRoute
   '/vorfall/hilfe': typeof VorfallHilfeRoute
+  '/vorfall/schnell': typeof VorfallSchnellRoute
   '/vorfall/speichern': typeof VorfallSpeichernRoute
   '/helfen/': typeof HelfenIndexRoute
   '/tagebuch/': typeof TagebuchIndexRoute
@@ -284,6 +293,7 @@ export interface FileRouteTypes {
     | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
+    | '/vorfall/schnell'
     | '/vorfall/speichern'
     | '/helfen/'
     | '/tagebuch/'
@@ -310,6 +320,7 @@ export interface FileRouteTypes {
     | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
+    | '/vorfall/schnell'
     | '/vorfall/speichern'
     | '/helfen'
     | '/tagebuch'
@@ -339,6 +350,7 @@ export interface FileRouteTypes {
     | '/tagebuch/$id'
     | '/vorfall/beweise'
     | '/vorfall/hilfe'
+    | '/vorfall/schnell'
     | '/vorfall/speichern'
     | '/helfen/'
     | '/tagebuch/'
@@ -545,6 +557,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VorfallHilfeRouteImport
       parentRoute: typeof VorfallRoute
     }
+    '/vorfall/schnell': {
+      id: '/vorfall/schnell'
+      path: '/schnell'
+      fullPath: '/vorfall/schnell'
+      preLoaderRoute: typeof VorfallSchnellRouteImport
+      parentRoute: typeof VorfallRoute
+    }
     '/vorfall/speichern': {
       id: '/vorfall/speichern'
       path: '/speichern'
@@ -597,6 +616,7 @@ const TagebuchRouteWithChildren = TagebuchRoute._addFileChildren(
 interface VorfallRouteChildren {
   VorfallBeweiseRoute: typeof VorfallBeweiseRoute
   VorfallHilfeRoute: typeof VorfallHilfeRoute
+  VorfallSchnellRoute: typeof VorfallSchnellRoute
   VorfallSpeichernRoute: typeof VorfallSpeichernRoute
   VorfallIndexRoute: typeof VorfallIndexRoute
 }
@@ -604,6 +624,7 @@ interface VorfallRouteChildren {
 const VorfallRouteChildren: VorfallRouteChildren = {
   VorfallBeweiseRoute: VorfallBeweiseRoute,
   VorfallHilfeRoute: VorfallHilfeRoute,
+  VorfallSchnellRoute: VorfallSchnellRoute,
   VorfallSpeichernRoute: VorfallSpeichernRoute,
   VorfallIndexRoute: VorfallIndexRoute,
 }
