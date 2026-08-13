@@ -1,8 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { BookOpen, HelpCircle, LifeBuoy, Paperclip, PenLine, Search, X } from "lucide-react";
+import { BookOpen, HelpCircle, LifeBuoy, Paperclip, PenLine, Search, X, Zap } from "lucide-react";
 
 const actions = [
+  {
+    to: "/vorfall/schnell",
+    title: "Schnell festhalten",
+    subtitle: "Ein Satz genügt – Details später.",
+    icon: Zap,
+    tone: "bg-warning-soft text-warning",
+  },
   {
     to: "/vorfall",
     title: "Vorfall dokumentieren",
@@ -17,6 +24,7 @@ const actions = [
     icon: Paperclip,
     tone: "bg-info-soft text-info",
   },
+
   {
     to: "/notfall",
     title: "Ich brauche gerade Hilfe",
