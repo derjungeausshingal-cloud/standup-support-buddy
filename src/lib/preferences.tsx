@@ -23,6 +23,8 @@ export const emptyContact: TrustedContact = { name: "", relation: "", phone: "",
 
 export type UserPreferences = {
   theme: ThemeMode;
+  /** Sprachcode (ISO 639-1) der gewählten Anzeigesprache. */
+  language: string;
   onboarded: boolean;
   focus: FocusArea | null;
   /** Diskreter Modus: weniger sichtbare Details auf Übersichten. */
@@ -32,6 +34,7 @@ export type UserPreferences = {
 
 const defaultPreferences: UserPreferences = {
   theme: "system",
+  language: "de",
   onboarded: false,
   focus: null,
   discreet: false,
