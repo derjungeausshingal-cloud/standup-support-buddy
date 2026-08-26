@@ -51,14 +51,10 @@ type Ctx = {
 const PreferencesContext = createContext<Ctx | null>(null);
 const STORAGE_KEY = "standup.preferences.v1";
 
-function applyTheme(theme: ThemeMode) {
+function applyTheme(_theme: ThemeMode) {
   if (typeof document === "undefined") return;
-  const dark =
-    theme === "dark" ||
-    (theme === "system" &&
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
-  document.documentElement.classList.toggle("dark", dark);
+  // StandUp ist immer hell gehalten.
+  document.documentElement.classList.remove("dark");
 }
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
@@ -88,13 +84,6 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     applyTheme(prefs.theme);
   }, [prefs, hydrated]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => applyTheme(prefs.theme);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, [prefs.theme]);
 
   const value = useMemo<Ctx>(
     () => ({

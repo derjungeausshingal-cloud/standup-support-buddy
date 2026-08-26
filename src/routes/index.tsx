@@ -10,7 +10,6 @@ import {
   Phone,
   Scale,
   ShieldCheck,
-  Zap,
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { OptionCard, QuickTile } from "@/components/OptionCard";
@@ -76,13 +75,6 @@ function HomePage() {
             description="Vorfall dokumentieren und Hilfe bekommen"
             icon={FileHeart}
             tone="primary"
-          />
-          <OptionCard
-            to="/vorfall/schnell"
-            title="Schnell festhalten"
-            description="Ein Satz genügt – Details kannst du später ergänzen"
-            icon={Zap}
-            tone="warning"
           />
           <OptionCard
             to="/helfen"
