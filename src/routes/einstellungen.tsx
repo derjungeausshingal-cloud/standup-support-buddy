@@ -93,13 +93,53 @@ function EinstellungenPage() {
         </Section>
 
         <Section icon={Globe} title="Sprache">
-          Aktuell: Deutsch. Weitere Sprachen sind für eine spätere Version geplant.
+          Wähle deine Sprache. Alle Sprachen stehen zur Auswahl; Inhalte, die noch nicht übersetzt sind,
+          werden weiterhin auf Deutsch angezeigt.
+          <select
+            aria-label="Sprache wählen"
+            value={prefs.language}
+            onChange={(e) => setPrefs({ language: e.target.value })}
+            className="mt-3 h-12 w-full rounded-2xl border border-border bg-card px-3 text-base font-bold text-foreground"
+          >
+            {languages.map((l) => (
+              <option key={l.code} value={l.code}>
+                {l.label}
+              </option>
+            ))}
+          </select>
         </Section>
 
         <Section icon={Info} title="Über StandUp">
-          StandUp begleitet dich, wenn du Mobbing, Diskriminierung, Beleidigungen oder Bedrohungen erlebst.
-          Die App ersetzt keine professionelle psychologische oder rechtliche Beratung und trifft keine
-          verbindlichen rechtlichen Entscheidungen. Prototyp-Version 0.1.
+          <p>
+            StandUp ist eine App für Menschen, die Mobbing, Diskriminierung, Beleidigungen, Bedrohungen
+            oder andere belastende Situationen erleben – in der Schule, am Arbeitsplatz, online oder im
+            privaten Umfeld.
+          </p>
+          <p className="mt-2">
+            Die App hilft dir dabei, Situationen einzuordnen („Ist das Mobbing?“), Vorfälle strukturiert zu
+            dokumentieren (Datum, Ort, Beteiligte, Zeugen, Auswirkungen), Beweise zu sammeln, eine
+            Chronologie über längere Zeit sichtbar zu machen, Nachrichten an Vertrauenspersonen
+            vorzubereiten und passende Beratungsstellen sowie Notfallnummern zu finden.
+          </p>
+          <p className="mt-2">
+            StandUp entscheidet nichts für dich: Du bestimmst, was du aufschreibst, was du löschst und mit
+            wem du etwas teilst. Deine Einträge bleiben in dieser Version lokal auf diesem Gerät.
+          </p>
+          <p className="mt-2">
+            StandUp ersetzt keine professionelle psychologische, medizinische oder rechtliche Beratung und
+            trifft keine verbindlichen rechtlichen Entscheidungen. In akuten Notfällen wende dich bitte an
+            110, 112 oder eine Notfallnummer aus dem Bereich „Notfall-Hilfe“.
+          </p>
+          <p className="mt-2 font-bold text-foreground">
+            Wichtiger Hinweis zum Missbrauch: Die App und die aufgeführten Telefonnummern sind ausschließlich
+            für echte Hilfe- und Dokumentationszwecke gedacht. Missbrauch – etwa bewusst falsche
+            Beschuldigungen, gefälschte oder manipulierte Dokumentationen, Verleumdung, das Veröffentlichen
+            oder Weitergeben von Daten anderer Personen ohne Erlaubnis sowie missbräuchliche oder
+            grundlose Anrufe bei Notruf- und Beratungsnummern – kann rechtliche Konsequenzen haben. Dazu
+            zählen unter anderem Strafanzeigen wegen falscher Verdächtigung, Verleumdung, übler Nachrede
+            oder Missbrauchs von Notrufen sowie zivilrechtliche Schadenersatzforderungen.
+          </p>
+          <p className="mt-2">Prototyp-Version 0.1.</p>
         </Section>
       </main>
 
