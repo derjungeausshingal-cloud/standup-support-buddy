@@ -4,7 +4,7 @@ import { Accessibility, Database, Globe, Info, Lock, Trash2 } from "lucide-react
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { useIncidents } from "@/lib/incidents";
-import { usePreferences, type ThemeMode } from "@/lib/preferences";
+import { usePreferences } from "@/lib/preferences";
 
 export const Route = createFileRoute("/einstellungen")({
   head: () => ({
