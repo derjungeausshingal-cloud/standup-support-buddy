@@ -51,27 +51,6 @@ function EinstellungenPage() {
       <AppHeader title="Einstellungen" back={false} />
 
       <main className="mx-auto max-w-md grid gap-3 px-5 pt-5">
-        <Section icon={Palette} title="Darstellung">
-          Wähle, wie StandUp aussehen soll.
-          <div className="mt-3 flex flex-wrap gap-2">
-            {([
-              ["system", "System"],
-              ["light", "Hell"],
-              ["dark", "Dunkel"],
-            ] as [ThemeMode, string][]).map(([mode, label]) => (
-              <button
-                key={mode}
-                type="button"
-                aria-pressed={prefs.theme === mode}
-                onClick={() => setPrefs({ theme: mode })}
-                className={prefs.theme === mode ? "chip-active" : "chip"}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </Section>
-
         <Section icon={Lock} title="Datenschutz">
           In dieser Prototyp-Version bleiben deine Einträge lokal in deinem Browser. Es findet keine
           Übertragung an einen Server statt und es ist noch keine Verschlüsselung eingebaut. Teile Angaben
