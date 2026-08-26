@@ -91,6 +91,13 @@ function HomePage() {
             icon={HandHeart}
             tone="success"
           />
+          <OptionCard
+            to="/tagebuch"
+            title="Meine Vorfälle"
+            description="Bisher dokumentierte Vorfälle ansehen"
+            icon={BookOpen}
+            tone="info"
+          />
         </div>
 
         {hydrated && incidents.length > 0 ? (
@@ -140,15 +147,7 @@ function HomePage() {
               </Link>
             ) : null}
           </section>
-        ) : (
-          <OptionCard
-            to="/tagebuch"
-            title="Meine Vorfälle"
-            description="Bisher dokumentierte Vorfälle ansehen"
-            icon={BookOpen}
-            tone="info"
-          />
-        )}
+        ) : null}
 
         <h2 className="mt-8 text-lg font-extrabold">Schnellzugriffe</h2>
         <div className="mt-3 grid grid-cols-2 gap-3">

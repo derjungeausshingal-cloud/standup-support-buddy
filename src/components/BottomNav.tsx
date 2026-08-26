@@ -44,22 +44,22 @@ export function BottomNav() {
   return (
     <>
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card/95 pb-[max(0.4rem,env(safe-area-inset-bottom))] pt-1 backdrop-blur">
-        <ul className="mx-auto grid max-w-md grid-cols-5 items-end px-2">
+        <ul className="mx-auto grid max-w-md grid-cols-5 items-center px-2">
           {left.map((item) => (
             <li key={item.to}>
               <NavItem {...item} />
             </li>
           ))}
-          <li className="relative flex justify-center">
+          <li className="flex justify-center pb-1">
             <button
               type="button"
               onClick={() => setOpen(true)}
               aria-label="Schnellaktionen öffnen"
               aria-haspopup="dialog"
               aria-expanded={open}
-              className="-mt-8 grid h-16 w-16 place-items-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-lift)] active:scale-95"
+              className="grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-lift)] active:scale-95"
             >
-              <Plus className="h-8 w-8" />
+              <Plus className="h-7 w-7" />
             </button>
           </li>
           {right.map((item) => (
