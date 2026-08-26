@@ -10,7 +10,6 @@ import {
   Phone,
   Scale,
   ShieldCheck,
-  Zap,
 } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 import { OptionCard, QuickTile } from "@/components/OptionCard";

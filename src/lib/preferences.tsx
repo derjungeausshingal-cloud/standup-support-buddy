@@ -84,13 +84,6 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     applyTheme(prefs.theme);
   }, [prefs, hydrated]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => applyTheme(prefs.theme);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, [prefs.theme]);
 
   const value = useMemo<Ctx>(
     () => ({
