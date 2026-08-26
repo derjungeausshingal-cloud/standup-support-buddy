@@ -91,6 +91,13 @@ function HomePage() {
             icon={HandHeart}
             tone="success"
           />
+          <OptionCard
+            to="/tagebuch"
+            title="Meine Vorfälle"
+            description="Bisher dokumentierte Vorfälle ansehen"
+            icon={BookOpen}
+            tone="info"
+          />
         </div>
 
         {hydrated && incidents.length > 0 ? (
