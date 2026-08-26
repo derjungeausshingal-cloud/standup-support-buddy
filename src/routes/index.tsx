@@ -78,13 +78,6 @@ function HomePage() {
             tone="primary"
           />
           <OptionCard
-            to="/vorfall/schnell"
-            title="Schnell festhalten"
-            description="Ein Satz genügt – Details kannst du später ergänzen"
-            icon={Zap}
-            tone="warning"
-          />
-          <OptionCard
             to="/helfen"
             title="Ich möchte jemandem helfen"
             description="Unterstützung für Freunde, Mitschüler, Kolleginnen und Kollegen"
