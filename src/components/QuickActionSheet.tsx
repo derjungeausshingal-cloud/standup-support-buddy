@@ -1,47 +1,49 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { BookOpen, HelpCircle, LifeBuoy, Paperclip, PenLine, Search, X } from "lucide-react";
+import { useI18n, type TranslationKey } from "@/lib/i18n";
 
 const actions = [
   {
     to: "/vorfall",
-    title: "Vorfall dokumentieren",
-    subtitle: "Halte fest, was passiert ist.",
+    titleKey: "qa.a1.t",
+    subtitleKey: "qa.a1.s",
     icon: PenLine,
     tone: "bg-primary-soft text-primary",
   },
   {
     to: "/vorfall/beweise",
-    title: "Beweis hinzufügen",
-    subtitle: "Speichere etwas zu einem Vorfall.",
+    titleKey: "qa.a2.t",
+    subtitleKey: "qa.a2.s",
     icon: Paperclip,
     tone: "bg-info-soft text-info",
   },
-
   {
     to: "/notfall",
-    title: "Ich brauche gerade Hilfe",
-    subtitle: "Finde einen passenden nächsten Schritt.",
+    titleKey: "qa.a3.t",
+    subtitleKey: "qa.a3.s",
     icon: LifeBuoy,
     tone: "bg-warning-soft text-warning",
   },
   {
     to: "/ist-das-mobbing",
-    title: "Ist das Mobbing?",
-    subtitle: "Ordne die Situation anhand einiger Fragen ein.",
+    titleKey: "qa.a4.t",
+    subtitleKey: "qa.a4.s",
     icon: HelpCircle,
     tone: "bg-primary-soft text-primary",
   },
   {
     to: "/beratung",
-    title: "Beratung finden",
-    subtitle: "Finde passende Unterstützung.",
+    titleKey: "qa.a5.t",
+    subtitleKey: "qa.a5.s",
     icon: Search,
     tone: "bg-success-soft text-success",
   },
 ] as const;
 
 export function QuickActionSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { t } = useI18n();
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -57,23 +59,23 @@ export function QuickActionSheet({ open, onClose }: { open: boolean; onClose: ()
     <div className="fixed inset-0 z-50">
       <button
         type="button"
-        aria-label="Menü schließen"
+        aria-label={t("qa.menuClose")}
         onClick={onClose}
         className="absolute inset-0 bg-foreground/40 backdrop-blur-[2px]"
       />
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Schnellaktionen"
+        aria-label={t("qa.label")}
         className="absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto rounded-t-3xl border-t border-border bg-card px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 shadow-[var(--shadow-lift)]"
       >
         <div className="mx-auto max-w-md">
           <div className="mx-auto h-1.5 w-10 rounded-full bg-border" />
           <div className="mt-3 flex items-center justify-between gap-3">
-            <h2 className="text-lg font-extrabold">Was möchtest du tun?</h2>
+            <h2 className="text-lg font-extrabold">{t("qa.title")}</h2>
             <button
               type="button"
-              aria-label="Schließen"
+              aria-label={t("qa.close")}
               onClick={onClose}
               className="grid h-11 w-11 place-items-center rounded-full bg-muted text-muted-foreground"
             >
@@ -93,22 +95,20 @@ export function QuickActionSheet({ open, onClose }: { open: boolean; onClose: ()
                     <a.icon className="h-6 w-6" />
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-base font-extrabold leading-tight">{a.title}</span>
+                    <span className="block text-base font-extrabold leading-tight">
+                      {t(a.titleKey as TranslationKey)}
+                    </span>
                     <span className="mt-0.5 block text-sm leading-snug text-muted-foreground">
-                      {a.subtitle}
+                      {t(a.subtitleKey as TranslationKey)}
                     </span>
                   </span>
                 </Link>
               </li>
             ))}
             <li>
-              <Link
-                to="/tagebuch"
-                onClick={onClose}
-                className="btn-ghost mt-1"
-              >
+              <Link to="/tagebuch" onClick={onClose} className="btn-ghost mt-1">
                 <BookOpen className="h-5 w-5" />
-                Tagebuch öffnen
+                {t("qa.diary")}
               </Link>
             </li>
           </ul>

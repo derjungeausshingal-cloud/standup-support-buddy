@@ -15,6 +15,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { OptionCard, QuickTile } from "@/components/OptionCard";
 import { formatDate, incidentDate, sortByDateDesc, useIncidents } from "@/lib/incidents";
 import { usePreferences } from "@/lib/preferences";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,17 +38,19 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-function greeting() {
+function greetingKey() {
   const h = new Date().getHours();
-  if (h < 5) return "Gute Nacht";
-  if (h < 11) return "Guten Morgen";
-  if (h < 18) return "Hallo";
-  return "Guten Abend";
+  if (h < 5) return "home.night" as const;
+  if (h < 11) return "home.morning" as const;
+  if (h < 18) return "home.day" as const;
+  return "home.evening" as const;
 }
 
 function HomePage() {
   const { incidents, hydrated } = useIncidents();
   const { prefs } = usePreferences();
+  const { t } = useI18n();
+
 
   const sorted = sortByDateDesc(incidents);
   const latest = sorted[0];
@@ -63,30 +66,32 @@ function HomePage() {
           </span>
           <span className="text-2xl font-extrabold tracking-tight">StandUp</span>
         </div>
-        <p className="mt-5 text-base font-semibold text-primary">{greeting()}. Du bist nicht allein.</p>
-        <h1 className="mt-1 text-2xl font-extrabold leading-tight">Wie können wir dir helfen?</h1>
+        <p className="mt-5 text-base font-semibold text-primary">
+          {t(greetingKey())}. {t("home.notAlone")}
+        </p>
+        <h1 className="mt-1 text-2xl font-extrabold leading-tight">{t("home.howHelp")}</h1>
       </header>
 
       <main className="mx-auto max-w-md px-5">
         <div className="mt-5 grid gap-3">
           <OptionCard
             to="/vorfall"
-            title="Mir ist etwas passiert"
-            description="Vorfall dokumentieren und Hilfe bekommen"
+            title={t("home.c1.t")}
+            description={t("home.c1.d")}
             icon={FileHeart}
             tone="primary"
           />
           <OptionCard
             to="/helfen"
-            title="Ich möchte jemandem helfen"
-            description="Unterstützung für Freunde, Mitschüler, Kolleginnen und Kollegen"
+            title={t("home.c2.t")}
+            description={t("home.c2.d")}
             icon={HandHeart}
             tone="success"
           />
           <OptionCard
             to="/tagebuch"
-            title="Meine Vorfälle"
-            description="Bisher dokumentierte Vorfälle ansehen"
+            title={t("home.c3.t")}
+            description={t("home.c3.d")}
             icon={BookOpen}
             tone="info"
           />
@@ -95,22 +100,22 @@ function HomePage() {
         {hydrated && incidents.length > 0 ? (
           <section className="card-tile mt-8 grid gap-3 p-4">
             <div className="flex items-center justify-between gap-3">
-              <h2 className="text-base font-extrabold">Dein Überblick</h2>
+              <h2 className="text-base font-extrabold">{t("home.overview")}</h2>
               <Link to="/tagebuch" className="text-sm font-bold text-primary">
-                Tagebuch
+                {t("nav.diary")}
               </Link>
             </div>
             <dl className="grid grid-cols-3 gap-2 text-center">
               <div className="rounded-2xl bg-muted p-3">
-                <dt className="text-xs font-bold text-muted-foreground">Einträge</dt>
+                <dt className="text-xs font-bold text-muted-foreground">{t("home.entries")}</dt>
                 <dd className="mt-0.5 text-xl font-extrabold">{incidents.length}</dd>
               </div>
               <div className="rounded-2xl bg-muted p-3">
-                <dt className="text-xs font-bold text-muted-foreground">Beweise</dt>
+                <dt className="text-xs font-bold text-muted-foreground">{t("home.evidence")}</dt>
                 <dd className="mt-0.5 text-xl font-extrabold">{evidenceCount}</dd>
               </div>
               <div className="rounded-2xl bg-muted p-3">
-                <dt className="text-xs font-bold text-muted-foreground">Offen</dt>
+                <dt className="text-xs font-bold text-muted-foreground">{t("home.open")}</dt>
                 <dd className="mt-0.5 text-xl font-extrabold">{openSteps.length}</dd>
               </div>
             </dl>
@@ -121,10 +126,10 @@ function HomePage() {
                 className="rounded-2xl bg-muted p-3 text-sm leading-snug"
               >
                 <span className="block text-xs font-bold text-muted-foreground">
-                  Zuletzt: {formatDate(incidentDate(latest))}
+                  {t("home.last")}: {formatDate(incidentDate(latest))}
                 </span>
                 <span className="mt-1 line-clamp-2 block">
-                  {latest.description || "Kein Beschreibungstext"}
+                  {latest.description || t("home.noDesc")}
                 </span>
               </Link>
             ) : null}
@@ -135,18 +140,20 @@ function HomePage() {
                 className="flex items-center gap-2 rounded-2xl bg-warning-soft p-3 text-sm font-bold text-foreground"
               >
                 <CheckCircle2 className="h-5 w-5 shrink-0 text-warning" />
-                <span className="min-w-0 truncate">Nächster Schritt: {openSteps[0]!.nextStep}</span>
+                <span className="min-w-0 truncate">
+                  {t("home.nextStep")}: {openSteps[0]!.nextStep}
+                </span>
               </Link>
             ) : null}
           </section>
         ) : null}
 
-        <h2 className="mt-8 text-lg font-extrabold">Schnellzugriffe</h2>
+        <h2 className="mt-8 text-lg font-extrabold">{t("home.quick")}</h2>
         <div className="mt-3 grid grid-cols-2 gap-3">
-          <QuickTile to="/beratung" title="Beratung & Hilfe" icon={HelpCircle} tone="success" />
-          <QuickTile to="/rechte" title="Rechte & Informationen" icon={Scale} tone="warning" />
-          <QuickTile to="/ist-das-mobbing" title="Ist das Mobbing?" icon={AlertCircle} tone="primary" />
-          <QuickTile to="/notfall" title="Notfall-Hilfe" icon={Phone} tone="info" />
+          <QuickTile to="/beratung" title={t("home.q1")} icon={HelpCircle} tone="success" />
+          <QuickTile to="/rechte" title={t("home.q2")} icon={Scale} tone="warning" />
+          <QuickTile to="/ist-das-mobbing" title={t("home.q3")} icon={AlertCircle} tone="primary" />
+          <QuickTile to="/notfall" title={t("home.q4")} icon={Phone} tone="info" />
         </div>
 
         <section className="card-tile mt-8 grid grid-cols-[auto_minmax(0,1fr)] gap-3 p-4">
@@ -154,21 +161,16 @@ function HomePage() {
             <Lock className="h-5 w-5" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-extrabold">Deine Angaben gehören dir</p>
-            <p className="mt-1 text-sm leading-snug text-muted-foreground">
-              Bitte geh mit persönlichen Informationen vertraulich um – auch mit denen anderer Menschen. In
-              dieser Version werden deine Einträge nur lokal auf diesem Gerät gespeichert. Du entscheidest,
-              was du aufschreibst und mit wem du es teilst.
-            </p>
+            <p className="text-sm font-extrabold">{t("home.privacy.t")}</p>
+            <p className="mt-1 text-sm leading-snug text-muted-foreground">{t("home.privacy.d")}</p>
             <Link to="/einstellungen" className="mt-2 inline-block text-sm font-bold text-primary">
-              Datenschutz-Einstellungen ansehen
+              {t("home.privacy.link")}
             </Link>
           </div>
         </section>
 
         <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
-          StandUp ersetzt keine professionelle psychologische oder rechtliche Beratung und trifft keine
-          verbindlichen rechtlichen Entscheidungen.
+          {t("home.disclaimer")}
         </p>
       </main>
 
