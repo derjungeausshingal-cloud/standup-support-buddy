@@ -2,15 +2,16 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { BookOpen, Home, Info, Plus, Settings } from "lucide-react";
 import { QuickActionSheet } from "@/components/QuickActionSheet";
+import { useI18n, type TranslationKey } from "@/lib/i18n";
 
 const left = [
-  { to: "/", label: "Start", icon: Home, exact: true },
-  { to: "/tagebuch", label: "Tagebuch", icon: BookOpen, exact: false },
+  { to: "/", labelKey: "nav.start", icon: Home, exact: true },
+  { to: "/tagebuch", labelKey: "nav.diary", icon: BookOpen, exact: false },
 ] as const;
 
 const right = [
-  { to: "/infos", label: "Infos", icon: Info, exact: false },
-  { to: "/einstellungen", label: "Einstellungen", icon: Settings, exact: false },
+  { to: "/infos", labelKey: "nav.info", icon: Info, exact: false },
+  { to: "/einstellungen", labelKey: "nav.settings", icon: Settings, exact: false },
 ] as const;
 
 function NavItem({
@@ -40,6 +41,7 @@ function NavItem({
 
 export function BottomNav() {
   const [open, setOpen] = useState(false);
+  const { t } = useI18n();
 
   return (
     <>
@@ -47,14 +49,19 @@ export function BottomNav() {
         <ul className="mx-auto grid max-w-md grid-cols-5 items-center px-2">
           {left.map((item) => (
             <li key={item.to}>
-              <NavItem {...item} />
+              <NavItem
+                to={item.to}
+                icon={item.icon}
+                exact={item.exact}
+                label={t(item.labelKey as TranslationKey)}
+              />
             </li>
           ))}
           <li className="flex justify-center pb-1">
             <button
               type="button"
               onClick={() => setOpen(true)}
-              aria-label="Schnellaktionen öffnen"
+              aria-label={t("nav.quickOpen")}
               aria-haspopup="dialog"
               aria-expanded={open}
               className="grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-lift)] active:scale-95"
@@ -64,7 +71,12 @@ export function BottomNav() {
           </li>
           {right.map((item) => (
             <li key={item.to}>
-              <NavItem {...item} />
+              <NavItem
+                to={item.to}
+                icon={item.icon}
+                exact={item.exact}
+                label={t(item.labelKey as TranslationKey)}
+              />
             </li>
           ))}
         </ul>
