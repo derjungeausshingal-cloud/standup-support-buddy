@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { IncidentProvider } from "@/lib/incidents";
 import { PreferencesProvider } from "@/lib/preferences";
+import { I18nProvider } from "@/lib/i18n";
 
 function NotFoundComponent() {
   return (
@@ -128,9 +129,11 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <PreferencesProvider>
-        <IncidentProvider>
-          <Outlet />
-        </IncidentProvider>
+        <I18nProvider>
+          <IncidentProvider>
+            <Outlet />
+          </IncidentProvider>
+        </I18nProvider>
       </PreferencesProvider>
     </QueryClientProvider>
   );
