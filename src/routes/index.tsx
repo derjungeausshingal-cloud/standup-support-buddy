@@ -15,6 +15,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { OptionCard, QuickTile } from "@/components/OptionCard";
 import { formatDate, incidentDate, sortByDateDesc, useIncidents } from "@/lib/incidents";
 import { usePreferences } from "@/lib/preferences";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,17 +38,19 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-function greeting() {
+function greetingKey() {
   const h = new Date().getHours();
-  if (h < 5) return "Gute Nacht";
-  if (h < 11) return "Guten Morgen";
-  if (h < 18) return "Hallo";
-  return "Guten Abend";
+  if (h < 5) return "home.night" as const;
+  if (h < 11) return "home.morning" as const;
+  if (h < 18) return "home.day" as const;
+  return "home.evening" as const;
 }
 
 function HomePage() {
   const { incidents, hydrated } = useIncidents();
   const { prefs } = usePreferences();
+  const { t } = useI18n();
+
 
   const sorted = sortByDateDesc(incidents);
   const latest = sorted[0];
