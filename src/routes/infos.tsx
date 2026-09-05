@@ -5,6 +5,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { OptionCard } from "@/components/OptionCard";
 import { AlertCircle, Scale } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/infos")({
   head: () => ({
@@ -19,52 +20,38 @@ export const Route = createFileRoute("/infos")({
 });
 
 const topics = [
-  {
-    title: "Mobbing",
-    text: "Von Mobbing spricht man meist, wenn eine Person über längere Zeit immer wieder verletzt, ausgegrenzt oder herabgesetzt wird und sich schwer wehren kann. Ein einzelner Streit ist damit nicht gemeint – auch wenn er weh tun kann.",
-  },
-  {
-    title: "Cybermobbing",
-    text: "Cybermobbing passiert online: in Chats, sozialen Netzwerken oder Spielen. Typisch sind wiederholte Beleidigungen, das Verbreiten von Bildern oder Gerüchten oder das gezielte Ausschließen aus Gruppen. Screenshots können später hilfreich sein.",
-  },
-  {
-    title: "Diskriminierung",
-    text: "Diskriminierung bedeutet, dass jemand schlechter behandelt wird – zum Beispiel wegen Herkunft, Hautfarbe, Religion, Geschlecht, Behinderung, Alter oder sexueller Orientierung. Sie kann offen oder versteckt passieren.",
-  },
-  {
-    title: "Beleidigungen",
-    text: "Beleidigungen sind Äußerungen, die eine Person herabwürdigen. Sie können mündlich, schriftlich oder mit Bildern geschehen. Wie stark sie belasten, entscheidest nicht du allein an der Lautstärke – dein Empfinden zählt.",
-  },
-  {
-    title: "Bedrohungen",
-    text: "Bei Bedrohungen wird jemandem Schaden angekündigt. Wenn du dich unsicher fühlst, kannst du dir Unterstützung holen – etwa bei einer Vertrauensperson oder in einer akuten Situation beim Notruf 110.",
-  },
-];
+  { key: "mobbing", titleKey: "info.infos.mobbing.title", textKey: "info.infos.mobbing.text" },
+  { key: "cybermobbing", titleKey: "info.infos.cybermobbing.title", textKey: "info.infos.cybermobbing.text" },
+  { key: "diskriminierung", titleKey: "info.infos.diskriminierung.title", textKey: "info.infos.diskriminierung.text" },
+  { key: "beleidigungen", titleKey: "info.infos.beleidigungen.title", textKey: "info.infos.beleidigungen.text" },
+  { key: "bedrohungen", titleKey: "info.infos.bedrohungen.title", textKey: "info.infos.bedrohungen.text" },
+] as const;
 
 function InfosPage() {
-  const [open, setOpen] = useState<string | null>("Mobbing");
+  const { t } = useI18n();
+  const [open, setOpen] = useState<string | null>("mobbing");
 
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Infos" back={false} subtitle="Verständlich erklärt – ohne Bewertung deiner Situation." />
+      <AppHeader title={t("info.infos.title")} back={false} subtitle={t("info.infos.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
         <div className="mt-5 grid gap-3">
-          {topics.map((t) => {
-            const isOpen = open === t.title;
+          {topics.map((topic) => {
+            const isOpen = open === topic.key;
             return (
-              <article key={t.title} className="card-tile overflow-hidden">
+              <article key={topic.key} className="card-tile overflow-hidden">
                 <button
                   type="button"
                   aria-expanded={isOpen}
-                  onClick={() => setOpen(isOpen ? null : t.title)}
+                  onClick={() => setOpen(isOpen ? null : topic.key)}
                   className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4 text-left"
                 >
-                  <h2 className="min-w-0 text-base font-extrabold">{t.title}</h2>
+                  <h2 className="min-w-0 text-base font-extrabold">{t(topic.titleKey)}</h2>
                   <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`} />
                 </button>
                 {isOpen ? (
-                  <p className="px-4 pb-4 text-sm leading-relaxed text-muted-foreground">{t.text}</p>
+                  <p className="px-4 pb-4 text-sm leading-relaxed text-muted-foreground">{t(topic.textKey)}</p>
                 ) : null}
               </article>
             );
@@ -72,13 +59,12 @@ function InfosPage() {
         </div>
 
         <div className="mt-6 grid gap-3">
-          <OptionCard to="/ist-das-mobbing" title="Ist das Mobbing?" description="Fragen, die dir beim Einordnen helfen können" icon={AlertCircle} />
-          <OptionCard to="/rechte" title="Deine Rechte kennen" description="Handlungsmöglichkeiten im Überblick" icon={Scale} tone="warning" />
+          <OptionCard to="/ist-das-mobbing" title={t("info.infos.card.mobbing.title")} description={t("info.infos.card.mobbing.desc")} icon={AlertCircle} />
+          <OptionCard to="/rechte" title={t("info.infos.card.rechte.title")} description={t("info.infos.card.rechte.desc")} icon={Scale} tone="warning" />
         </div>
 
         <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
-          Diese Infos sind allgemein gehalten. StandUp stellt keine Diagnose und bewertet deine Situation nicht
-          automatisch.
+          {t("info.infos.footer")}
         </p>
       </main>
 
