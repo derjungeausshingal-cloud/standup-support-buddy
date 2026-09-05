@@ -7,13 +7,13 @@ import {
   formatDate,
   formatTime,
   incidentDate,
-  kindLabels,
   sortByDateDesc,
   useIncidents,
   type Incident,
   type IncidentKind,
 } from "@/lib/incidents";
 import { usePreferences } from "@/lib/preferences";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/tagebuch/")({
   head: () => ({
@@ -35,12 +35,7 @@ export const Route = createFileRoute("/tagebuch/")({
 
 type Range = "alle" | "30" | "90" | "365";
 
-const rangeLabels: Record<Range, string> = {
-  alle: "Gesamter Zeitraum",
-  "30": "Letzte 30 Tage",
-  "90": "Letzte 3 Monate",
-  "365": "Letztes Jahr",
-};
+const rangeOrder: Range[] = ["alle", "30", "90", "365"];
 
 function withinRange(i: Incident, range: Range) {
   if (range === "alle") return true;
@@ -50,19 +45,20 @@ function withinRange(i: Incident, range: Range) {
   return days <= Number(range);
 }
 
-function monthLabel(iso: string) {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "Ohne Datum";
-  return d.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
-}
-
 function TagebuchPage() {
+  const { t } = useI18n();
   const { incidents, hydrated } = useIncidents();
   const { prefs } = usePreferences();
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState<IncidentKind | "alle">("alle");
   const [place, setPlace] = useState("alle");
   const [range, setRange] = useState<Range>("alle");
+
+  function monthLabel(iso: string) {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return t("diary.noDate");
+    return d.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+  }
 
   const usedKinds = useMemo(() => {
     const set = new Set<IncidentKind>();
@@ -111,7 +107,7 @@ function TagebuchPage() {
 
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Mein Tagebuch" back={false} subtitle="Alles, was du bisher festgehalten hast." />
+      <AppHeader title={t("diary.title")} back={false} subtitle={t("diary.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
         {incidents.length > 1 ? (
@@ -120,9 +116,7 @@ function TagebuchPage() {
             className="card-tile mt-5 flex items-center gap-3 border-warning/30 bg-warning-soft p-4"
           >
             <FileBarChart className="h-5 w-5 shrink-0 text-warning" />
-            <span className="min-w-0 text-sm font-bold">
-              Du hast mehrere Einträge – du kannst daraus eine Zusammenfassung erstellen.
-            </span>
+            <span className="min-w-0 text-sm font-bold">{t("diary.summaryLink")}</span>
           </Link>
         ) : null}
 
@@ -130,44 +124,46 @@ function TagebuchPage() {
           <section className="mt-5 grid gap-3">
             <label className="relative block">
               <Search className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-              <span className="sr-only">Einträge durchsuchen</span>
+              <span className="sr-only">{t("diary.searchSr")}</span>
               <input
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Suchen: Wort, Ort, Person …"
+                placeholder={t("diary.searchPlaceholder")}
                 className="field-input pl-11"
               />
             </label>
 
             <div className="grid grid-cols-2 gap-3">
               <label className="grid gap-1.5">
-                <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Art</span>
+                <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                  {t("diary.filter.kind")}
+                </span>
                 <select
                   value={kind}
                   onChange={(e) => setKind(e.target.value as IncidentKind | "alle")}
                   className="field-input"
                 >
-                  <option value="alle">Alle Arten</option>
+                  <option value="alle">{t("diary.filter.allKinds")}</option>
                   {usedKinds.map((k) => (
                     <option key={k} value={k}>
-                      {kindLabels[k]}
+                      {t(`diary.kind.${k}`)}
                     </option>
                   ))}
                 </select>
               </label>
               <label className="grid gap-1.5">
                 <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                  Zeitraum
+                  {t("diary.filter.period")}
                 </span>
                 <select
                   value={range}
                   onChange={(e) => setRange(e.target.value as Range)}
                   className="field-input"
                 >
-                  {(Object.keys(rangeLabels) as Range[]).map((r) => (
+                  {rangeOrder.map((r) => (
                     <option key={r} value={r}>
-                      {rangeLabels[r]}
+                      {t(`diary.range.${r}`)}
                     </option>
                   ))}
                 </select>
@@ -176,9 +172,11 @@ function TagebuchPage() {
 
             {usedPlaces.length > 0 ? (
               <label className="grid gap-1.5">
-                <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Ort</span>
+                <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                  {t("diary.filter.place")}
+                </span>
                 <select value={place} onChange={(e) => setPlace(e.target.value)} className="field-input">
-                  <option value="alle">Alle Orte</option>
+                  <option value="alle">{t("diary.filter.allPlaces")}</option>
                   {usedPlaces.map((p) => (
                     <option key={p} value={p}>
                       {p}
@@ -190,7 +188,11 @@ function TagebuchPage() {
 
             <div className="flex items-center justify-between gap-3">
               <p className="text-sm font-semibold text-muted-foreground">
-                {filtered.length} von {incidents.length} {incidents.length === 1 ? "Eintrag" : "Einträgen"}
+                {t("diary.countOf", {
+                  count: filtered.length,
+                  total: incidents.length,
+                  label: t(incidents.length === 1 ? "diary.entry.one" : "diary.entry.other"),
+                })}
               </p>
               {hasFilters ? (
                 <button
@@ -204,7 +206,7 @@ function TagebuchPage() {
                   className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-primary"
                 >
                   <X className="h-4 w-4" />
-                  Filter zurücksetzen
+                  {t("diary.resetFilters")}
                 </button>
               ) : null}
             </div>
@@ -216,25 +218,21 @@ function TagebuchPage() {
             <span className="grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-primary">
               <BookOpen className="h-7 w-7" />
             </span>
-            <p className="text-base font-extrabold">Noch keine Einträge</p>
-            <p className="text-sm text-muted-foreground">
-              Wenn du möchtest, kannst du einen Vorfall dokumentieren. Du entscheidest, was du festhältst.
-            </p>
+            <p className="text-base font-extrabold">{t("diary.empty.title")}</p>
+            <p className="text-sm text-muted-foreground">{t("diary.empty.text")}</p>
             <Link to="/vorfall" className="btn-primary mt-2">
               <Plus className="h-5 w-5" />
-              Vorfall dokumentieren
+              {t("diary.empty.document")}
             </Link>
             <Link to="/vorfall/schnell" className="btn-ghost">
               <Zap className="h-5 w-5" />
-              Schnell festhalten
+              {t("diary.empty.quick")}
             </Link>
           </section>
         ) : filtered.length === 0 ? (
           <section className="card-tile mt-5 grid justify-items-center gap-2 p-8 text-center">
-            <p className="text-base font-extrabold">Keine passenden Einträge</p>
-            <p className="text-sm text-muted-foreground">
-              Ändere die Suche oder setze die Filter zurück, um wieder alle Einträge zu sehen.
-            </p>
+            <p className="text-base font-extrabold">{t("diary.noResults.title")}</p>
+            <p className="text-sm text-muted-foreground">{t("diary.noResults.text")}</p>
           </section>
         ) : (
           <div className="mt-5 grid gap-6">
@@ -254,7 +252,7 @@ function TagebuchPage() {
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-extrabold text-primary">
-                              {i.kind ? kindLabels[i.kind] : "Ohne Kategorie"}
+                              {i.kind ? t(`diary.kind.${i.kind}`) : t("diary.noCategory")}
                             </span>
                             <span className="text-xs font-semibold text-muted-foreground">
                               {formatDate(incidentDate(i))}
@@ -263,11 +261,11 @@ function TagebuchPage() {
                           </div>
                           {prefs.discreet ? (
                             <p className="mt-2 text-sm leading-snug text-muted-foreground">
-                              Details ausgeblendet (diskreter Modus)
+                              {t("diary.discreetHidden")}
                             </p>
                           ) : (
                             <p className="mt-2 line-clamp-2 text-sm leading-snug text-foreground/85">
-                              {i.description || "Keine Beschreibung"}
+                              {i.description || t("diary.noDescription")}
                             </p>
                           )}
                           <div className="mt-2 flex flex-wrap items-center gap-3 text-xs font-semibold text-muted-foreground">
@@ -275,11 +273,12 @@ function TagebuchPage() {
                             {i.evidence.length > 0 ? (
                               <span className="flex items-center gap-1">
                                 <Paperclip className="h-3.5 w-3.5" />
-                                {i.evidence.length} {i.evidence.length === 1 ? "Beweis" : "Beweise"}
+                                {i.evidence.length}{" "}
+                                {t(i.evidence.length === 1 ? "diary.evidence.one" : "diary.evidence.other")}
                               </span>
                             ) : null}
                             {i.nextStep && !i.nextStepDone ? (
-                              <span className="text-warning">Offener nächster Schritt</span>
+                              <span className="text-warning">{t("diary.openNextStep")}</span>
                             ) : null}
                           </div>
                         </div>

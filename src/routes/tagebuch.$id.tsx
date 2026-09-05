@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
-import { evidenceLabels, formatDate, kindLabels, useIncidents } from "@/lib/incidents";
+import { formatDate, useIncidents } from "@/lib/incidents";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/tagebuch/$id")({
   head: () => ({
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/tagebuch/$id")({
 });
 
 function EintragPage() {
+  const { t } = useI18n();
   const { id } = useParams({ from: "/tagebuch/$id" });
   const { incidents, updateIncident, deleteIncident } = useIncidents();
   const navigate = useNavigate();
@@ -27,11 +29,11 @@ function EintragPage() {
   if (!incident) {
     return (
       <div className="min-h-screen pb-32">
-        <AppHeader title="Eintrag" />
+        <AppHeader title={t("diary.entryPage.title")} />
         <main className="mx-auto max-w-md px-5 pt-10 text-center">
-          <p className="text-base font-bold">Dieser Eintrag ist nicht (mehr) vorhanden.</p>
+          <p className="text-base font-bold">{t("diary.entryPage.gone")}</p>
           <Link to="/tagebuch" className="btn-ghost mt-4">
-            Zurück zum Tagebuch
+            {t("diary.entryPage.backToDiary")}
           </Link>
         </main>
         <BottomNav />
@@ -42,12 +44,12 @@ function EintragPage() {
   return (
     <div className="min-h-screen pb-32">
       <AppHeader
-        title={incident.kind ? kindLabels[incident.kind] : "Eintrag"}
+        title={incident.kind ? t(`diary.kind.${incident.kind}`) : t("diary.entryPage.title")}
         subtitle={formatDate(incident.date || incident.createdAt.slice(0, 10))}
         right={
           <button
             type="button"
-            aria-label={edit ? "Bearbeiten beenden" : "Eintrag bearbeiten"}
+            aria-label={edit ? t("diary.entryPage.stopEdit") : t("diary.entryPage.edit")}
             onClick={() => setEdit((v) => !v)}
             className="grid h-11 w-11 place-items-center rounded-full bg-primary-soft text-primary"
           >
@@ -60,7 +62,7 @@ function EintragPage() {
         {edit ? (
           <div className="mt-6 grid gap-4">
             <label className="grid gap-2">
-              <span className="text-sm font-bold">Beschreibung</span>
+              <span className="text-sm font-bold">{t("diary.entryPage.description")}</span>
               <textarea
                 rows={6}
                 value={incident.description}
@@ -69,7 +71,7 @@ function EintragPage() {
               />
             </label>
             <label className="grid gap-2">
-              <span className="text-sm font-bold">Datum</span>
+              <span className="text-sm font-bold">{t("diary.entryPage.date")}</span>
               <input
                 type="date"
                 value={incident.date}
@@ -78,7 +80,10 @@ function EintragPage() {
               />
             </label>
             <label className="grid gap-2">
-              <span className="text-sm font-bold">Ort <span className="font-semibold text-muted-foreground">(optional)</span></span>
+              <span className="text-sm font-bold">
+                {t("diary.entryPage.place")}{" "}
+                <span className="font-semibold text-muted-foreground">{t("diary.entryPage.optional")}</span>
+              </span>
               <input
                 type="text"
                 value={incident.place}
@@ -87,7 +92,10 @@ function EintragPage() {
               />
             </label>
             <label className="grid gap-2">
-              <span className="text-sm font-bold">Zeugen <span className="font-semibold text-muted-foreground">(optional)</span></span>
+              <span className="text-sm font-bold">
+                {t("diary.entryPage.witnesses")}{" "}
+                <span className="font-semibold text-muted-foreground">{t("diary.entryPage.optional")}</span>
+              </span>
               <input
                 type="text"
                 value={incident.witnesses}
@@ -96,23 +104,23 @@ function EintragPage() {
               />
             </label>
             <button type="button" onClick={() => setEdit(false)} className="btn-primary">
-              Änderungen übernehmen
+              {t("diary.entryPage.applyChanges")}
             </button>
           </div>
         ) : (
           <>
             <section className="card-tile mt-6 p-4">
               <p className="whitespace-pre-wrap text-base leading-relaxed">
-                {incident.description || "Keine Beschreibung"}
+                {incident.description || t("diary.noDescription")}
               </p>
             </section>
 
             <dl className="card-tile mt-4 px-4 py-1">
               {[
-                ["Art", incident.kind ? kindLabels[incident.kind] : "Keine Angabe"],
-                ["Datum", incident.date ? formatDate(incident.date) : "Keine Angabe"],
-                ["Ort", incident.place || "Keine Angabe"],
-                ["Zeugen", incident.witnesses || "Keine Angabe"],
+                [t("diary.entryPage.fieldKind"), incident.kind ? t(`diary.kind.${incident.kind}`) : t("diary.noCategoryShort")],
+                [t("diary.entryPage.fieldDate"), incident.date ? formatDate(incident.date) : t("diary.noCategoryShort")],
+                [t("diary.entryPage.fieldPlace"), incident.place || t("diary.noCategoryShort")],
+                [t("diary.entryPage.fieldWitnesses"), incident.witnesses || t("diary.noCategoryShort")],
               ].map(([label, value]) => (
                 <div key={label} className="grid gap-0.5 border-b border-border py-3 last:border-0">
                   <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{label}</dt>
@@ -121,16 +129,16 @@ function EintragPage() {
               ))}
             </dl>
 
-            <h2 className="mt-6 text-lg font-extrabold">Beweise</h2>
+            <h2 className="mt-6 text-lg font-extrabold">{t("diary.entryPage.evidenceTitle")}</h2>
             {incident.evidence.length === 0 ? (
-              <p className="mt-1 text-sm text-muted-foreground">Keine Beweise hinterlegt – das ist in Ordnung.</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t("diary.entryPage.noEvidence")}</p>
             ) : (
               <ul className="mt-3 grid gap-3">
                 {incident.evidence.map((e) => (
                   <li key={e.id} className="card-tile p-4">
                     <p className="truncate text-sm font-bold">{e.name}</p>
                     <p className="mt-0.5 text-xs text-muted-foreground">
-                      {evidenceLabels[e.type]} · {formatDate(e.date)}
+                      {t(`diary.evidenceType.${e.type}`)} · {formatDate(e.date)}
                     </p>
                   </li>
                 ))}
@@ -148,7 +156,7 @@ function EintragPage() {
           className="btn-ghost mt-7 text-destructive"
         >
           <Trash2 className="h-5 w-5" />
-          Eintrag löschen
+          {t("diary.entryPage.delete")}
         </button>
       </main>
 
