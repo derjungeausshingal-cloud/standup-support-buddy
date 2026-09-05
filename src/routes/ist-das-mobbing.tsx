@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Check, HeartHandshake, NotebookPen, RotateCcw, U
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { OptionCard } from "@/components/OptionCard";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/ist-das-mobbing")({
   head: () => ({
@@ -17,27 +18,28 @@ export const Route = createFileRoute("/ist-das-mobbing")({
   component: IstDasMobbingPage,
 });
 
-const fragen = [
-  "Passiert es öfter oder wiederholt sich die Situation?",
-  "Geht es meistens von derselben Person oder Gruppe aus?",
-  "Fällt es dir schwer, dich alleine dagegen zu wehren?",
-  "Fühlst du dich dadurch ausgegrenzt, verletzt oder unter Druck gesetzt?",
-  "Hast du das Gefühl, dass die Situation mit der Zeit schlimmer wird?",
-  "Belastet dich die Situation auch außerhalb des konkreten Moments?",
-];
+const fragenKeys: readonly string[] = [
+  "info.mobbing.q1",
+  "info.mobbing.q2",
+  "info.mobbing.q3",
+  "info.mobbing.q4",
+  "info.mobbing.q5",
+  "info.mobbing.q6",
+] as const;
 
 type Antwort = "ja" | "unsicher" | "nein";
 
-const optionen: { key: Antwort; label: string }[] = [
-  { key: "ja", label: "Ja" },
-  { key: "unsicher", label: "Unsicher" },
-  { key: "nein", label: "Nein" },
+const optionen: { key: Antwort; labelKey: string }[] = [
+  { key: "ja", labelKey: "info.mobbing.opt.ja" },
+  { key: "unsicher", labelKey: "info.mobbing.opt.unsicher" },
+  { key: "nein", labelKey: "info.mobbing.opt.nein" },
 ];
 
 function IstDasMobbingPage() {
+  const { t } = useI18n();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, Antwort>>({});
-  const total = fragen.length;
+  const total = fragenKeys.length;
   const done = step >= total;
   const current = answers[step] ?? null;
 
@@ -57,13 +59,13 @@ function IstDasMobbingPage() {
 
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Ist das Mobbing?" subtitle="Zur Orientierung – keine Diagnose." />
+      <AppHeader title={t("info.mobbing.title")} subtitle={t("info.mobbing.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
         <div className="mt-5">
           <div className="flex items-center justify-between text-sm font-bold">
             <span className={done ? "text-success" : "text-primary"}>
-              {done ? "Alle Fragen beantwortet" : `Frage ${step + 1} von ${total}`}
+              {done ? t("info.mobbing.progress.done") : t("info.mobbing.progress.step", { n: step + 1, total })}
             </span>
             <span className="text-muted-foreground">{progress} %</span>
           </div>
@@ -78,7 +80,7 @@ function IstDasMobbingPage() {
         {!done ? (
           <>
             <section className="card-tile mt-5 p-5">
-              <p className="text-lg font-extrabold leading-snug">{fragen[step]}</p>
+              <p className="text-lg font-extrabold leading-snug">{t(fragenKeys[step]!)}</p>
               <div className="mt-5 grid gap-2.5">
                 {optionen.map((o) => {
                   const active = current === o.key;
@@ -94,7 +96,7 @@ function IstDasMobbingPage() {
                           : "border-border bg-card text-foreground"
                       }`}
                     >
-                      <span>{o.label}</span>
+                      <span>{t(o.labelKey)}</span>
                       <span
                         className={`grid h-6 w-6 shrink-0 place-items-center rounded-full ${
                           active ? "bg-primary text-primary-foreground" : "bg-muted"
@@ -116,7 +118,7 @@ function IstDasMobbingPage() {
                 className="btn-ghost disabled:opacity-40"
               >
                 <ArrowLeft className="h-5 w-5" />
-                Zurück
+                {t("info.mobbing.back")}
               </button>
               <button
                 type="button"
@@ -124,39 +126,37 @@ function IstDasMobbingPage() {
                 disabled={!current}
                 className="btn-primary disabled:opacity-40"
               >
-                {step === total - 1 ? "Auswerten" : "Weiter"}
+                {step === total - 1 ? t("info.mobbing.auswerten") : t("info.mobbing.weiter")}
                 <ArrowRight className="h-5 w-5" />
               </button>
             </div>
 
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Es gibt keine richtigen oder falschen Antworten. StandUp entscheidet nicht für dich, wie deine
-              Situation heißt.
+              {t("info.mobbing.hinweis")}
             </p>
           </>
         ) : (
           <>
             <section className="card-tile mt-5 border-primary/30 bg-primary-soft p-5">
-              <h2 className="text-base font-extrabold text-primary">Eine vorsichtige Einordnung</h2>
+              <h2 className="text-base font-extrabold text-primary">{t("info.mobbing.result.title")}</h2>
               <p className="mt-2 text-sm leading-relaxed">
                 {ja >= 4
-                  ? "Einige Merkmale können zu Mobbing passen. Sicher sagen lässt sich das hier nicht – ein Gespräch mit einer Beratungsstelle kann helfen."
+                  ? t("info.mobbing.result.hoch")
                   : ja + unsicher >= 3
-                    ? "Manches klingt nach einem Muster, anderes ist noch offen. Ob es Mobbing ist, lässt sich hier nicht feststellen."
-                    : "Aus deinen Antworten lässt sich nicht ableiten, ob es sich um Mobbing handelt."}
+                    ? t("info.mobbing.result.mittel")
+                    : t("info.mobbing.result.niedrig")}
               </p>
               <p className="mt-2 text-sm leading-relaxed">
-                Wichtig ist vor allem: Wenn dich die Situation belastet, ist das Grund genug, dir Unterstützung
-                zu holen.
+                {t("info.mobbing.result.hinweis")}
               </p>
             </section>
 
             <ul className="mt-4 grid gap-2">
-              {fragen.map((f, i) => {
+              {fragenKeys.map((fKey, i) => {
                 const a = answers[i];
                 return (
-                  <li key={f} className="card-tile grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-3">
-                    <span className="min-w-0 text-sm leading-snug">{f}</span>
+                  <li key={fKey} className="card-tile grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-3">
+                    <span className="min-w-0 text-sm leading-snug">{t(fKey)}</span>
                     <span
                       className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-extrabold ${
                         a === "ja"
@@ -174,18 +174,18 @@ function IstDasMobbingPage() {
             </ul>
 
             <div className="mt-5 grid gap-3">
-              <OptionCard to="/vorfall" title="Vorfall dokumentieren" description="Festhalten, was passiert ist" icon={NotebookPen} />
+              <OptionCard to="/vorfall" title={t("info.mobbing.card.vorfall.title")} description={t("info.mobbing.card.vorfall.desc")} icon={NotebookPen} />
               <OptionCard
                 to="/vertrauensperson"
-                title="Mit einer Vertrauensperson sprechen"
-                description="Jemanden einbeziehen, dem du vertraust"
+                title={t("info.mobbing.card.vertrauensperson.title")}
+                description={t("info.mobbing.card.vertrauensperson.desc")}
                 icon={Users}
                 tone="info"
               />
               <OptionCard
                 to="/beratung"
-                title="Beratung & Hilfe finden"
-                description="Anlaufstellen in deiner Nähe oder bundesweit"
+                title={t("info.mobbing.card.beratung.title")}
+                description={t("info.mobbing.card.beratung.desc")}
                 icon={HeartHandshake}
                 tone="success"
               />
@@ -193,7 +193,7 @@ function IstDasMobbingPage() {
 
             <button type="button" onClick={reset} className="btn-ghost mt-4">
               <RotateCcw className="h-5 w-5" />
-              Fragen neu beantworten
+              {t("info.mobbing.reset")}
             </button>
           </>
         )}
