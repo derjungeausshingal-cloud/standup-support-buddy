@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { Clock, Globe, MapPin, Phone, Search, X } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
+import { useI18n } from "@/lib/i18n";
 import { sucheStellen, themen, type Stelle, type Thema } from "@/lib/beratung";
 
 export const Route = createFileRoute("/beratung")({
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/beratung")({
 });
 
 function StelleCard({ s }: { s: Stelle }) {
+  const { t } = useI18n();
   const anrufbar = /^[\d\s]+$/.test(s.tel);
   return (
     <li className="card-tile p-4">
@@ -37,16 +39,16 @@ function StelleCard({ s }: { s: Stelle }) {
         </span>
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
-        {s.themen.map((t) => (
-          <span key={t} className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-bold text-primary">
-            {t}
+        {s.themen.map((th) => (
+          <span key={th} className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-bold text-primary">
+            {t(`adv.topic.${th}`)}
           </span>
         ))}
       </div>
       {anrufbar ? (
         <a href={`tel:${s.tel.replace(/\s/g, "")}`} className="btn-primary mt-4">
           <Phone className="h-5 w-5" />
-          {s.tel} anrufen
+          {t("adv.card.call", { tel: s.tel })}
         </a>
       ) : (
         <p className="mt-4 text-sm font-bold">{s.tel}</p>
@@ -59,7 +61,7 @@ function StelleCard({ s }: { s: Stelle }) {
           className="btn-ghost mt-2"
         >
           <Globe className="h-5 w-5" />
-          Website öffnen
+          {t("adv.card.website")}
         </a>
       ) : null}
     </li>
@@ -67,6 +69,7 @@ function StelleCard({ s }: { s: Stelle }) {
 }
 
 function BeratungPage() {
+  const { t } = useI18n();
   const [query, setQuery] = useState("");
   const [thema, setThema] = useState<Thema | null>(null);
 
@@ -77,7 +80,7 @@ function BeratungPage() {
 
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Beratung & Hilfe" subtitle="Du entscheidest, ob und wen du kontaktierst." />
+      <AppHeader title={t("adv.head.title")} subtitle={t("adv.head.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
         <div className="relative mt-5">
@@ -87,13 +90,13 @@ function BeratungPage() {
             inputMode="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ort, Stadt oder PLZ (z. B. Köln, 04109)"
+            placeholder={t("adv.search.placeholder")}
             className="field-input pl-12 pr-11"
           />
           {query ? (
             <button
               type="button"
-              aria-label="Suche löschen"
+              aria-label={t("adv.search.clear")}
               onClick={() => setQuery("")}
               className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full bg-muted text-muted-foreground"
             >
@@ -103,19 +106,19 @@ function BeratungPage() {
         </div>
 
         <div className="mt-3 flex flex-wrap gap-2">
-          {themen.map((t) => {
-            const active = thema === t;
+          {themen.map((th) => {
+            const active = thema === th;
             return (
               <button
-                key={t}
+                key={th}
                 type="button"
                 aria-pressed={active}
-                onClick={() => setThema(active ? null : t)}
+                onClick={() => setThema(active ? null : th)}
                 className={`rounded-full px-3.5 py-2 text-sm font-bold ${
                   active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                 }`}
               >
-                {t}
+                {t(`adv.topic.${th}`)}
               </button>
             );
           })}
@@ -125,22 +128,21 @@ function BeratungPage() {
           <section className="card-tile mt-4 border-primary/30 bg-primary-soft p-4">
             <p className="text-sm font-extrabold text-primary">{ort.label}</p>
             <p className="mt-1 text-sm leading-snug">
-              Region: {ort.region} · {ort.land}
+              {t("adv.region.label", { region: ort.region, land: ort.land })}
             </p>
           </section>
         ) : null}
 
         {unbekannterOrt ? (
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Zu „{query}“ konnten wir keinen Ort zuordnen. Versuch es mit einer Postleitzahl (z. B. 20095) oder
-            einer größeren Stadt in der Nähe. Bundesweite Angebote findest du unten.
+            {t("adv.unknownPlace", { query })}
           </p>
         ) : null}
 
         {ort ? (
           <>
             <h2 className="mt-6 text-sm font-extrabold uppercase tracking-wide text-muted-foreground">
-              In der Region ({lokal.length})
+              {t("adv.local.heading", { n: lokal.length })}
             </h2>
             {lokal.length > 0 ? (
               <ul className="mt-3 grid gap-3">
@@ -150,15 +152,14 @@ function BeratungPage() {
               </ul>
             ) : (
               <p className="mt-3 text-sm text-muted-foreground">
-                Für dieses Thema haben wir vor Ort keine passende Stelle gefunden. Die bundesweiten Angebote
-                helfen dir aber auch weiter.
+                {t("adv.local.empty")}
               </p>
             )}
           </>
         ) : null}
 
         <h2 className="mt-6 text-sm font-extrabold uppercase tracking-wide text-muted-foreground">
-          Bundesweit erreichbar ({bundesweit.length})
+          {t("adv.national.heading", { n: bundesweit.length })}
         </h2>
         {bundesweit.length > 0 ? (
           <ul className="mt-3 grid gap-3">
@@ -168,14 +169,13 @@ function BeratungPage() {
           </ul>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            Für dieses Thema gibt es hier gerade keinen bundesweiten Eintrag. Du kannst den Themenfilter
-            zurücksetzen.
+            {t("adv.national.empty")}
           </p>
         )}
 
         {thema ? (
           <button type="button" onClick={() => setThema(null)} className="btn-ghost mt-4">
-            Themenfilter zurücksetzen
+            {t("adv.resetFilter")}
           </button>
         ) : null}
       </main>

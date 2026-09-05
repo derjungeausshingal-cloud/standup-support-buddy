@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Phone, ShieldAlert } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/notfall")({
   head: () => ({
@@ -16,16 +17,17 @@ export const Route = createFileRoute("/notfall")({
 });
 
 const nummern = [
-  { name: "Polizei-Notruf", tel: "110", info: "Wenn du dich in Gefahr fühlst oder gerade etwas passiert." },
-  { name: "Rettungsdienst", tel: "112", info: "Bei medizinischen Notfällen." },
-  { name: "Telefonseelsorge", tel: "0800 111 0 111", info: "Rund um die Uhr, anonym und kostenfrei." },
-  { name: "Nummer gegen Kummer", tel: "116 111", info: "Für Kinder und Jugendliche, Mo–Sa 14–20 Uhr." },
-];
+  { name: "Polizei-Notruf", tel: "110", infoKey: "adv.emergency.police.info" },
+  { name: "Rettungsdienst", tel: "112", infoKey: "adv.emergency.rescue.info" },
+  { name: "Telefonseelsorge", tel: "0800 111 0 111", infoKey: "adv.emergency.telefonseelsorge.info" },
+  { name: "Nummer gegen Kummer", tel: "116 111", infoKey: "adv.emergency.kummer.info" },
+] as const;
 
 function NotfallPage() {
+  const { t } = useI18n();
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Notfall-Hilfe" subtitle="Wenn es schnell gehen muss." />
+      <AppHeader title={t("adv.emergency.title")} subtitle={t("adv.emergency.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
         <section className="card-tile mt-6 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 border-info/30 bg-info-soft p-4">
@@ -33,8 +35,7 @@ function NotfallPage() {
             <ShieldAlert className="h-6 w-6" />
           </span>
           <p className="min-w-0 text-sm leading-snug">
-            Wenn du dich akut bedroht fühlst, kannst du jederzeit den Notruf wählen. Du musst dafür nichts
-            beweisen.
+            {t("adv.emergency.notice")}
           </p>
         </section>
 
@@ -42,10 +43,10 @@ function NotfallPage() {
           {nummern.map((n) => (
             <li key={n.tel} className="card-tile p-4">
               <h2 className="text-base font-extrabold">{n.name}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{n.info}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t(n.infoKey)}</p>
               <a href={`tel:${n.tel.replace(/\s/g, "")}`} className="btn-primary mt-3">
                 <Phone className="h-5 w-5" />
-                {n.tel} anrufen
+                {t("adv.card.call", { tel: n.tel })}
               </a>
             </li>
           ))}
