@@ -1,9 +1,168 @@
 import type { Lang, PageDict } from "./types";
 
-const de: PageDict = {};
-const en: PageDict = {};
-const tr: PageDict = {};
-const ar: PageDict = {};
-const ru: PageDict = {};
+const de: PageDict = {
+  "adv.head.title": "Beratung & Hilfe",
+  "adv.head.subtitle": "Du entscheidest, ob und wen du kontaktierst.",
+  "adv.search.placeholder": "Ort, Stadt oder PLZ (z. B. Köln, 04109)",
+  "adv.search.clear": "Suche löschen",
+  "adv.region.label": "Region: {region} · {land}",
+  "adv.unknownPlace": "Zu „{query}“ konnten wir keinen Ort zuordnen. Versuch es mit einer Postleitzahl (z. B. 20095) oder einer größeren Stadt in der Nähe. Bundesweite Angebote findest du unten.",
+  "adv.local.heading": "In der Region ({n})",
+  "adv.local.empty": "Für dieses Thema haben wir vor Ort keine passende Stelle gefunden. Die bundesweiten Angebote helfen dir aber auch weiter.",
+  "adv.national.heading": "Bundesweit erreichbar ({n})",
+  "adv.national.empty": "Für dieses Thema gibt es hier gerade keinen bundesweiten Eintrag. Du kannst den Themenfilter zurücksetzen.",
+  "adv.resetFilter": "Themenfilter zurücksetzen",
+  "adv.card.call": "{tel} anrufen",
+  "adv.card.website": "Website öffnen",
+
+  "adv.topic.Mobbing": "Mobbing",
+  "adv.topic.Diskriminierung": "Diskriminierung",
+  "adv.topic.Gewalt": "Gewalt",
+  "adv.topic.Bedrohung": "Bedrohung",
+  "adv.topic.Schule": "Schule",
+  "adv.topic.Arbeit": "Arbeit",
+  "adv.topic.Recht": "Recht",
+  "adv.topic.Krise": "Krise",
+
+  "adv.emergency.title": "Notfall-Hilfe",
+  "adv.emergency.subtitle": "Wenn es schnell gehen muss.",
+  "adv.emergency.notice": "Wenn du dich akut bedroht fühlst, kannst du jederzeit den Notruf wählen. Du musst dafür nichts beweisen.",
+  "adv.emergency.police.info": "Wenn du dich in Gefahr fühlst oder gerade etwas passiert.",
+  "adv.emergency.rescue.info": "Bei medizinischen Notfällen.",
+  "adv.emergency.telefonseelsorge.info": "Rund um die Uhr, anonym und kostenfrei.",
+  "adv.emergency.kummer.info": "Für Kinder und Jugendliche, Mo–Sa 14–20 Uhr.",
+};
+
+const en: PageDict = {
+  "adv.head.title": "Counselling & Help",
+  "adv.head.subtitle": "You decide whether and whom to contact.",
+  "adv.search.placeholder": "Place, city or postal code (e.g. Cologne, 04109)",
+  "adv.search.clear": "Clear search",
+  "adv.region.label": "Region: {region} · {land}",
+  "adv.unknownPlace": "We couldn't match a place to “{query}”. Try a postal code (e.g. 20095) or a larger city nearby. Nationwide services can be found below.",
+  "adv.local.heading": "In the region ({n})",
+  "adv.local.empty": "We couldn't find a matching local service for this topic. The nationwide services can still help you.",
+  "adv.national.heading": "Nationwide ({n})",
+  "adv.national.empty": "There's currently no nationwide entry for this topic. You can reset the topic filter.",
+  "adv.resetFilter": "Reset topic filter",
+  "adv.card.call": "Call {tel}",
+  "adv.card.website": "Open website",
+
+  "adv.topic.Mobbing": "Bullying",
+  "adv.topic.Diskriminierung": "Discrimination",
+  "adv.topic.Gewalt": "Violence",
+  "adv.topic.Bedrohung": "Threats",
+  "adv.topic.Schule": "School",
+  "adv.topic.Arbeit": "Work",
+  "adv.topic.Recht": "Legal",
+  "adv.topic.Krise": "Crisis",
+
+  "adv.emergency.title": "Emergency help",
+  "adv.emergency.subtitle": "When things need to move fast.",
+  "adv.emergency.notice": "If you feel acutely threatened, you can call the emergency number at any time. You don't need to prove anything for that.",
+  "adv.emergency.police.info": "If you feel in danger or something is happening right now.",
+  "adv.emergency.rescue.info": "For medical emergencies.",
+  "adv.emergency.telefonseelsorge.info": "Around the clock, anonymous and free of charge.",
+  "adv.emergency.kummer.info": "For children and young people, Mon–Sat 2–8 pm.",
+};
+
+const tr: PageDict = {
+  "adv.head.title": "Danışmanlık ve Yardım",
+  "adv.head.subtitle": "Kiminle iletişime geçeceğine sen karar verirsin.",
+  "adv.search.placeholder": "Yer, şehir veya posta kodu (örn. Köln, 04109)",
+  "adv.search.clear": "Aramayı temizle",
+  "adv.region.label": "Bölge: {region} · {land}",
+  "adv.unknownPlace": "„{query}“ için bir yer bulamadık. Bir posta kodu (örn. 20095) veya yakındaki daha büyük bir şehir dene. Ülke genelindeki hizmetleri aşağıda bulabilirsin.",
+  "adv.local.heading": "Bölgede ({n})",
+  "adv.local.empty": "Bu konu için yerel bir hizmet bulamadık. Ülke genelindeki hizmetler de sana yardımcı olabilir.",
+  "adv.national.heading": "Ülke genelinde ulaşılabilir ({n})",
+  "adv.national.empty": "Bu konu için şu anda ülke genelinde bir kayıt yok. Konu filtresini sıfırlayabilirsin.",
+  "adv.resetFilter": "Konu filtresini sıfırla",
+  "adv.card.call": "{tel} numarasını ara",
+  "adv.card.website": "Web sitesini aç",
+
+  "adv.topic.Mobbing": "Zorbalık",
+  "adv.topic.Diskriminierung": "Ayrımcılık",
+  "adv.topic.Gewalt": "Şiddet",
+  "adv.topic.Bedrohung": "Tehdit",
+  "adv.topic.Schule": "Okul",
+  "adv.topic.Arbeit": "İş",
+  "adv.topic.Recht": "Hukuk",
+  "adv.topic.Krise": "Kriz",
+
+  "adv.emergency.title": "Acil Yardım",
+  "adv.emergency.subtitle": "Hızlı olması gerektiğinde.",
+  "adv.emergency.notice": "Kendini ciddi şekilde tehdit altında hissediyorsan istediğin zaman acil durum numarasını arayabilirsin. Bunun için bir şey kanıtlaman gerekmez.",
+  "adv.emergency.police.info": "Tehlikede olduğunu hissediyorsan veya az önce bir şey olduysa.",
+  "adv.emergency.rescue.info": "Tıbbi acil durumlarda.",
+  "adv.emergency.telefonseelsorge.info": "Günün her saati, anonim ve ücretsiz.",
+  "adv.emergency.kummer.info": "Çocuklar ve gençler için, Pzt–Cmt 14–20 arası.",
+};
+
+const ar: PageDict = {
+  "adv.head.title": "الاستشارة والمساعدة",
+  "adv.head.subtitle": "أنت من يقرر إن كنت ستتواصل ومع من.",
+  "adv.search.placeholder": "المكان أو المدينة أو الرمز البريدي (مثال: كولونيا، 04109)",
+  "adv.search.clear": "مسح البحث",
+  "adv.region.label": "المنطقة: {region} · {land}",
+  "adv.unknownPlace": "لم نتمكن من إيجاد مكان مطابق لـ „{query}“. جرّب رمزًا بريديًا (مثل 20095) أو مدينة أكبر قريبة منك. تجد الخدمات على مستوى البلاد أدناه.",
+  "adv.local.heading": "في المنطقة ({n})",
+  "adv.local.empty": "لم نجد جهة محلية مناسبة لهذا الموضوع. لكن الخدمات على مستوى البلاد قد تساعدك أيضًا.",
+  "adv.national.heading": "متاح على مستوى البلاد ({n})",
+  "adv.national.empty": "لا توجد حاليًا جهة على مستوى البلاد لهذا الموضوع. يمكنك إعادة ضبط عامل التصفية حسب الموضوع.",
+  "adv.resetFilter": "إعادة ضبط عامل تصفية الموضوع",
+  "adv.card.call": "اتصل بـ {tel}",
+  "adv.card.website": "فتح الموقع الإلكتروني",
+
+  "adv.topic.Mobbing": "التنمر",
+  "adv.topic.Diskriminierung": "التمييز",
+  "adv.topic.Gewalt": "العنف",
+  "adv.topic.Bedrohung": "التهديد",
+  "adv.topic.Schule": "المدرسة",
+  "adv.topic.Arbeit": "العمل",
+  "adv.topic.Recht": "القانون",
+  "adv.topic.Krise": "الأزمة",
+
+  "adv.emergency.title": "مساعدة الطوارئ",
+  "adv.emergency.subtitle": "عندما يجب أن يتم الأمر بسرعة.",
+  "adv.emergency.notice": "إذا شعرت بتهديد حاد، يمكنك الاتصال برقم الطوارئ في أي وقت. لست بحاجة إلى إثبات أي شيء لذلك.",
+  "adv.emergency.police.info": "إذا شعرت بالخطر أو كان هناك أمر يحدث الآن.",
+  "adv.emergency.rescue.info": "في حالات الطوارئ الطبية.",
+  "adv.emergency.telefonseelsorge.info": "على مدار الساعة، بشكل مجهول ومجاني.",
+  "adv.emergency.kummer.info": "للأطفال والشباب، من الاثنين إلى السبت من 14 إلى 20.",
+};
+
+const ru: PageDict = {
+  "adv.head.title": "Консультации и помощь",
+  "adv.head.subtitle": "Ты сам решаешь, стоит ли и с кем связываться.",
+  "adv.search.placeholder": "Населённый пункт или индекс (напр. Кёльн, 04109)",
+  "adv.search.clear": "Очистить поиск",
+  "adv.region.label": "Регион: {region} · {land}",
+  "adv.unknownPlace": "Мы не смогли определить место для «{query}». Попробуй указать почтовый индекс (напр. 20095) или ближайший крупный город. Общегерманские предложения ты найдёшь ниже.",
+  "adv.local.heading": "В регионе ({n})",
+  "adv.local.empty": "Мы не нашли подходящей местной службы по этой теме. Но общегерманские предложения тоже могут помочь.",
+  "adv.national.heading": "Доступно по всей стране ({n})",
+  "adv.national.empty": "Сейчас по этой теме нет общегерманской записи. Ты можешь сбросить фильтр по теме.",
+  "adv.resetFilter": "Сбросить фильтр по теме",
+  "adv.card.call": "Позвонить {tel}",
+  "adv.card.website": "Открыть сайт",
+
+  "adv.topic.Mobbing": "Травля",
+  "adv.topic.Diskriminierung": "Дискриминация",
+  "adv.topic.Gewalt": "Насилие",
+  "adv.topic.Bedrohung": "Угрозы",
+  "adv.topic.Schule": "Школа",
+  "adv.topic.Arbeit": "Работа",
+  "adv.topic.Recht": "Право",
+  "adv.topic.Krise": "Кризис",
+
+  "adv.emergency.title": "Экстренная помощь",
+  "adv.emergency.subtitle": "Когда всё должно решиться быстро.",
+  "adv.emergency.notice": "Если ты чувствуешь острую угрозу, ты можешь в любой момент позвонить в экстренную службу. Тебе не нужно ничего доказывать.",
+  "adv.emergency.police.info": "Если ты чувствуешь себя в опасности или что-то происходит прямо сейчас.",
+  "adv.emergency.rescue.info": "При медицинских неотложных случаях.",
+  "adv.emergency.telefonseelsorge.info": "Круглосуточно, анонимно и бесплатно.",
+  "adv.emergency.kummer.info": "Для детей и подростков, пн–сб 14–20.",
+};
 
 export const advice: Record<Lang, PageDict> = { de, en, tr, ar, ru };
