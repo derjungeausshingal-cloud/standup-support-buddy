@@ -3,7 +3,8 @@ import { ArrowRight, FileText, Image as ImageIcon, MessageSquareText, Mic, Trash
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Stepper } from "@/components/Stepper";
-import { evidenceLabels, formatDate, useIncidents, type EvidenceType } from "@/lib/incidents";
+import { useI18n } from "@/lib/i18n";
+import { formatDate, useIncidents, type EvidenceType } from "@/lib/incidents";
 
 export const Route = createFileRoute("/vorfall/beweise")({
   head: () => ({
@@ -20,16 +21,17 @@ export const Route = createFileRoute("/vorfall/beweise")({
   component: BeweisePage,
 });
 
-const options: { type: EvidenceType; label: string; icon: typeof ImageIcon; sample: string }[] = [
-  { type: "foto", label: "Foto / Screenshot hinzufügen", icon: ImageIcon, sample: "Screenshot.png" },
-  { type: "chat", label: "Chatverlauf hinzufügen", icon: MessageSquareText, sample: "Chatverlauf.txt" },
-  { type: "datei", label: "Datei hinzufügen", icon: FileText, sample: "Dokument.pdf" },
-  { type: "sprachnotiz", label: "Sprachnotiz aufnehmen", icon: Mic, sample: "Sprachnotiz.m4a" },
+const options: { type: EvidenceType; labelKey: string; icon: typeof ImageIcon; sample: string }[] = [
+  { type: "foto", labelKey: "incident.evidence.add.foto", icon: ImageIcon, sample: "Screenshot.png" },
+  { type: "chat", labelKey: "incident.evidence.add.chat", icon: MessageSquareText, sample: "Chatverlauf.txt" },
+  { type: "datei", labelKey: "incident.evidence.add.datei", icon: FileText, sample: "Dokument.pdf" },
+  { type: "sprachnotiz", labelKey: "incident.evidence.add.sprachnotiz", icon: Mic, sample: "Sprachnotiz.m4a" },
 ];
 
 function BeweisePage() {
   const { draft, setDraft } = useIncidents();
   const navigate = useNavigate();
+  const { t } = useI18n();
   const today = new Date().toISOString().slice(0, 10);
 
   const add = (type: EvidenceType, sample: string) => {
@@ -49,16 +51,13 @@ function BeweisePage() {
 
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Beweise hinzufügen" subtitle="Dieser Schritt ist optional." />
+      <AppHeader title={t("incident.evidence.pageTitle")} subtitle={t("incident.evidence.pageSubtitle")} />
       <Stepper current={3} />
 
       <main className="mx-auto max-w-md px-5">
         <section className="card-tile mt-6 border-success/30 bg-success-soft p-4">
-          <p className="text-sm font-bold text-success">Beweise sind freiwillig</p>
-          <p className="mt-1 text-sm leading-snug text-foreground/80">
-            Auch ohne Beweise kannst du Unterstützung bekommen. Wenn du etwas hast, kannst du es hier
-            sammeln – nur wenn du möchtest.
-          </p>
+          <p className="text-sm font-bold text-success">{t("incident.evidence.voluntary.title")}</p>
+          <p className="mt-1 text-sm leading-snug text-foreground/80">{t("incident.evidence.voluntary.text")}</p>
         </section>
 
         <div className="mt-5 grid gap-3">
@@ -72,17 +71,15 @@ function BeweisePage() {
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary-soft text-primary">
                 <o.icon className="h-5 w-5" />
               </span>
-              <span className="min-w-0 text-base font-bold leading-tight">{o.label}</span>
+              <span className="min-w-0 text-base font-bold leading-tight">{t(o.labelKey)}</span>
               <span className="text-2xl font-bold leading-none text-primary">+</span>
             </button>
           ))}
         </div>
 
-        <h2 className="mt-8 text-lg font-extrabold">Hinzugefügte Beweise</h2>
+        <h2 className="mt-8 text-lg font-extrabold">{t("incident.evidence.added.title")}</h2>
         {draft.evidence.length === 0 ? (
-          <p className="mt-2 text-sm text-muted-foreground">
-            Noch nichts hinzugefügt. Das ist völlig in Ordnung.
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">{t("incident.evidence.added.empty")}</p>
         ) : (
           <ul className="mt-3 grid gap-3">
             {draft.evidence.map((e) => (
@@ -90,12 +87,12 @@ function BeweisePage() {
                 <div className="min-w-0">
                   <p className="truncate text-sm font-bold">{e.name}</p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
-                    {evidenceLabels[e.type]} · {formatDate(e.date)}
+                    {t(`incident.evidence.${e.type}`)} · {formatDate(e.date)}
                   </p>
                 </div>
                 <button
                   type="button"
-                  aria-label={`${e.name} entfernen`}
+                  aria-label={t("incident.evidence.remove", { name: e.name })}
                   onClick={() => setDraft({ evidence: draft.evidence.filter((x) => x.id !== e.id) })}
                   className="grid h-10 w-10 place-items-center rounded-full bg-muted text-muted-foreground"
                 >
@@ -108,7 +105,7 @@ function BeweisePage() {
 
         <div className="mt-7 grid gap-3">
           <button type="button" onClick={() => navigate({ to: "/vorfall/speichern" })} className="btn-primary">
-            Weiter: Speichern
+            {t("incident.continueSave")}
             <ArrowRight className="h-5 w-5" />
           </button>
           <button
@@ -119,7 +116,7 @@ function BeweisePage() {
             }}
             className="btn-ghost"
           >
-            Ohne Beweise weiter
+            {t("incident.continueNoEvidence")}
           </button>
         </div>
       </main>

@@ -17,7 +17,8 @@ import {
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Stepper } from "@/components/Stepper";
-import { kindLabels, useIncidents, type IncidentKind } from "@/lib/incidents";
+import { useI18n } from "@/lib/i18n";
+import { useIncidents, type IncidentKind } from "@/lib/incidents";
 
 export const Route = createFileRoute("/vorfall/")({
   head: () => ({
@@ -36,27 +37,28 @@ export const Route = createFileRoute("/vorfall/")({
   component: VorfallPage,
 });
 
-const kinds: { key: IncidentKind; hint: string; icon: typeof Users }[] = [
-  { key: "mobbing", hint: "Wiederholtes Schikanieren", icon: Users },
-  { key: "ausgrenzung", hint: "Bewusst ausgeschlossen werden", icon: UserX },
-  { key: "beleidigung", hint: "Beschimpfungen, Herabwürdigungen", icon: MessageSquare },
-  { key: "bedrohung", hint: "Drohungen, Einschüchterung", icon: AlertTriangle },
-  { key: "diskriminierung", hint: "Z. B. Herkunft, Geschlecht, Religion", icon: ShieldAlert },
-  { key: "koerperlich", hint: "Schubsen, Schlagen, Festhalten", icon: HeartCrack },
-  { key: "cybermobbing", hint: "Chats, Social Media, Nachrichten", icon: Smartphone },
-  { key: "belaestigung", hint: "Grenzüberschreitendes Verhalten", icon: Ban },
-  { key: "konflikt", hint: "Streit oder Auseinandersetzung", icon: MessagesSquare },
-  { key: "anderes", hint: "Etwas, das hier nicht steht", icon: MoreHorizontal },
+const kinds: { key: IncidentKind; hintKey: string; icon: typeof Users }[] = [
+  { key: "mobbing", hintKey: "incident.hint.mobbing", icon: Users },
+  { key: "ausgrenzung", hintKey: "incident.hint.ausgrenzung", icon: UserX },
+  { key: "beleidigung", hintKey: "incident.hint.beleidigung", icon: MessageSquare },
+  { key: "bedrohung", hintKey: "incident.hint.bedrohung", icon: AlertTriangle },
+  { key: "diskriminierung", hintKey: "incident.hint.diskriminierung", icon: ShieldAlert },
+  { key: "koerperlich", hintKey: "incident.hint.koerperlich", icon: HeartCrack },
+  { key: "cybermobbing", hintKey: "incident.hint.cybermobbing", icon: Smartphone },
+  { key: "belaestigung", hintKey: "incident.hint.belaestigung", icon: Ban },
+  { key: "konflikt", hintKey: "incident.hint.konflikt", icon: MessagesSquare },
+  { key: "anderes", hintKey: "incident.hint.anderes", icon: MoreHorizontal },
 ];
 
 function VorfallPage() {
   const { draft, setDraft } = useIncidents();
   const navigate = useNavigate();
   const { modus } = Route.useSearch();
+  const { t } = useI18n();
 
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Mir ist etwas passiert" subtitle="Du bestimmst, was du angibst." />
+      <AppHeader title={t("incident.page.title")} subtitle={t("incident.page.subtitle")} />
       <Stepper current={draft.kind ? 2 : 1} />
 
       <main className="mx-auto max-w-md px-5">
@@ -66,10 +68,8 @@ function VorfallPage() {
               <Users className="h-5 w-5" />
             </span>
             <span className="min-w-0">
-              <span className="block text-sm font-extrabold">Gemeinsam dokumentieren</span>
-              <span className="mt-1 block text-sm leading-snug">
-                Achte darauf, dass die betroffene Person damit einverstanden ist, was gespeichert wird.
-              </span>
+              <span className="block text-sm font-extrabold">{t("incident.gemeinsam.title")}</span>
+              <span className="mt-1 block text-sm leading-snug">{t("incident.gemeinsam.text")}</span>
             </span>
           </section>
         ) : null}
@@ -79,15 +79,11 @@ function VorfallPage() {
           className="card-tile mt-5 flex items-center gap-3 border-warning/30 bg-warning-soft p-4"
         >
           <Zap className="h-5 w-5 shrink-0 text-warning" />
-          <span className="min-w-0 text-sm font-bold">
-            Wenig Zeit oder Kraft? Halte es zuerst in einem Satz fest.
-          </span>
+          <span className="min-w-0 text-sm font-bold">{t("incident.quick.text")}</span>
         </Link>
 
-        <h2 className="mt-6 text-lg font-extrabold">1. Was ist passiert?</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Wenn du möchtest, kannst du eine Art auswählen. Du kannst das später ändern.
-        </p>
+        <h2 className="mt-6 text-lg font-extrabold">{t("incident.step1.title")}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{t("incident.step1.desc")}</p>
         <div className="mt-3 grid grid-cols-2 gap-3">
           {kinds.map((k) => {
             const active = draft.kind === k.key;
@@ -110,24 +106,22 @@ function VorfallPage() {
                   </span>
                 )}
                 <span className="min-w-0">
-                  <span className="block text-base font-extrabold leading-tight">{kindLabels[k.key]}</span>
-                  <span className="mt-1 block text-sm leading-snug text-muted-foreground">{k.hint}</span>
+                  <span className="block text-base font-extrabold leading-tight">{t(`incident.kind.${k.key}`)}</span>
+                  <span className="mt-1 block text-sm leading-snug text-muted-foreground">{t(k.hintKey)}</span>
                 </span>
               </button>
             );
           })}
         </div>
 
-        <h2 className="mt-8 text-lg font-extrabold">2. Beschreibe, was passiert ist</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Schreibe in deinen eigenen Worten. Du entscheidest, was du teilst.
-        </p>
+        <h2 className="mt-8 text-lg font-extrabold">{t("incident.step2.title")}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{t("incident.step2.desc")}</p>
         <textarea
           value={draft.description}
           maxLength={2000}
           rows={7}
           onChange={(e) => setDraft({ description: e.target.value })}
-          placeholder="Zum Beispiel: Was ist passiert? Wie ging es dir dabei?"
+          placeholder={t("incident.step2.placeholder")}
           className="field-input mt-3 resize-none"
         />
         <p className="mt-1 text-right text-xs text-muted-foreground">{draft.description.length} / 2000</p>
@@ -136,7 +130,7 @@ function VorfallPage() {
           <div className="grid grid-cols-2 gap-3">
             <label className="grid gap-2">
               <span className="text-sm font-bold">
-                Datum <span className="font-semibold text-muted-foreground">(optional)</span>
+                {t("incident.date.label")} <span className="font-semibold text-muted-foreground">{t("incident.optional")}</span>
               </span>
               <input
                 type="date"
@@ -147,7 +141,7 @@ function VorfallPage() {
             </label>
             <label className="grid gap-2">
               <span className="text-sm font-bold">
-                Uhrzeit <span className="font-semibold text-muted-foreground">(optional)</span>
+                {t("incident.time.label")} <span className="font-semibold text-muted-foreground">{t("incident.optional")}</span>
               </span>
               <input
                 type="time"
@@ -159,76 +153,74 @@ function VorfallPage() {
           </div>
           <label className="grid gap-2">
             <span className="text-sm font-bold">
-              Ort <span className="font-semibold text-muted-foreground">(optional)</span>
+              {t("incident.place.label")} <span className="font-semibold text-muted-foreground">{t("incident.optional")}</span>
             </span>
             <input
               type="text"
               value={draft.place}
               onChange={(e) => setDraft({ place: e.target.value })}
-              placeholder="z. B. Schulhof, Klassenchat, Büro"
+              placeholder={t("incident.place.placeholder")}
               className="field-input"
             />
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-bold">
-              Beteiligte Personen <span className="font-semibold text-muted-foreground">(optional)</span>
+              {t("incident.persons.label")} <span className="font-semibold text-muted-foreground">{t("incident.optional")}</span>
             </span>
             <input
               type="text"
               value={draft.persons}
               onChange={(e) => setDraft({ persons: e.target.value })}
-              placeholder="Nur für dich – z. B. Vorname oder Kürzel"
+              placeholder={t("incident.persons.placeholder")}
               className="field-input"
             />
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-bold">
-              Zeugen <span className="font-semibold text-muted-foreground">(optional)</span>
+              {t("incident.witnesses.label")} <span className="font-semibold text-muted-foreground">{t("incident.optional")}</span>
             </span>
             <input
               type="text"
               value={draft.witnesses}
               onChange={(e) => setDraft({ witnesses: e.target.value })}
-              placeholder="Wer war dabei? Nur wenn du magst."
+              placeholder={t("incident.witnesses.placeholder")}
               className="field-input"
             />
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-bold">
-              Wie ging es dir danach?{" "}
-              <span className="font-semibold text-muted-foreground">(optional)</span>
+              {t("incident.impact.label")}{" "}
+              <span className="font-semibold text-muted-foreground">{t("incident.optional")}</span>
             </span>
             <textarea
               value={draft.impact}
               rows={3}
               maxLength={1000}
               onChange={(e) => setDraft({ impact: e.target.value })}
-              placeholder="z. B. Angst vor dem nächsten Tag, schlecht geschlafen"
+              placeholder={t("incident.impact.placeholder")}
               className="field-input resize-none"
             />
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-bold">
-              Eigene Notizen <span className="font-semibold text-muted-foreground">(optional)</span>
+              {t("incident.notes.label")} <span className="font-semibold text-muted-foreground">{t("incident.optional")}</span>
             </span>
             <textarea
               value={draft.notes}
               rows={3}
               maxLength={1000}
               onChange={(e) => setDraft({ notes: e.target.value })}
-              placeholder="Gedanken, die du nur für dich festhalten möchtest"
+              placeholder={t("incident.notes.placeholder")}
               className="field-input resize-none"
             />
           </label>
         </div>
 
         <button type="button" onClick={() => navigate({ to: "/vorfall/beweise" })} className="btn-primary mt-7">
-          Weiter: Beweise hinzufügen
+          {t("incident.continueEvidence")}
           <ArrowRight className="h-5 w-5" />
         </button>
-        <p className="mt-3 text-center text-xs text-muted-foreground">
-          Alle Angaben sind freiwillig. Du kannst jederzeit pausieren.
-        </p>
+        <p className="mt-3 text-center text-xs text-muted-foreground">{t("incident.footnote")}</p>
       </main>
 
       <BottomNav />
