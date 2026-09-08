@@ -1,8 +1,15 @@
 import { Check } from "lucide-react";
-
-const steps = ["Art", "Details", "Beweise", "Speichern", "Hilfe"] as const;
+import { useI18n } from "@/lib/i18n";
 
 export function Stepper({ current }: { current: number }) {
+  const { t } = useI18n();
+  const steps = [
+    t("incident.stepper.kind"),
+    t("incident.stepper.details"),
+    t("incident.stepper.evidence"),
+    t("incident.stepper.save"),
+    t("incident.stepper.help"),
+  ];
   return (
     <div className="mx-auto max-w-md px-5 pt-4">
       <div className="flex items-center justify-between gap-1">

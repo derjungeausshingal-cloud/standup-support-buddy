@@ -3,6 +3,7 @@ import { ArrowRight, Info } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { CopyText } from "@/components/CopyText";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/helfen/ernst-nehmen")({
   head: () => ({
@@ -19,28 +20,20 @@ export const Route = createFileRoute("/helfen/ernst-nehmen")({
   component: ErnstNehmenPage,
 });
 
-const saetze = [
-  "Danke, dass du mir das anvertraust.",
-  "Ich nehme das ernst.",
-  "Das klingt belastend.",
-  "Wie kann ich dich unterstützen?",
-  "Du entscheidest, was wir als Nächstes machen.",
-];
-
 function ErnstNehmenPage() {
+  const { t } = useI18n();
+  const saetze = [t("help.ernst.s1"), t("help.ernst.s2"), t("help.ernst.s3"), t("help.ernst.s4"), t("help.ernst.s5")];
+
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Ernst nehmen" subtitle="Glauben statt bewerten." />
+      <AppHeader title={t("help.ernst.title")} subtitle={t("help.ernst.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
-        <h2 className="mt-6 text-xl font-extrabold leading-tight">Zeig der Person: Ich nehme dich ernst.</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Menschen erzählen schwierige Erfahrungen manchmal erst nach längerer Zeit. Versuche nicht sofort zu
-          beurteilen, was passiert ist. Höre zunächst zu.
-        </p>
+        <h2 className="mt-6 text-xl font-extrabold leading-tight">{t("help.ernst.lead")}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t("help.ernst.text")}</p>
 
-        <h3 className="mt-7 text-lg font-extrabold">Hilfreiche Formulierungen</h3>
-        <p className="mt-1 text-sm text-muted-foreground">Tippe auf einen Satz, um ihn zu kopieren.</p>
+        <h3 className="mt-7 text-lg font-extrabold">{t("help.ernst.formTitle")}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{t("help.ernst.formHint")}</p>
         <div className="mt-3 grid gap-3">
           {saetze.map((s) => (
             <CopyText key={s} text={s} />
@@ -51,14 +44,11 @@ function ErnstNehmenPage() {
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-info text-primary-foreground">
             <Info className="h-5 w-5" />
           </span>
-          <p className="min-w-0 text-sm leading-snug">
-            StandUp stellt nicht fest, ob es sich um Mobbing, Diskriminierung oder eine Straftat handelt. Das kann
-            nur gemeinsam mit fachkundigen Personen eingeschätzt werden.
-          </p>
+          <p className="min-w-0 text-sm leading-snug">{t("help.ernst.info")}</p>
         </section>
 
         <Link to="/helfen/was-tun" className="btn-primary mt-7">
-          Gemeinsam nächsten Schritt finden
+          {t("help.ernst.cta")}
           <ArrowRight className="h-5 w-5" />
         </Link>
       </main>

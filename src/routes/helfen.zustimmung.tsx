@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/helfen/zustimmung")({
   head: () => ({
@@ -18,39 +19,32 @@ export const Route = createFileRoute("/helfen/zustimmung")({
   component: ZustimmungPage,
 });
 
-const beispiele = [
-  {
-    statt: "Ich gehe morgen zu deinem Lehrer.",
-    besser: "Möchtest du, dass wir gemeinsam mit deinem Lehrer sprechen?",
-  },
-  {
-    statt: "Ich erzähle das deinen Eltern.",
-    besser: "Gibt es jemanden, dem du vertraust und den du gerne einbeziehen möchtest?",
-  },
-  {
-    statt: "Ich kümmere mich darum.",
-    besser: "Was wäre für dich ein guter nächster Schritt?",
-  },
-];
-
 function ZustimmungPage() {
+  const { t } = useI18n();
+  const beispiele = [
+    { statt: t("help.zustimmung.ex1.statt"), besser: t("help.zustimmung.ex1.besser") },
+    { statt: t("help.zustimmung.ex2.statt"), besser: t("help.zustimmung.ex2.besser") },
+    { statt: t("help.zustimmung.ex3.statt"), besser: t("help.zustimmung.ex3.besser") },
+  ];
+
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Nicht ohne Zustimmung" subtitle="Die Person behält die Kontrolle." />
+      <AppHeader title={t("help.zustimmung.title")} subtitle={t("help.zustimmung.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
-        <h2 className="mt-6 text-xl font-extrabold leading-tight">Unterstützen, ohne die Kontrolle zu übernehmen</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Gut gemeinte Hilfe kann sich unangenehm anfühlen, wenn über den Kopf der betroffenen Person hinweg
-          entschieden wird. Frage deshalb nach Möglichkeit zuerst, was sie möchte.
-        </p>
+        <h2 className="mt-6 text-xl font-extrabold leading-tight">{t("help.zustimmung.lead")}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t("help.zustimmung.text")}</p>
 
         <div className="mt-6 grid gap-3">
           {beispiele.map((b) => (
             <article key={b.statt} className="card-tile p-4">
-              <p className="text-xs font-extrabold uppercase tracking-wide text-muted-foreground">Statt</p>
+              <p className="text-xs font-extrabold uppercase tracking-wide text-muted-foreground">
+                {t("help.zustimmung.statt")}
+              </p>
               <p className="mt-1 text-sm leading-snug text-muted-foreground">„{b.statt}“</p>
-              <p className="mt-3 text-xs font-extrabold uppercase tracking-wide text-success">Besser</p>
+              <p className="mt-3 text-xs font-extrabold uppercase tracking-wide text-success">
+                {t("help.zustimmung.besser")}
+              </p>
               <p className="mt-1 text-sm font-semibold leading-snug">„{b.besser}“</p>
             </article>
           ))}
@@ -59,19 +53,17 @@ function ZustimmungPage() {
         <section className="mt-6 rounded-2xl border-2 border-warning/40 bg-warning-soft p-4">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 shrink-0 text-warning" />
-            <h3 className="text-base font-extrabold">Bei unmittelbarer Gefahr</h3>
+            <h3 className="text-base font-extrabold">{t("help.zustimmung.dangerTitle")}</h3>
           </div>
-          <p className="mt-2 text-sm leading-snug">
-            Wenn jemand unmittelbar in Gefahr ist, kann schnelle professionelle Hilfe notwendig sein.
-          </p>
+          <p className="mt-2 text-sm leading-snug">{t("help.zustimmung.dangerText")}</p>
           <Link to="/notfall" className="btn-ghost mt-3">
-            Notfall-Seite öffnen
+            {t("help.zustimmung.dangerCta")}
             <ArrowRight className="h-5 w-5" />
           </Link>
         </section>
 
         <Link to="/helfen/hilfe-finden" className="btn-primary mt-7">
-          Gemeinsam Unterstützung suchen
+          {t("help.zustimmung.cta")}
           <ArrowRight className="h-5 w-5" />
         </Link>
       </main>
