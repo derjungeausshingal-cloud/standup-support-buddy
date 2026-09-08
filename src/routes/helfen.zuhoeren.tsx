@@ -3,6 +3,7 @@ import { ArrowRight, Check, X } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { CopyText } from "@/components/CopyText";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/helfen/zuhoeren")({
   head: () => ({
@@ -19,50 +20,42 @@ export const Route = createFileRoute("/helfen/zuhoeren")({
   component: ZuhoerenPage,
 });
 
-const openers = [
-  "Ich bin für dich da. Möchtest du mir erzählen, was passiert ist?",
-  "Du musst mir nichts erzählen, was du nicht erzählen möchtest.",
-  "Möchtest du, dass ich einfach zuhöre oder sollen wir gemeinsam überlegen, was dir helfen könnte?",
-  "Was brauchst du gerade von mir?",
-];
-
-const helps = [
-  "Nicht unterbrechen.",
-  "Keine Schuldzuweisungen.",
-  "Nicht sofort nach einer Lösung suchen.",
-  "Gefühle ernst nehmen.",
-  "Nachfragen, bevor man etwas weitererzählt.",
-];
-
-const avoid = [
-  "Ignorier es einfach.",
-  "Das war bestimmt nicht so gemeint.",
-  "Du musst dich einfach wehren.",
-  "Warum hast du nichts dagegen gemacht?",
-  "So schlimm ist das doch nicht.",
-];
-
 function ZuhoerenPage() {
+  const { t } = useI18n();
+
+  const openers = [t("help.zuhoeren.opener1"), t("help.zuhoeren.opener2"), t("help.zuhoeren.opener3"), t("help.zuhoeren.opener4")];
+  const helps = [
+    t("help.zuhoeren.help1"),
+    t("help.zuhoeren.help2"),
+    t("help.zuhoeren.help3"),
+    t("help.zuhoeren.help4"),
+    t("help.zuhoeren.help5"),
+  ];
+  const avoid = [
+    t("help.zuhoeren.avoid1"),
+    t("help.zuhoeren.avoid2"),
+    t("help.zuhoeren.avoid3"),
+    t("help.zuhoeren.avoid4"),
+    t("help.zuhoeren.avoid5"),
+  ];
+
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Zuhören" subtitle="In Ruhe und ohne Druck." />
+      <AppHeader title={t("help.zuhoeren.title")} subtitle={t("help.zuhoeren.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
-        <h2 className="mt-6 text-xl font-extrabold leading-tight">Einfach da sein kann schon helfen.</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Du musst keine perfekte Antwort haben. Gib der Person Zeit und lass sie selbst entscheiden, was sie
-          erzählen möchte.
-        </p>
+        <h2 className="mt-6 text-xl font-extrabold leading-tight">{t("help.zuhoeren.lead")}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t("help.zuhoeren.text")}</p>
 
-        <h3 className="mt-7 text-lg font-extrabold">So kannst du anfangen</h3>
-        <p className="mt-1 text-sm text-muted-foreground">Tippe auf einen Satz, um ihn zu kopieren.</p>
+        <h3 className="mt-7 text-lg font-extrabold">{t("help.zuhoeren.startTitle")}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{t("help.zuhoeren.startHint")}</p>
         <div className="mt-3 grid gap-3">
-          {openers.map((t) => (
-            <CopyText key={t} text={t} />
+          {openers.map((o) => (
+            <CopyText key={o} text={o} />
           ))}
         </div>
 
-        <h3 className="mt-8 text-lg font-extrabold">Das kann helfen</h3>
+        <h3 className="mt-8 text-lg font-extrabold">{t("help.zuhoeren.helpsTitle")}</h3>
         <ul className="mt-3 grid gap-2">
           {helps.map((h) => (
             <li key={h} className="card-tile grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 p-3.5">
@@ -74,7 +67,7 @@ function ZuhoerenPage() {
           ))}
         </ul>
 
-        <h3 className="mt-8 text-lg font-extrabold">Diese Sätze lieber vermeiden</h3>
+        <h3 className="mt-8 text-lg font-extrabold">{t("help.zuhoeren.avoidTitle")}</h3>
         <ul className="mt-3 grid gap-2">
           {avoid.map((a) => (
             <li
@@ -90,17 +83,15 @@ function ZuhoerenPage() {
         </ul>
 
         <section className="card-tile mt-4 border-success/30 bg-success-soft p-4">
-          <h4 className="text-sm font-extrabold">Besser:</h4>
-          <p className="mt-1 text-sm leading-snug">
-            „Danke, dass du mir das erzählst. Was würde dir jetzt helfen?“
-          </p>
+          <h4 className="text-sm font-extrabold">{t("help.zuhoeren.betterTitle")}</h4>
+          <p className="mt-1 text-sm leading-snug">„{t("help.zuhoeren.betterText")}“</p>
         </section>
         <div className="mt-3">
-          <CopyText text="Danke, dass du mir das erzählst. Was würde dir jetzt helfen?" tone="soft" />
+          <CopyText text={t("help.zuhoeren.betterText")} tone="soft" />
         </div>
 
         <Link to="/helfen/was-tun" className="btn-primary mt-7">
-          Weiter: Gemeinsam überlegen
+          {t("help.zuhoeren.cta")}
           <ArrowRight className="h-5 w-5" />
         </Link>
       </main>

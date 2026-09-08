@@ -3,6 +3,7 @@ import { Compass, Ear, HandHeart, Heart, NotebookPen, Search, ShieldQuestion } f
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { OptionCard } from "@/components/OptionCard";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/helfen/")({
   head: () => ({
@@ -22,64 +23,28 @@ export const Route = createFileRoute("/helfen/")({
   component: HelfenPage,
 });
 
-const cards = [
-  {
-    to: "/helfen/zuhoeren",
-    title: "Zuhören",
-    description: "Finde Worte für ein ruhiges Gespräch und erfahre, wie du wirklich zuhören kannst.",
-    icon: Ear,
-    tone: "primary" as const,
-  },
-  {
-    to: "/helfen/ernst-nehmen",
-    title: "Ernst nehmen",
-    description: "Zeige der Person, dass du ihr glaubst und ihre Gefühle respektierst.",
-    icon: Heart,
-    tone: "success" as const,
-  },
-  {
-    to: "/helfen/dokumentieren",
-    title: "Gemeinsam dokumentieren",
-    description: "Wenn die Person möchte, könnt ihr gemeinsam festhalten, was passiert ist.",
-    icon: NotebookPen,
-    tone: "info" as const,
-  },
-  {
-    to: "/helfen/zustimmung",
-    title: "Nicht ohne Zustimmung handeln",
-    description: "Unterstütze die Person, ohne ihr die Kontrolle über die Situation abzunehmen.",
-    icon: ShieldQuestion,
-    tone: "warning" as const,
-  },
-  {
-    to: "/helfen/hilfe-finden",
-    title: "Hilfe finden",
-    description: "Findet gemeinsam eine passende Vertrauens- oder Beratungsstelle.",
-    icon: Search,
-    tone: "primary" as const,
-  },
-  {
-    to: "/helfen/was-tun",
-    title: "Was kann ich konkret tun?",
-    description: "Beantworte ein paar kurze Fragen und erhalte passende nächste Schritte.",
-    icon: Compass,
-    tone: "info" as const,
-  },
-];
-
 function HelfenPage() {
+  const { t } = useI18n();
+
+  const cards = [
+    { to: "/helfen/zuhoeren", title: t("help.index.c1.t"), description: t("help.index.c1.d"), icon: Ear, tone: "primary" as const },
+    { to: "/helfen/ernst-nehmen", title: t("help.index.c2.t"), description: t("help.index.c2.d"), icon: Heart, tone: "success" as const },
+    { to: "/helfen/dokumentieren", title: t("help.index.c3.t"), description: t("help.index.c3.d"), icon: NotebookPen, tone: "info" as const },
+    { to: "/helfen/zustimmung", title: t("help.index.c4.t"), description: t("help.index.c4.d"), icon: ShieldQuestion, tone: "warning" as const },
+    { to: "/helfen/hilfe-finden", title: t("help.index.c5.t"), description: t("help.index.c5.d"), icon: Search, tone: "primary" as const },
+    { to: "/helfen/was-tun", title: t("help.index.c6.t"), description: t("help.index.c6.d"), icon: Compass, tone: "info" as const },
+  ];
+
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Ich möchte jemandem helfen" subtitle="Danke, dass du da bist." />
+      <AppHeader title={t("help.index.title")} subtitle={t("help.index.subtitle")} />
 
       <main className="mx-auto max-w-md px-5">
         <section className="card-tile mt-6 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 border-success/30 bg-success-soft p-4">
           <span className="grid h-11 w-11 place-items-center rounded-2xl bg-success text-primary-foreground">
             <HandHeart className="h-6 w-6" />
           </span>
-          <p className="min-w-0 text-sm leading-snug">
-            Du musst nichts perfekt machen. Schon Zuhören und Dasein kann viel bewirken.
-          </p>
+          <p className="min-w-0 text-sm leading-snug">{t("help.index.banner")}</p>
         </section>
 
         <div className="mt-5 grid gap-3">
