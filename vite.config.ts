@@ -7,7 +7,7 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // GitHub Pages build: static SPA served from /<repo>/ (set by the Pages workflow).
-const pagesBase = process.env.GITHUB_PAGES_BASE;
+const pagesBase = process.env["GITHUB_PAGES_BASE"];
 
 export default defineConfig({
   tanstackStart: {
