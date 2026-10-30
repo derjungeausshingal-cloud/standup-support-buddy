@@ -27,15 +27,21 @@ jobs:
           # Use "/" instead if you serve from a custom domain or <user>.github.io repo.
           GITHUB_PAGES_BASE: /${{ github.event.repository.name }}/
       - name: Prepare Pages output
+        id: out
         run: |
-          cd dist/client
+          # Build output lands in dist/client or .output/public depending on environment.
+          SHELL_FILE=$(find dist/client .output/public -maxdepth 1 -name '_shell.html' 2>/dev/null | head -n1)
+          if [ -z "$SHELL_FILE" ]; then echo "_shell.html not found"; ls -R dist .output 2>/dev/null | head -50; exit 1; fi
+          OUT_DIR=$(dirname "$SHELL_FILE")
+          echo "dir=$OUT_DIR" >> "$GITHUB_OUTPUT"
+          cd "$OUT_DIR"
           cp _shell.html index.html
           cp _shell.html 404.html
           rm -f _headers
           touch .nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/client
+          path: ${{ steps.out.outputs.dir }}
 
   deploy:
     needs: build
