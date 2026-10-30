@@ -6,10 +6,15 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// GitHub Pages build: static SPA served from /<repo>/ (set by the Pages workflow).
+const pagesBase = process.env.GITHUB_PAGES_BASE;
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    ...(pagesBase ? { spa: { enabled: true } } : {}),
   },
+  ...(pagesBase ? { vite: { base: pagesBase } } : {}),
 });
