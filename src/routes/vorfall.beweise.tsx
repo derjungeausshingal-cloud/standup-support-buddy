@@ -41,7 +41,7 @@ function BeweisePage() {
         ...draft.evidence,
         {
           id: Math.random().toString(36).slice(2, 9),
-          name: `${sample.split(".")[0]}_${count}.${sample.split(".")[1]}`,
+          name: `${sample.split(".")[0]} ${count}.${sample.split(".")[1]}`,
           type,
           date: today,
         },
