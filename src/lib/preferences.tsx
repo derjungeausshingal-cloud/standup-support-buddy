@@ -1,4 +1,7 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
+
+import { PREFERENCES_KEY, type StorageProblem } from "./local-data";
+import { useLocalData } from "./use-local-data";
 
 export type ThemeMode = "system" | "light" | "dark";
 
@@ -46,10 +49,19 @@ type Ctx = {
   hydrated: boolean;
   setPrefs: (patch: Partial<UserPreferences>) => void;
   resetPrefs: () => void;
+  storageProblem: StorageProblem | null;
 };
 
 const PreferencesContext = createContext<Ctx | null>(null);
-const STORAGE_KEY = "standup.preferences.v1";
+const preferenceKeys = [PREFERENCES_KEY];
+
+function decodePreferences(raw: unknown): UserPreferences {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("Invalid preferences");
+  const r = raw as Partial<UserPreferences>;
+  if (r.language !== undefined && typeof r.language !== "string")
+    throw new Error("Invalid language");
+  return { ...defaultPreferences, ...r };
+}
 
 function applyTheme(_theme: ThemeMode) {
   if (typeof document === "undefined") return;
@@ -58,41 +70,29 @@ function applyTheme(_theme: ThemeMode) {
 }
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
-  const [prefs, setState] = useState<UserPreferences>(defaultPreferences);
-  const [hydrated, setHydrated] = useState(false);
-
+  const {
+    value: prefs,
+    hydrated,
+    problem: storageProblem,
+    write,
+  } = useLocalData(preferenceKeys, defaultPreferences, decodePreferences);
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as Partial<UserPreferences>;
-        setState({ ...defaultPreferences, ...parsed });
-      }
-    } catch {
-      /* Beschädigte Einstellungen werden ignoriert. */
-    }
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
-    } catch {
-      /* Speichern nicht möglich – App bleibt nutzbar. */
-    }
     applyTheme(prefs.theme);
-  }, [prefs, hydrated]);
-
+  }, [prefs.theme]);
 
   const value = useMemo<Ctx>(
     () => ({
       prefs,
       hydrated,
-      setPrefs: (patch) => setState((p) => ({ ...p, ...patch })),
-      resetPrefs: () => setState(defaultPreferences),
+      storageProblem,
+      setPrefs: (patch) => {
+        write((p) => ({ ...p, ...patch }));
+      },
+      resetPrefs: () => {
+        write(defaultPreferences);
+      },
     }),
-    [prefs, hydrated],
+    [prefs, hydrated, storageProblem, write],
   );
 
   return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>;
@@ -100,6 +100,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
 
 export function usePreferences() {
   const ctx = useContext(PreferencesContext);
-  if (!ctx) throw new Error("usePreferences muss innerhalb von PreferencesProvider verwendet werden");
+  if (!ctx)
+    throw new Error("usePreferences muss innerhalb von PreferencesProvider verwendet werden");
   return ctx;
 }

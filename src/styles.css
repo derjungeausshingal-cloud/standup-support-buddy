@@ -38,7 +38,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: "Nunito Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
   --shadow-card: 0 1px 2px oklch(0.5 0.12 291 / 0.06), 0 8px 24px -14px oklch(0.5 0.12 291 / 0.35);
   --shadow-lift: 0 12px 30px -14px oklch(0.5 0.12 291 / 0.45);
 }

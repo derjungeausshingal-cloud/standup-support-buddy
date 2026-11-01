@@ -1,5 +1,14 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
+import {
+  DATA_CLEARED_EVENT,
+  INCIDENTS_KEY,
+  LEGACY_INCIDENTS_KEY,
+  deleteAppData,
+  type StorageProblem,
+} from "./local-data";
+import { useLocalData } from "./use-local-data";
+
 export type IncidentKind =
   | "mobbing"
   | "ausgrenzung"
@@ -107,14 +116,18 @@ function normalizeIncident(raw: unknown): Incident | null {
   const r = raw as Record<string, unknown>;
   const str = (v: unknown) => (typeof v === "string" ? v : "");
   const createdAt = str(r["createdAt"]) || new Date().toISOString();
-  const kind = typeof r["kind"] === "string" && r["kind"] in kindLabels ? (r["kind"] as IncidentKind) : null;
+  const kind =
+    typeof r["kind"] === "string" && Object.hasOwn(kindLabels, r["kind"])
+      ? (r["kind"] as IncidentKind)
+      : null;
   const evidence = Array.isArray(r["evidence"])
     ? (r["evidence"] as unknown[]).flatMap((e) => {
         if (!e || typeof e !== "object") return [];
         const ev = e as Record<string, unknown>;
-        const type = typeof ev["type"] === "string" && ev["type"] in evidenceLabels
-          ? (ev["type"] as EvidenceType)
-          : "datei";
+        const type =
+          typeof ev["type"] === "string" && Object.hasOwn(evidenceLabels, ev["type"])
+            ? (ev["type"] as EvidenceType)
+            : "datei";
         const item: Evidence = {
           id: str(ev["id"]) || newId(),
           name: str(ev["name"]) || "Datei",
@@ -152,105 +165,133 @@ type Ctx = {
   draft: Draft;
   setDraft: (updater: Partial<Draft>) => void;
   resetDraft: () => void;
-  saveDraft: () => Incident;
-  addIncident: (partial: Partial<Draft>) => Incident;
-  updateIncident: (id: string, patch: Partial<Incident>) => void;
-  deleteIncident: (id: string) => void;
+  saveDraft: () => Incident | null;
+  addIncident: (partial: Partial<Draft>) => Incident | null;
+  updateIncident: (id: string, patch: Partial<Incident>) => boolean;
+  deleteIncident: (id: string) => boolean;
   undoDelete: () => void;
   recentlyDeleted: Incident | null;
-  clearAll: () => void;
+  clearAll: () => boolean;
+  storageProblem: StorageProblem | null;
   clearEvidence: () => void;
   lastSavedId: string | null;
 };
 
 const IncidentContext = createContext<Ctx | null>(null);
-const STORAGE_KEY = "standup.incidents.v2";
-const LEGACY_KEY = "standup.incidents.v1";
+const incidentKeys = [INCIDENTS_KEY, LEGACY_INCIDENTS_KEY];
+const noIncidents: Incident[] = [];
+
+function decodeIncidents(raw: unknown): Incident[] {
+  if (!Array.isArray(raw)) throw new Error("Invalid incident list");
+  return raw.map((item) => {
+    if (!item || typeof item !== "object" || Array.isArray(item))
+      throw new Error("Invalid incident");
+    for (const key of [
+      "id",
+      "description",
+      "date",
+      "time",
+      "place",
+      "persons",
+      "witnesses",
+      "notes",
+      "impact",
+      "nextStep",
+      "createdAt",
+      "updatedAt",
+    ]) {
+      if (item[key] !== undefined && typeof item[key] !== "string")
+        throw new Error("Invalid field");
+    }
+    if (
+      item.evidence !== undefined &&
+      (!Array.isArray(item.evidence) ||
+        item.evidence.some((e: unknown) => !e || typeof e !== "object" || Array.isArray(e)))
+    )
+      throw new Error("Invalid evidence");
+    const incident = normalizeIncident(item);
+    if (!incident) throw new Error("Invalid incident");
+    return incident;
+  });
+}
 
 function newId() {
-  return Math.random().toString(36).slice(2, 10);
+  return crypto.randomUUID();
 }
 
 export function IncidentProvider({ children }: { children: ReactNode }) {
-  const [incidents, setIncidents] = useState<Incident[]>([]);
+  const {
+    value: incidents,
+    hydrated,
+    problem: storageProblem,
+    write,
+  } = useLocalData(incidentKeys, noIncidents, decodeIncidents);
   const [draft, setDraftState] = useState<Draft>(emptyDraft);
   const [lastSavedId, setLastSavedId] = useState<string | null>(null);
   const [recentlyDeleted, setRecentlyDeleted] = useState<Incident | null>(null);
-  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_KEY);
-      if (raw) {
-        const parsed: unknown = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          setIncidents(parsed.map(normalizeIncident).filter((i): i is Incident => i !== null));
-        }
-      }
-    } catch {
-      /* Beschädigte lokale Daten werden ignoriert, statt die App zu blockieren. */
-    }
-    setHydrated(true);
+    const reset = () => {
+      setDraftState(emptyDraft);
+      setLastSavedId(null);
+      setRecentlyDeleted(null);
+    };
+    window.addEventListener(DATA_CLEARED_EVENT, reset);
+    return () => window.removeEventListener(DATA_CLEARED_EVENT, reset);
   }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(incidents));
-    } catch {
-      /* Speichern nicht möglich (z. B. voller Speicher) – App bleibt nutzbar. */
-    }
-  }, [incidents, hydrated]);
 
   const value = useMemo<Ctx>(() => {
     const create = (base: Draft): Incident => {
       const now = new Date().toISOString();
       return { ...base, id: newId(), createdAt: now, updatedAt: now };
     };
-
+    const add = (base: Draft) => {
+      const incident = create(base);
+      if (!write((list) => [incident, ...list])) return null;
+      setLastSavedId(incident.id);
+      return incident;
+    };
     return {
       incidents,
       hydrated,
+      storageProblem,
       draft,
       lastSavedId,
       recentlyDeleted,
       setDraft: (patch) => setDraftState((d) => ({ ...d, ...patch })),
       resetDraft: () => setDraftState(emptyDraft),
       saveDraft: () => {
-        const incident = create(draft);
-        setIncidents((list) => [incident, ...list]);
-        setLastSavedId(incident.id);
-        setDraftState(emptyDraft);
+        const incident = add(draft);
+        if (incident) setDraftState(emptyDraft);
         return incident;
       },
-      addIncident: (partial) => {
-        const incident = create({ ...emptyDraft, ...partial });
-        setIncidents((list) => [incident, ...list]);
-        setLastSavedId(incident.id);
-        return incident;
-      },
+      addIncident: (partial) => add({ ...emptyDraft, ...partial }),
       updateIncident: (id, patch) =>
-        setIncidents((list) =>
-          list.map((i) => (i.id === id ? { ...i, ...patch, updatedAt: new Date().toISOString() } : i)),
+        write((list) =>
+          list.map((i) =>
+            i.id === id ? { ...i, ...patch, updatedAt: new Date().toISOString() } : i,
+          ),
         ),
-      deleteIncident: (id) =>
-        setIncidents((list) => {
-          const found = list.find((i) => i.id === id) ?? null;
-          setRecentlyDeleted(found);
-          return list.filter((i) => i.id !== id);
-        }),
-      undoDelete: () =>
-        setRecentlyDeleted((deleted) => {
-          if (deleted) setIncidents((list) => [deleted, ...list]);
-          return null;
-        }),
-      clearAll: () => {
-        setIncidents([]);
-        setRecentlyDeleted(null);
+      deleteIncident: (id) => {
+        const found = incidents.find((i) => i.id === id) ?? null;
+        if (!write((list) => list.filter((i) => i.id !== id))) return false;
+        setRecentlyDeleted(found);
+        return true;
       },
-      clearEvidence: () => setIncidents((list) => list.map((i) => ({ ...i, evidence: [] }))),
+      undoDelete: () => {
+        if (recentlyDeleted && write((list) => [recentlyDeleted, ...list]))
+          setRecentlyDeleted(null);
+      },
+      clearAll: () => {
+        const success = deleteAppData(() => window.localStorage);
+        window.dispatchEvent(new CustomEvent(DATA_CLEARED_EVENT, { detail: success }));
+        return success;
+      },
+      clearEvidence: () => {
+        write((list) => list.map((i) => ({ ...i, evidence: [] })));
+      },
     };
-  }, [incidents, draft, lastSavedId, recentlyDeleted, hydrated]);
+  }, [incidents, hydrated, storageProblem, draft, lastSavedId, recentlyDeleted, write]);
 
   return <IncidentContext.Provider value={value}>{children}</IncidentContext.Provider>;
 }

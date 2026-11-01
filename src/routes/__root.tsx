@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { IncidentProvider } from "@/lib/incidents";
 import { PreferencesProvider } from "@/lib/preferences";
 import { I18nProvider } from "@/lib/i18n";
+import { DataNotice, DataSession } from "@/components/DataNotice";
 
 function NotFoundComponent() {
   return (
@@ -84,7 +85,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "StandUp – Du bist nicht allein" },
       {
         name: "description",
-        content: "StandUp unterstützt dich bei Mobbing, Diskriminierung, Beleidigung oder Bedrohung: dokumentieren, verstehen, Hilfe finden.",
+        content:
+          "StandUp unterstützt dich bei Mobbing, Diskriminierung, Beleidigung oder Bedrohung: dokumentieren, verstehen, Hilfe finden.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -92,12 +94,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap",
-      },
       { rel: "icon", type: "image/png", href: `${import.meta.env.BASE_URL}favicon.png` },
       { rel: "apple-touch-icon", href: `${import.meta.env.BASE_URL}icon-512.png` },
       { rel: "manifest", href: `${import.meta.env.BASE_URL}manifest.webmanifest` },
@@ -132,7 +128,10 @@ function RootComponent() {
       <PreferencesProvider>
         <I18nProvider>
           <IncidentProvider>
-            <Outlet />
+            <DataNotice />
+            <DataSession>
+              <Outlet />
+            </DataSession>
           </IncidentProvider>
         </I18nProvider>
       </PreferencesProvider>

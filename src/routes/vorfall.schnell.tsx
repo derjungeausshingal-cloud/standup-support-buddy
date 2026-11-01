@@ -15,7 +15,10 @@ export const Route = createFileRoute("/vorfall/schnell")({
           "Nur ein Satz und ein Datum: Halte einen Vorfall in wenigen Sekunden fest und ergänze später Details.",
       },
       { property: "og:title", content: "Schnell dokumentieren – StandUp" },
-      { property: "og:description", content: "In wenigen Sekunden festhalten, was gerade passiert ist." },
+      {
+        property: "og:description",
+        content: "In wenigen Sekunden festhalten, was gerade passiert ist.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -47,6 +50,10 @@ function SchnellPage() {
       date: stamp.date,
       time: stamp.time,
     });
+    if (!incident) {
+      setSavedId(null);
+      return;
+    }
     setSavedId(incident.id);
     setText("");
     setKind(null);
@@ -54,7 +61,10 @@ function SchnellPage() {
 
   return (
     <div className="min-h-screen pb-32">
-      <AppHeader title="Schnell festhalten" subtitle="Ein Satz genügt. Details kannst du später ergänzen." />
+      <AppHeader
+        title="Schnell festhalten"
+        subtitle="Ein Satz genügt. Details kannst du später ergänzen."
+      />
 
       <main className="mx-auto max-w-md px-5">
         <section className="card-tile mt-6 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 border-warning/30 bg-warning-soft p-4">
@@ -62,7 +72,8 @@ function SchnellPage() {
             <Zap className="h-6 w-6" />
           </span>
           <p className="min-w-0 text-sm leading-snug">
-            Für Momente, in denen es schnell gehen muss. Datum und Uhrzeit werden automatisch übernommen.
+            Für Momente, in denen es schnell gehen muss. Datum und Uhrzeit werden automatisch
+            übernommen.
           </p>
         </section>
 
@@ -155,7 +166,11 @@ function SchnellPage() {
           <Save className="h-5 w-5" />
           Schnell speichern
         </button>
-        <button type="button" onClick={() => navigate({ to: "/vorfall" })} className="btn-ghost mt-3">
+        <button
+          type="button"
+          onClick={() => navigate({ to: "/vorfall" })}
+          className="btn-ghost mt-3"
+        >
           Ausführlich dokumentieren
         </button>
         <p className="mt-3 text-center text-xs text-muted-foreground">
