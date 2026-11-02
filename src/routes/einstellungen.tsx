@@ -11,7 +11,11 @@ export const Route = createFileRoute("/einstellungen")({
   head: () => ({
     meta: [
       { title: "Einstellungen – StandUp" },
-      { name: "description", content: "Datenschutz, gespeicherte Daten, Daten löschen, Barrierefreiheit, Sprache und Infos über StandUp." },
+      {
+        name: "description",
+        content:
+          "Datenschutz, gespeicherte Daten, Daten löschen, Barrierefreiheit, Sprache und Infos über StandUp.",
+      },
       { property: "og:title", content: "Einstellungen – StandUp" },
       { property: "og:description", content: "Deine Daten, deine Entscheidungen." },
     ],
@@ -67,7 +71,12 @@ function EinstellungenPage() {
 
       <main className="mx-auto max-w-md grid gap-3 px-5 pt-5">
         <Section icon={Lock} title={t("set.privacy.t")}>
-          {t("set.privacy.d")}
+          <p>{t("set.privacy.d")}</p>
+          <p className="mt-2">{t("privacy.device")}</p>
+          <p className="mt-2">{t("privacy.network")}</p>
+          <p className="mt-2">{t("privacy.sharing")}</p>
+          <p className="mt-2">{t("privacy.drafts")}</p>
+          <p className="mt-2 font-bold">{t("privacy.pilot")}</p>
         </Section>
 
         <Section icon={Database} title={t("set.data.t")}>
@@ -80,9 +89,8 @@ function EinstellungenPage() {
             <div className="mt-3 grid gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  clearAll();
-                  setConfirm(false);
+                onClick={async () => {
+                  await clearAll();
                 }}
                 className="btn-primary bg-destructive"
               >
@@ -93,7 +101,11 @@ function EinstellungenPage() {
               </button>
             </div>
           ) : (
-            <button type="button" onClick={() => setConfirm(true)} className="btn-ghost mt-3 text-destructive">
+            <button
+              type="button"
+              onClick={() => setConfirm(true)}
+              className="btn-ghost mt-3 text-destructive"
+            >
               {t("set.delete.btn")}
             </button>
           )}

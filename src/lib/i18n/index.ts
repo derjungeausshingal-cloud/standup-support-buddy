@@ -5,11 +5,12 @@ import { diary } from "./diary";
 import { help } from "./help";
 import { advice } from "./advice";
 import { infoPages } from "./info";
+import { privacy } from "./privacy";
 
 export { langs };
 export type { Lang, PageDict };
 
-const modules: Record<Lang, PageDict>[] = [core, incident, diary, help, advice, infoPages];
+const modules: Record<Lang, PageDict>[] = [core, incident, diary, help, advice, infoPages, privacy];
 
 function merge(lang: Lang): PageDict {
   return Object.assign({}, ...modules.map((m) => m[lang] ?? {}));
