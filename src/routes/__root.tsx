@@ -16,6 +16,8 @@ import { IncidentProvider } from "@/lib/incidents";
 import { PreferencesProvider } from "@/lib/preferences";
 import { I18nProvider } from "@/lib/i18n";
 import { DataNotice, DataSession } from "@/components/DataNotice";
+import { VaultProvider } from "@/lib/vault-context";
+import { VaultGate } from "@/components/VaultGate";
 
 function NotFoundComponent() {
   return (
@@ -125,16 +127,20 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <PreferencesProvider>
-        <I18nProvider>
-          <IncidentProvider>
-            <DataNotice />
-            <DataSession>
-              <Outlet />
-            </DataSession>
-          </IncidentProvider>
-        </I18nProvider>
-      </PreferencesProvider>
+      <VaultProvider>
+        <VaultGate>
+          <PreferencesProvider>
+            <I18nProvider>
+              <IncidentProvider>
+                <DataNotice />
+                <DataSession>
+                  <Outlet />
+                </DataSession>
+              </IncidentProvider>
+            </I18nProvider>
+          </PreferencesProvider>
+        </VaultGate>
+      </VaultProvider>
     </QueryClientProvider>
   );
 }

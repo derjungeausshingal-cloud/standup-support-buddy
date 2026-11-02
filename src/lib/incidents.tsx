@@ -4,10 +4,10 @@ import {
   DATA_CLEARED_EVENT,
   INCIDENTS_KEY,
   LEGACY_INCIDENTS_KEY,
-  deleteAppData,
   type StorageProblem,
 } from "./local-data";
 import { useLocalData } from "./use-local-data";
+import { useVault } from "./vault-context";
 
 export type IncidentKind =
   | "mobbing"
@@ -165,13 +165,13 @@ type Ctx = {
   draft: Draft;
   setDraft: (updater: Partial<Draft>) => void;
   resetDraft: () => void;
-  saveDraft: () => Incident | null;
-  addIncident: (partial: Partial<Draft>) => Incident | null;
-  updateIncident: (id: string, patch: Partial<Incident>) => boolean;
-  deleteIncident: (id: string) => boolean;
+  saveDraft: () => Promise<Incident | null>;
+  addIncident: (partial: Partial<Draft>) => Promise<Incident | null>;
+  updateIncident: (id: string, patch: Partial<Incident>) => Promise<boolean>;
+  deleteIncident: (id: string) => Promise<boolean>;
   undoDelete: () => void;
   recentlyDeleted: Incident | null;
-  clearAll: () => boolean;
+  clearAll: () => Promise<boolean>;
   storageProblem: StorageProblem | null;
   clearEvidence: () => void;
   lastSavedId: string | null;
@@ -226,6 +226,7 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
     problem: storageProblem,
     write,
   } = useLocalData(incidentKeys, noIncidents, decodeIncidents);
+  const session = useVault();
   const [draft, setDraftState] = useState<Draft>(emptyDraft);
   const [lastSavedId, setLastSavedId] = useState<string | null>(null);
   const [recentlyDeleted, setRecentlyDeleted] = useState<Incident | null>(null);
@@ -245,9 +246,9 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
       const now = new Date().toISOString();
       return { ...base, id: newId(), createdAt: now, updatedAt: now };
     };
-    const add = (base: Draft) => {
+    const add = async (base: Draft) => {
       const incident = create(base);
-      if (!write((list) => [incident, ...list])) return null;
+      if (!(await write((list) => [incident, ...list]))) return null;
       setLastSavedId(incident.id);
       return incident;
     };
@@ -260,8 +261,8 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
       recentlyDeleted,
       setDraft: (patch) => setDraftState((d) => ({ ...d, ...patch })),
       resetDraft: () => setDraftState(emptyDraft),
-      saveDraft: () => {
-        const incident = add(draft);
+      saveDraft: async () => {
+        const incident = await add(draft);
         if (incident) setDraftState(emptyDraft);
         return incident;
       },
@@ -272,18 +273,18 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
             i.id === id ? { ...i, ...patch, updatedAt: new Date().toISOString() } : i,
           ),
         ),
-      deleteIncident: (id) => {
+      deleteIncident: async (id) => {
         const found = incidents.find((i) => i.id === id) ?? null;
-        if (!write((list) => list.filter((i) => i.id !== id))) return false;
+        if (!(await write((list) => list.filter((i) => i.id !== id)))) return false;
         setRecentlyDeleted(found);
         return true;
       },
-      undoDelete: () => {
-        if (recentlyDeleted && write((list) => [recentlyDeleted, ...list]))
+      undoDelete: async () => {
+        if (recentlyDeleted && (await write((list) => [recentlyDeleted, ...list])))
           setRecentlyDeleted(null);
       },
-      clearAll: () => {
-        const success = deleteAppData(() => window.localStorage);
+      clearAll: async () => {
+        const success = await session.clear();
         window.dispatchEvent(new CustomEvent(DATA_CLEARED_EVENT, { detail: success }));
         return success;
       },
@@ -291,7 +292,7 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
         write((list) => list.map((i) => ({ ...i, evidence: [] })));
       },
     };
-  }, [incidents, hydrated, storageProblem, draft, lastSavedId, recentlyDeleted, write]);
+  }, [incidents, hydrated, storageProblem, draft, lastSavedId, recentlyDeleted, write, session]);
 
   return <IncidentContext.Provider value={value}>{children}</IncidentContext.Provider>;
 }

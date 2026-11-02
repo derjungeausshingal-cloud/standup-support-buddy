@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { Save } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
@@ -38,6 +39,7 @@ function Row({ label, value }: { label: string; value: string }) {
 
 function SpeichernPage() {
   const { draft, saveDraft } = useIncidents();
+  const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
   const { t } = useI18n();
 
@@ -77,10 +79,18 @@ function SpeichernPage() {
 
         <button
           type="button"
-          onClick={() => {
-            if (saveDraft()) navigate({ to: "/vorfall/hilfe" });
+          onClick={async () => {
+            if (saving) return;
+            setSaving(true);
+            try {
+              if (await saveDraft()) navigate({ to: "/vorfall/hilfe" });
+            } finally {
+              setSaving(false);
+            }
           }}
-          className="btn-primary mt-6"
+          disabled={saving}
+          aria-busy={saving}
+          className="btn-primary mt-6 disabled:opacity-50"
         >
           <Save className="h-5 w-5" />
           {t("incident.save.submit")}
