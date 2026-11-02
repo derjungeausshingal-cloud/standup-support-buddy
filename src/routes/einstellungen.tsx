@@ -89,8 +89,8 @@ function EinstellungenPage() {
             <div className="mt-3 grid gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  clearAll();
+                onClick={async () => {
+                  await clearAll();
                 }}
                 className="btn-primary bg-destructive"
               >

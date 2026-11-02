@@ -6,17 +6,17 @@ export const privacy: Record<Lang, PageDict> = {
     "privacy.pilot":
       "Testversion: Bitte nur erfundene Beispieldaten eingeben. Noch nicht für echte Vorfälle im Schulpiloten freigegeben.",
     "set.privacy.d":
-      "Vorfälle und Einstellungen werden unverschlüsselt in diesem Browserprofil gespeichert. Es gibt keine App-Sperre, keine automatische Sicherung und keine garantierte Aufbewahrung.",
+      "Nach der Einrichtung werden Vorfälle und Einstellungen mit deinem Passwort verschlüsselt in diesem Browserprofil gespeichert. Der Schlüssel bleibt nur in der entsperrten Sitzung im Arbeitsspeicher. Es gibt keine automatische Sicherung oder garantierte Aufbewahrung.",
     "privacy.device":
-      "Wer dieses Browserprofil nutzen kann, kann gespeicherte Angaben lesen. Auf gemeinsam genutzten Schulgeräten keine persönlichen Angaben eingeben. Das Löschen von Browserdaten oder ein Gerätewechsel kann Einträge dauerhaft verlieren lassen.",
+      "Sperre die App, bevor du das Gerät weitergibst. Sie sperrt automatisch nach fünf Minuten ohne Bedienung und beim Wechsel in den Hintergrund. Ohne Passwort gibt es keine Wiederherstellung. Browserdaten zu löschen kann den Tresor dauerhaft entfernen. Schadsoftware oder bösartige Skripte können während einer entsperrten Sitzung weiterhin Daten lesen.",
     "privacy.network":
       "Die App lädt Schriften vom Gerät und leitet Fehlerdetails nicht an die optionalen Lovable-Meldehooks weiter. Beim Abruf der Website verarbeitet der Hostinganbieter Verbindungsdaten. Externe Beratungslinks führen zu anderen Anbietern mit eigenen Datenschutzregeln.",
     "privacy.sharing":
       "Einträge werden von der App nicht automatisch an Schule, Lehrkräfte oder Beratungsstellen gesendet oder von ihnen überwacht. Beim Kopieren oder Drucken entstehen zusätzliche Kopien, die „Alle Daten löschen“ nicht entfernen kann.",
     "privacy.drafts":
-      "Noch nicht gespeicherte Entwürfe bleiben nur während der geöffneten App erhalten. Beim Neuladen oder Schließen gehen sie verloren. Eine Beweis-Demo legt nur Beispielnamen an und sichert keine Dateien oder Aufnahmen.",
+      "Ungespeicherte Entwürfe bleiben nur in der entsperrten Sitzung. Beim Sperren, Neuladen oder Schließen gehen sie verloren. Die Beweis-Demo sichert keine Dateien oder Aufnahmen.",
     "home.privacy.d":
-      "Testversion: Nutze nur erfundene Beispiele. Einträge bleiben unverschlüsselt in diesem Browserprofil und sind für andere Personen mit Zugriff auf dieses Profil lesbar. Niemand erhält oder überwacht sie automatisch.",
+      "Testversion: Nutze nur erfundene Beispiele. Deine lokalen Einträge und Einstellungen werden nach Einrichtung des Tresors verschlüsselt. Sperre die App, wenn du sie verlässt. Niemand erhält oder überwacht Einträge automatisch.",
     "set.delete.d":
       "Entfernt Vorfälle einschließlich alter Speicherbestände, Entwürfe und Einstellungen in diesem Browserprofil. Nicht rückgängig zu machen. Gedruckte Berichte, die Zwischenablage und Kopien außerhalb der App bleiben bestehen.",
     "privacy.deleted":
@@ -42,7 +42,7 @@ export const privacy: Record<Lang, PageDict> = {
     "incident.evidence.added.title": "Beweisnamen (Demo, keine Dateien)",
     "incident.save.row.evidence": "Beweisnamen (Demo)",
     "incident.save.localNotice":
-      "Gespeichert wird nur in diesem Browserprofil, unverschlüsselt und ohne automatische Sicherung. Die Beweis-Demo speichert keine Originaldateien. Niemand erhält den Eintrag automatisch.",
+      "Der Eintrag wird verschlüsselt in diesem Browserprofil gespeichert. Es gibt keine automatische Sicherung. Die Beweis-Demo speichert keine Originaldateien. Niemand erhält den Eintrag automatisch.",
     "incident.footnote":
       "Alle Angaben sind freiwillig. Ungespeicherte Entwürfe gehen beim Neuladen oder Schließen verloren.",
     "incident.help.saved.text":
@@ -59,17 +59,17 @@ export const privacy: Record<Lang, PageDict> = {
     "privacy.pilot":
       "Test version: use fictional examples only. Not yet approved for real incidents in a school pilot.",
     "set.privacy.d":
-      "Incidents and settings are stored unencrypted in this browser profile. There is no app lock, automatic backup or guaranteed retention.",
+      "After setup, incidents and settings are encrypted with your password in this browser profile. The key stays in memory only during an unlocked session. There is no automatic backup or guaranteed retention.",
     "privacy.device":
-      "Anyone who can use this browser profile can read saved information. Do not enter personal details on shared school devices. Clearing browser data or changing devices can permanently lose entries.",
+      "Lock the app before handing over your device. It locks after five minutes of inactivity and when moved to the background. There is no recovery without the password. Clearing browser data can permanently remove the vault. Malware or malicious scripts can still read data during an unlocked session.",
     "privacy.network":
       "The app uses device fonts and does not forward error details to optional Lovable reporting hooks. The hosting provider processes connection data when you open the website. External advice links lead to providers with their own privacy rules.",
     "privacy.sharing":
       "The app does not automatically send entries to or have them monitored by schools, teachers or advice services. Copying and printing create separate copies that “Delete all data” cannot remove.",
     "privacy.drafts":
-      "Unsaved drafts last only while the app remains open. Reloading or closing loses them. The evidence demo creates example names only and saves no files or recordings.",
+      "Unsaved drafts exist only during the unlocked session. Locking, reloading or closing loses them. The evidence demo saves no files or recordings.",
     "home.privacy.d":
-      "Test version: use fictional examples only. Entries stay unencrypted in this browser profile and can be read by others with access to it. Nobody receives or monitors them automatically.",
+      "Test version: use fictional examples only. Your local entries and settings are encrypted after vault setup. Lock the app when leaving. Nobody receives or monitors entries automatically.",
     "set.delete.d":
       "Removes incidents including legacy storage, drafts and settings in this browser profile. Cannot be undone. Printed reports, clipboard contents and copies outside the app remain.",
     "privacy.deleted":
@@ -95,7 +95,7 @@ export const privacy: Record<Lang, PageDict> = {
     "incident.evidence.added.title": "Evidence names (demo, no files)",
     "incident.save.row.evidence": "Evidence names (demo)",
     "incident.save.localNotice":
-      "Saved only in this browser profile, unencrypted and without automatic backup. The evidence demo does not save original files. Nobody receives the entry automatically.",
+      "The entry is encrypted in this browser profile. There is no automatic backup. The evidence demo saves no original files. Nobody receives the entry automatically.",
     "incident.footnote":
       "All information is optional. Unsaved drafts are lost when you reload or close the app.",
     "incident.help.saved.text":
@@ -112,17 +112,17 @@ export const privacy: Record<Lang, PageDict> = {
     "privacy.pilot":
       "Test sürümü: Yalnızca hayali örnekler girin. Okul pilotunda gerçek olaylar için henüz onaylanmadı.",
     "set.privacy.d":
-      "Olaylar ve ayarlar bu tarayıcı profilinde şifrelenmeden saklanır. Uygulama kilidi, otomatik yedekleme veya saklama garantisi yoktur.",
+      "Kurulumdan sonra olaylar ve ayarlar bu tarayıcı profilinde parolanızla şifrelenir. Anahtar yalnızca kilidi açık oturumda bellekte kalır. Otomatik yedekleme veya saklama garantisi yoktur.",
     "privacy.device":
-      "Bu tarayıcı profilini kullanabilen herkes kayıtları okuyabilir. Ortak okul cihazlarına kişisel bilgi girmeyin. Tarayıcı verilerini silmek veya cihaz değiştirmek kayıtları kalıcı olarak kaybettirebilir.",
+      "Cihazı vermeden önce uygulamayı kilitleyin. Beş dakika işlem yapılmadığında veya arka plana geçince kilitlenir. Parola olmadan kurtarma yoktur. Tarayıcı verilerini silmek kasayı kalıcı silebilir. Zararlı yazılımlar veya betikler kilit açıkken verileri okuyabilir.",
     "privacy.network":
       "Uygulama cihazın yazı tiplerini kullanır ve hata ayrıntılarını isteğe bağlı Lovable bildirim işlevlerine iletmez. Site açıldığında barındırma sağlayıcısı bağlantı verilerini işler. Dış danışma bağlantılarının kendi gizlilik kuralları vardır.",
     "privacy.sharing":
       "Kayıtlar okula, öğretmenlere veya danışma merkezlerine otomatik gönderilmez ve onlar tarafından izlenmez. Kopyalama ve yazdırma, “Tüm verileri sil” ile silinemeyen ayrı kopyalar oluşturur.",
     "privacy.drafts":
-      "Kaydedilmemiş taslaklar yalnızca uygulama açıkken kalır; yenileme veya kapatma ile kaybolur. Kanıt demosu yalnızca örnek adlar oluşturur; dosya veya ses kaydetmez.",
+      "Kaydedilmemiş taslaklar yalnızca kilidi açık oturumda kalır. Kilitleme, yenileme veya kapatma ile kaybolur. Kanıt demosu dosya veya ses saklamaz.",
     "home.privacy.d":
-      "Test sürümü: Yalnızca hayali örnekler kullanın. Kayıtlar bu tarayıcı profilinde şifresizdir. Profile erişen başkaları okuyabilir. Kimseye otomatik gönderilmez veya izlenmez.",
+      "Test sürümü: Yalnızca hayali örnekler kullanın. Yerel kayıtlar ve ayarlar kasa kurulduktan sonra şifrelenir. Ayrılırken kilitleyin. Kayıtlar otomatik gönderilmez veya izlenmez.",
     "set.delete.d":
       "Bu profildeki olayları, eski kayıtları, taslakları ve ayarları kaldırır. Geri alınamaz. Yazdırılan raporlar, pano ve uygulama dışındaki kopyalar kalır.",
     "privacy.deleted":
@@ -148,7 +148,7 @@ export const privacy: Record<Lang, PageDict> = {
     "incident.evidence.added.title": "Kanıt adları (demo, dosya yok)",
     "incident.save.row.evidence": "Kanıt adları (demo)",
     "incident.save.localNotice":
-      "Yalnızca bu tarayıcı profiline, şifresiz ve otomatik yedekleme olmadan kaydedilir. Kanıt demosu asıl dosyaları saklamaz. Kayıt kimseye otomatik gönderilmez.",
+      "Kayıt bu tarayıcı profilinde şifrelenir. Otomatik yedekleme yoktur. Kanıt demosu asıl dosyaları saklamaz. Kayıt kimseye otomatik gönderilmez.",
     "incident.footnote":
       "Tüm bilgiler isteğe bağlıdır. Kaydedilmemiş taslaklar yenileme veya kapatma ile kaybolur.",
     "incident.help.saved.text":
@@ -165,17 +165,17 @@ export const privacy: Record<Lang, PageDict> = {
     "privacy.pilot":
       "نسخة تجريبية: استخدم أمثلة خيالية فقط. لم تُعتمد بعد للحوادث الحقيقية في تجربة مدرسية.",
     "set.privacy.d":
-      "تُحفظ الحوادث والإعدادات دون تشفير في ملف هذا المتصفح. لا يوجد قفل للتطبيق أو نسخ احتياطي تلقائي أو ضمان للاحتفاظ.",
+      "بعد الإعداد تُشفّر الحوادث والإعدادات بكلمة مرورك في ملف هذا المتصفح. يبقى المفتاح في الذاكرة خلال الجلسة المفتوحة فقط. لا يوجد نسخ احتياطي تلقائي أو ضمان للاحتفاظ.",
     "privacy.device":
-      "يمكن لأي شخص يستخدم ملف المتصفح هذا قراءة البيانات. لا تدخل معلومات شخصية على أجهزة المدرسة المشتركة. قد يؤدي مسح بيانات المتصفح أو تغيير الجهاز إلى فقدان السجلات نهائياً.",
+      "اقفل التطبيق قبل إعطاء الجهاز لشخص آخر. يُقفل بعد خمس دقائق دون استخدام وعند الانتقال للخلفية. لا استعادة دون كلمة المرور. قد يمحو مسح بيانات المتصفح الخزنة نهائياً. قد تقرأ البرمجيات أو النصوص الخبيثة البيانات أثناء فتح القفل.",
     "privacy.network":
       "يستخدم التطبيق خطوط الجهاز ولا يرسل تفاصيل الأخطاء إلى وظائف الإبلاغ الاختيارية في Lovable. يعالج مزود الاستضافة بيانات الاتصال عند فتح الموقع. روابط الاستشارة الخارجية لها سياسات خصوصية خاصة بها.",
     "privacy.sharing":
       "لا يرسل التطبيق السجلات تلقائياً إلى المدرسة أو المعلمين أو جهات الاستشارة ولا يراقبونها. ينشئ النسخ والطباعة نسخاً منفصلة لا يحذفها «حذف جميع البيانات».",
     "privacy.drafts":
-      "تبقى المسودات غير المحفوظة ما دام التطبيق مفتوحاً فقط. تضيع عند إعادة التحميل أو الإغلاق. ينشئ عرض الأدلة أسماء أمثلة فقط ولا يحفظ ملفات أو تسجيلات.",
+      "تبقى المسودات غير المحفوظة في الجلسة المفتوحة فقط. تضيع عند القفل أو إعادة التحميل أو الإغلاق. لا يحفظ عرض الأدلة ملفات أو تسجيلات.",
     "home.privacy.d":
-      "نسخة تجريبية: استخدم أمثلة خيالية فقط. السجلات غير مشفرة في ملف المتصفح ويمكن لمن يصل إليه قراءتها. لا يتلقاها أو يراقبها أحد تلقائياً.",
+      "نسخة تجريبية: أمثلة خيالية فقط. تُشفّر السجلات والإعدادات المحلية بعد إعداد الخزنة. اقفل التطبيق عند المغادرة. لا يتلقى أحد السجلات أو يراقبها تلقائياً.",
     "set.delete.d":
       "يحذف الحوادث والبيانات القديمة والمسودات والإعدادات في ملف هذا المتصفح دون إمكانية التراجع. تبقى التقارير المطبوعة والحافظة والنسخ خارج التطبيق.",
     "privacy.deleted":
@@ -201,7 +201,7 @@ export const privacy: Record<Lang, PageDict> = {
     "incident.evidence.added.title": "أسماء الأدلة (عرض تجريبي دون ملفات)",
     "incident.save.row.evidence": "أسماء الأدلة (تجريبية)",
     "incident.save.localNotice":
-      "يُحفظ في ملف هذا المتصفح فقط دون تشفير أو نسخ احتياطي تلقائي. لا يحفظ عرض الأدلة الملفات الأصلية. لا يتلقى أحد السجل تلقائياً.",
+      "يُحفظ السجل مشفراً في ملف هذا المتصفح. لا يوجد نسخ احتياطي تلقائي. لا يحفظ عرض الأدلة الملفات الأصلية. لا يتلقى أحد السجل تلقائياً.",
     "incident.footnote":
       "كل المعلومات اختيارية. تضيع المسودات غير المحفوظة عند إعادة التحميل أو الإغلاق.",
     "incident.help.saved.text":
@@ -218,17 +218,17 @@ export const privacy: Record<Lang, PageDict> = {
     "privacy.pilot":
       "Тестовая версия: вводите только вымышленные примеры. Для реальных случаев в школьном пилоте пока не одобрена.",
     "set.privacy.d":
-      "Случаи и настройки хранятся без шифрования в этом профиле браузера. Нет блокировки приложения, автоматического резервного копирования или гарантии хранения.",
+      "После настройки случаи и настройки шифруются вашим паролем в этом профиле браузера. Ключ остаётся в памяти только во время разблокированного сеанса. Нет автоматической резервной копии или гарантии хранения.",
     "privacy.device":
-      "Любой, кто может использовать этот профиль браузера, может читать записи. Не вводите личные данные на общих школьных устройствах. Очистка браузера или смена устройства может безвозвратно удалить записи.",
+      "Блокируйте приложение перед передачей устройства. Оно блокируется после пяти минут бездействия и при переходе в фон. Без пароля восстановление невозможно. Очистка браузера может навсегда удалить хранилище. Вредоносные программы или скрипты могут читать данные при снятой блокировке.",
     "privacy.network":
       "Приложение использует шрифты устройства и не передаёт подробности ошибок необязательным функциям отчётности Lovable. При открытии сайта хостинг обрабатывает данные соединения. Внешние консультационные сайты имеют свои правила конфиденциальности.",
     "privacy.sharing":
       "Приложение не отправляет записи школе, учителям или консультантам автоматически; они их не отслеживают. Копирование и печать создают отдельные копии, которые «Удалить все данные» не удаляет.",
     "privacy.drafts":
-      "Несохранённые черновики остаются только пока приложение открыто. Перезагрузка или закрытие их удаляет. Демо доказательств создаёт лишь примерные имена, не сохраняет файлы или записи.",
+      "Несохранённые черновики остаются только в разблокированном сеансе. Блокировка, перезагрузка или закрытие их удаляет. Демо не сохраняет файлы или записи.",
     "home.privacy.d":
-      "Тестовая версия: только вымышленные примеры. Записи не зашифрованы в этом профиле браузера и доступны другим пользователям профиля. Никто автоматически не получает и не отслеживает их.",
+      "Тестовая версия: только вымышленные примеры. Локальные записи и настройки шифруются после настройки хранилища. Блокируйте приложение при уходе. Никто автоматически не получает и не отслеживает записи.",
     "set.delete.d":
       "Удаляет случаи, старые данные, черновики и настройки этого профиля браузера. Отменить нельзя. Распечатки, буфер обмена и копии вне приложения остаются.",
     "privacy.deleted":
@@ -254,7 +254,7 @@ export const privacy: Record<Lang, PageDict> = {
     "incident.evidence.added.title": "Имена доказательств (демо, без файлов)",
     "incident.save.row.evidence": "Имена доказательств (демо)",
     "incident.save.localNotice":
-      "Хранение только в этом профиле браузера, без шифрования и автоматической резервной копии. Демо не сохраняет оригиналы файлов. Запись никому не отправляется автоматически.",
+      "Запись хранится зашифрованной в этом профиле браузера. Автоматической резервной копии нет. Демо не сохраняет оригиналы файлов. Запись никому автоматически не отправляется.",
     "incident.footnote":
       "Все сведения добровольны. Несохранённые черновики теряются при перезагрузке или закрытии.",
     "incident.help.saved.text":

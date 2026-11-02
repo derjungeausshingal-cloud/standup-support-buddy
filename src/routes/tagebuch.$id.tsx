@@ -31,6 +31,7 @@ function EintragPage() {
   const { incidents, updateIncident, deleteIncident } = useIncidents();
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [changes, setChanges] = useState<Partial<Incident>>({});
   const incident = incidents.find((i) => i.id === id);
 
@@ -57,6 +58,7 @@ function EintragPage() {
         right={
           <button
             type="button"
+            disabled={saving}
             aria-label={edit ? t("diary.entryPage.stopEdit") : t("diary.entryPage.edit")}
             onClick={() => {
               setChanges({});
@@ -69,132 +71,153 @@ function EintragPage() {
         }
       />
 
-      <main className="mx-auto max-w-md px-5">
-        {edit ? (
-          <div className="mt-6 grid gap-4">
-            <label className="grid gap-2">
-              <span className="text-sm font-bold">{t("diary.entryPage.description")}</span>
-              <textarea
-                rows={6}
-                value={changes.description ?? incident.description}
-                onChange={(e) =>
-                  setChanges((previous) => ({ ...previous, description: e.target.value }))
-                }
-                className="field-input resize-none"
-              />
-            </label>
-            <label className="grid gap-2">
-              <span className="text-sm font-bold">{t("diary.entryPage.date")}</span>
-              <input
-                type="date"
-                value={changes.date ?? incident.date}
-                onChange={(e) => setChanges((previous) => ({ ...previous, date: e.target.value }))}
-                className="field-input"
-              />
-            </label>
-            <label className="grid gap-2">
-              <span className="text-sm font-bold">
-                {t("diary.entryPage.place")}{" "}
-                <span className="font-semibold text-muted-foreground">
-                  {t("diary.entryPage.optional")}
+      <main className="mx-auto max-w-md px-5" aria-busy={saving}>
+        <fieldset disabled={saving} className="contents">
+          {edit ? (
+            <div className="mt-6 grid gap-4">
+              <label className="grid gap-2">
+                <span className="text-sm font-bold">{t("diary.entryPage.description")}</span>
+                <textarea
+                  rows={6}
+                  value={changes.description ?? incident.description}
+                  onChange={(e) =>
+                    setChanges((previous) => ({ ...previous, description: e.target.value }))
+                  }
+                  className="field-input resize-none"
+                />
+              </label>
+              <label className="grid gap-2">
+                <span className="text-sm font-bold">{t("diary.entryPage.date")}</span>
+                <input
+                  type="date"
+                  value={changes.date ?? incident.date}
+                  onChange={(e) =>
+                    setChanges((previous) => ({ ...previous, date: e.target.value }))
+                  }
+                  className="field-input"
+                />
+              </label>
+              <label className="grid gap-2">
+                <span className="text-sm font-bold">
+                  {t("diary.entryPage.place")}{" "}
+                  <span className="font-semibold text-muted-foreground">
+                    {t("diary.entryPage.optional")}
+                  </span>
                 </span>
-              </span>
-              <input
-                type="text"
-                value={changes.place ?? incident.place}
-                onChange={(e) => setChanges((previous) => ({ ...previous, place: e.target.value }))}
-                className="field-input"
-              />
-            </label>
-            <label className="grid gap-2">
-              <span className="text-sm font-bold">
-                {t("diary.entryPage.witnesses")}{" "}
-                <span className="font-semibold text-muted-foreground">
-                  {t("diary.entryPage.optional")}
+                <input
+                  type="text"
+                  value={changes.place ?? incident.place}
+                  onChange={(e) =>
+                    setChanges((previous) => ({ ...previous, place: e.target.value }))
+                  }
+                  className="field-input"
+                />
+              </label>
+              <label className="grid gap-2">
+                <span className="text-sm font-bold">
+                  {t("diary.entryPage.witnesses")}{" "}
+                  <span className="font-semibold text-muted-foreground">
+                    {t("diary.entryPage.optional")}
+                  </span>
                 </span>
-              </span>
-              <input
-                type="text"
-                value={changes.witnesses ?? incident.witnesses}
-                onChange={(e) =>
-                  setChanges((previous) => ({ ...previous, witnesses: e.target.value }))
-                }
-                className="field-input"
-              />
-            </label>
-            <button
-              type="button"
-              onClick={() => {
-                if (updateIncident(incident.id, changes)) setEdit(false);
-              }}
-              className="btn-primary"
-            >
-              {t("diary.entryPage.applyChanges")}
-            </button>
-          </div>
-        ) : (
-          <>
-            <section className="card-tile mt-6 p-4">
-              <p className="whitespace-pre-wrap text-base leading-relaxed">
-                {incident.description || t("diary.noDescription")}
-              </p>
-            </section>
+                <input
+                  type="text"
+                  value={changes.witnesses ?? incident.witnesses}
+                  onChange={(e) =>
+                    setChanges((previous) => ({ ...previous, witnesses: e.target.value }))
+                  }
+                  className="field-input"
+                />
+              </label>
+              <button
+                type="button"
+                onClick={async () => {
+                  if (saving) return;
+                  setSaving(true);
+                  try {
+                    if (await updateIncident(incident.id, changes)) setEdit(false);
+                  } finally {
+                    setSaving(false);
+                  }
+                }}
+                className="btn-primary"
+              >
+                {t("diary.entryPage.applyChanges")}
+              </button>
+            </div>
+          ) : (
+            <>
+              <section className="card-tile mt-6 p-4">
+                <p className="whitespace-pre-wrap text-base leading-relaxed">
+                  {incident.description || t("diary.noDescription")}
+                </p>
+              </section>
 
-            <dl className="card-tile mt-4 px-4 py-1">
-              {[
-                [
-                  t("diary.entryPage.fieldKind"),
-                  incident.kind ? t(`diary.kind.${incident.kind}`) : t("diary.noCategoryShort"),
-                ],
-                [
-                  t("diary.entryPage.fieldDate"),
-                  incident.date ? formatDate(incident.date) : t("diary.noCategoryShort"),
-                ],
-                [t("diary.entryPage.fieldPlace"), incident.place || t("diary.noCategoryShort")],
-                [
-                  t("diary.entryPage.fieldWitnesses"),
-                  incident.witnesses || t("diary.noCategoryShort"),
-                ],
-              ].map(([label, value]) => (
-                <div key={label} className="grid gap-0.5 border-b border-border py-3 last:border-0">
-                  <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                    {label}
-                  </dt>
-                  <dd className="text-sm">{value}</dd>
-                </div>
-              ))}
-            </dl>
-
-            <h2 className="mt-6 text-lg font-extrabold">{t("diary.entryPage.evidenceTitle")}</h2>
-            {incident.evidence.length === 0 ? (
-              <p className="mt-1 text-sm text-muted-foreground">
-                {t("diary.entryPage.noEvidence")}
-              </p>
-            ) : (
-              <ul className="mt-3 grid gap-3">
-                {incident.evidence.map((e) => (
-                  <li key={e.id} className="card-tile p-4">
-                    <p className="truncate text-sm font-bold">{e.name}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      {t(`diary.evidenceType.${e.type}`)} · {formatDate(e.date)}
-                    </p>
-                  </li>
+              <dl className="card-tile mt-4 px-4 py-1">
+                {[
+                  [
+                    t("diary.entryPage.fieldKind"),
+                    incident.kind ? t(`diary.kind.${incident.kind}`) : t("diary.noCategoryShort"),
+                  ],
+                  [
+                    t("diary.entryPage.fieldDate"),
+                    incident.date ? formatDate(incident.date) : t("diary.noCategoryShort"),
+                  ],
+                  [t("diary.entryPage.fieldPlace"), incident.place || t("diary.noCategoryShort")],
+                  [
+                    t("diary.entryPage.fieldWitnesses"),
+                    incident.witnesses || t("diary.noCategoryShort"),
+                  ],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="grid gap-0.5 border-b border-border py-3 last:border-0"
+                  >
+                    <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                      {label}
+                    </dt>
+                    <dd className="text-sm">{value}</dd>
+                  </div>
                 ))}
-              </ul>
-            )}
-          </>
-        )}
+              </dl>
 
-        <button
-          type="button"
-          onClick={() => {
-            if (deleteIncident(incident.id)) navigate({ to: "/tagebuch" });
-          }}
-          className="btn-ghost mt-7 text-destructive"
-        >
-          <Trash2 className="h-5 w-5" />
-          {t("diary.entryPage.delete")}
-        </button>
+              <h2 className="mt-6 text-lg font-extrabold">{t("diary.entryPage.evidenceTitle")}</h2>
+              {incident.evidence.length === 0 ? (
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {t("diary.entryPage.noEvidence")}
+                </p>
+              ) : (
+                <ul className="mt-3 grid gap-3">
+                  {incident.evidence.map((e) => (
+                    <li key={e.id} className="card-tile p-4">
+                      <p className="truncate text-sm font-bold">{e.name}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        {t(`diary.evidenceType.${e.type}`)} · {formatDate(e.date)}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+
+          <button
+            type="button"
+            onClick={async () => {
+              if (saving) return;
+              setSaving(true);
+              try {
+                if (await deleteIncident(incident.id)) navigate({ to: "/tagebuch" });
+              } finally {
+                setSaving(false);
+              }
+            }}
+            className="btn-ghost mt-7 text-destructive"
+          >
+            <Trash2 className="h-5 w-5" />
+            {t("diary.entryPage.delete")}
+          </button>
+        </fieldset>
       </main>
 
       <BottomNav />

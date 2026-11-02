@@ -2,28 +2,16 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import { useIncidents } from "@/lib/incidents";
 import { usePreferences } from "@/lib/preferences";
-import { APP_DATA_KEYS, DATA_CLEARED_EVENT } from "@/lib/local-data";
+import { DATA_CLEARED_EVENT } from "@/lib/local-data";
 
 /** Remount route-local drafts too, including a prepared message in another tab. */
 export function DataSession({ children }: { children: ReactNode }) {
   const [generation, setGeneration] = useState(0);
   useEffect(() => {
     const reset = () => setGeneration((n) => n + 1);
-    const onStorage = (event: StorageEvent) => {
-      if (
-        event.storageArea === window.localStorage &&
-        event.newValue === null &&
-        (event.key === null || APP_DATA_KEYS.some((key) => key === event.key))
-      ) {
-        const success = APP_DATA_KEYS.every((key) => window.localStorage.getItem(key) === null);
-        window.dispatchEvent(new CustomEvent(DATA_CLEARED_EVENT, { detail: success }));
-      }
-    };
     window.addEventListener(DATA_CLEARED_EVENT, reset);
-    window.addEventListener("storage", onStorage);
     return () => {
       window.removeEventListener(DATA_CLEARED_EVENT, reset);
-      window.removeEventListener("storage", onStorage);
     };
   }, []);
   return <div key={generation}>{children}</div>;

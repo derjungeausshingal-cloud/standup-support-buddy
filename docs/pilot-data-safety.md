@@ -1,5 +1,7 @@
 # StandUp: erster Schritt zur Pilotvorbereitung
 
+Ergänzend gilt das aktuelle [Tresor-Schutzkonzept](vault-security.md).
+
 Diese Version bleibt ein Prototyp für erfundene Beispieldaten. Sie ist keine
 Freigabe für die Verarbeitung echter Fälle von Schülerinnen und Schülern.
 
@@ -9,9 +11,9 @@ Freigabe für die Verarbeitung echter Fälle von Schülerinnen und Schülern.
   bestätigt. Bei Fehlern bleiben neue Entwürfe bzw. Änderungen im Formular.
 - Beim Laden wird nichts automatisch zurückgeschrieben. Unlesbare Daten
   blockieren Schreibvorgänge und bleiben für eine mögliche Wiederherstellung erhalten.
-- Änderungen aus anderen Tabs werden erkannt. Die Prüfung ist kein atomarer
-  Mehrbenutzermechanismus; parallele Bearbeitung mehrerer Tabs vermeiden.
-- „Alle Daten löschen“ entfernt gezielt die drei bekannten StandUp-Speicherschlüssel:
+- Änderungen aus anderen Tabs sperren die Sitzung. Tresorschreibvorgänge werden
+  mit Web Locks serialisiert; veraltete Ansichten dürfen nicht überschreiben.
+- „Alle Daten löschen“ entfernt den Tresor und die drei alten StandUp-Speicherschlüssel:
   aktuelle und alte Vorfälle sowie Einstellungen. Entwurf, Rückgängig-Zustand und
   vorbereitete Nachrichten werden aus der geöffneten App entfernt. Andere geöffnete
   Tabs derselben Herkunft reagieren auf die Speicherereignisse.
@@ -23,8 +25,9 @@ Freigabe für die Verarbeitung echter Fälle von Schülerinnen und Schülern.
 
 ## Verbleibende Grenzen
 
-Die Browserdaten sind weiterhin unverschlüsselt. Es gibt keine Zugriffssperre,
-garantierte Aufbewahrung, automatische Sicherung oder sichere Dateiverwaltung.
+Die Browserdaten werden nach Einrichtung verschlüsselt gespeichert und die
+App besitzt eine Zugangssperre. Garantierte Aufbewahrung, automatische Sicherung
+und sichere Dateiverwaltung fehlen weiterhin.
 Hosting-Verbindungsdaten und mögliche zusätzliche Skripte der jeweiligen
 Hosting-/Vorschauumgebung müssen vor einem echten Piloten separat geprüft werden.
 Lokale Beratungstreffer sind weiterhin Vorlagen; der Fragebogen benötigt weitere

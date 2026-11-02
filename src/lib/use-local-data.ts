@@ -1,63 +1,54 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { DATA_CLEARED_EVENT, LocalDataStore, type StorageProblem } from "./local-data";
+import { useCallback, useRef, useState } from "react";
+import { useVault } from "./vault-context";
+import { VaultError } from "./vault";
+import type { StorageProblem } from "./local-data";
 
+/** Providers mount anew after unlocking; no private data is ever read from plaintext storage here. */
 export function useLocalData<T>(keys: readonly string[], fallback: T, decode: (raw: unknown) => T) {
-  const [value, setValue] = useState(fallback);
-  const valueRef = useRef(fallback);
-  const [hydrated, setHydrated] = useState(false);
-  const [problem, setProblem] = useState<StorageProblem | null>(null);
-  const [store] = useState(
-    () => new LocalDataStore(() => window.localStorage, keys, fallback, decode),
-  );
-
-  useEffect(() => {
-    const load = () => {
-      const result = store.read();
-      valueRef.current = result.value;
-      setValue(result.value);
-      setProblem(result.problem);
-      setHydrated(true);
-    };
-    const onStorage = (event: StorageEvent) => {
-      if (
-        event.storageArea === window.localStorage &&
-        (event.key === null || keys.includes(event.key))
-      )
-        load();
-    };
-    const onClear = (event: Event) => {
-      const success = (event as CustomEvent<boolean>).detail;
-      load();
-      // Even if persistent deletion failed, remove sensitive values from this screen.
-      valueRef.current = fallback;
-      setValue(fallback);
-      if (!success) {
-        store.blockWrites();
-        setProblem("delete");
-      }
-    };
-    load();
-    window.addEventListener("storage", onStorage);
-    window.addEventListener(DATA_CLEARED_EVENT, onClear);
-    return () => {
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener(DATA_CLEARED_EVENT, onClear);
-    };
-  }, [store, keys, fallback]);
-
+  const session = useVault();
+  const [initial] = useState(() => {
+    if (!session.unlocked) return { value: fallback, problem: null };
+    try {
+      const raw = session.vault.get(keys);
+      return { value: raw === null ? fallback : decode(JSON.parse(raw)), problem: null };
+    } catch {
+      return { value: fallback, problem: "load" as StorageProblem };
+    }
+  });
+  const [value, setValue] = useState(initial.value);
+  const [problem, setProblem] = useState<StorageProblem | null>(initial.problem);
+  const valueRef = useRef(initial.value);
+  const snapshot = useRef(session.unlocked ? session.vault.get([keys[0]!]) : null);
+  const writing = useRef(false);
   const write = useCallback(
-    (update: T | ((current: T) => T)) => {
-      const next =
-        typeof update === "function" ? (update as (current: T) => T)(valueRef.current) : update;
-      const error = store.write(next);
-      setProblem(error);
-      if (error) return false;
-      valueRef.current = next;
-      setValue(next);
-      return true;
+    async (update: T | ((current: T) => T)) => {
+      if (!session.unlocked || initial.problem) {
+        setProblem("load");
+        return false;
+      }
+      if (writing.current) {
+        setProblem("save");
+        return false;
+      }
+      writing.current = true;
+      try {
+        const next =
+          typeof update === "function" ? (update as (current: T) => T)(valueRef.current) : update;
+        const raw = JSON.stringify(next);
+        await session.vault.write(keys[0]!, raw, snapshot.current);
+        snapshot.current = raw;
+        valueRef.current = next;
+        setValue(next);
+        setProblem(null);
+        return true;
+      } catch (error) {
+        setProblem(error instanceof VaultError && error.code === "conflict" ? "conflict" : "save");
+        return false;
+      } finally {
+        writing.current = false;
+      }
     },
-    [store],
+    [session, keys, initial.problem],
   );
-
-  return { value, hydrated, problem, write };
+  return { value, hydrated: true, problem, write };
 }
