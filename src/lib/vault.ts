@@ -203,6 +203,8 @@ export class Vault {
       this.check(epoch);
       if ((this.records[name] ?? null) !== expected) throw new VaultError("conflict");
       const records = { ...this.records, [name]: value };
+      // Once incidents are updated, a migrated v1 copy must not retain deleted entries.
+      if (name === INCIDENTS_KEY) delete records[LEGACY_INCIDENTS_KEY];
       const raw = await seal(records, this.key, this.salt);
       this.check(epoch);
       const storage = this.access();

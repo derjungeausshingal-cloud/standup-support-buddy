@@ -209,6 +209,18 @@ test("no fallback when storage is blocked or writes are silently ignored", async
   await assert.rejects(f.vault.create(password));
   assert.equal(f.values.get(LEGACY_INCIDENTS_KEY), "[]");
 });
+test("updating incidents also drops the encrypted legacy copy of deleted entries", async () => {
+  const previous = '[{"description":"fictional entry to delete"}]';
+  const f = fixture({ [INCIDENTS_KEY]: previous, [LEGACY_INCIDENTS_KEY]: previous });
+  await f.vault.create(password);
+  await f.vault.write(INCIDENTS_KEY, "[]", previous);
+  assert.equal(f.vault.get([LEGACY_INCIDENTS_KEY]), null);
+  f.vault.lock();
+  await f.vault.unlock(password);
+  assert.equal(f.vault.get([INCIDENTS_KEY]), "[]");
+  assert.equal(f.vault.get([LEGACY_INCIDENTS_KEY]), null);
+});
+
 test("short passwords cannot create a vault", async () => {
   const f = fixture();
   await assert.rejects(f.vault.create("1234"));
