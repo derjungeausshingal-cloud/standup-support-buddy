@@ -6,22 +6,22 @@ const de: PageDict = {
 
   // Infos-Seite
   "info.infos.title": "Infos",
-  "info.infos.subtitle": "Verständlich erklärt – ohne Bewertung deiner Situation.",
+  "info.infos.subtitle": "Verständlich erklärt ohne Bewertung deiner Situation.",
   "info.infos.mobbing.title": "Mobbing",
   "info.infos.mobbing.text":
-    "Von Mobbing spricht man meist, wenn eine Person über längere Zeit immer wieder verletzt, ausgegrenzt oder herabgesetzt wird und sich schwer wehren kann. Ein einzelner Streit ist damit nicht gemeint – auch wenn er weh tun kann.",
+    "Von Mobbing spricht man meist, wenn eine Person über längere Zeit immer wieder verletzt, ausgegrenzt oder herabgesetzt wird und sich schwer wehren kann. Ein einzelner Streit ist damit nicht gemeint, auch wenn er weh tun kann.",
   "info.infos.cybermobbing.title": "Cybermobbing",
   "info.infos.cybermobbing.text":
     "Cybermobbing passiert online: in Chats, sozialen Netzwerken oder Spielen. Typisch sind wiederholte Beleidigungen, das Verbreiten von Bildern oder Gerüchten oder das gezielte Ausschließen aus Gruppen. Screenshots können später hilfreich sein.",
   "info.infos.diskriminierung.title": "Diskriminierung",
   "info.infos.diskriminierung.text":
-    "Diskriminierung bedeutet, dass jemand schlechter behandelt wird – zum Beispiel wegen Herkunft, Hautfarbe, Religion, Geschlecht, Behinderung, Alter oder sexueller Orientierung. Sie kann offen oder versteckt passieren.",
+    "Diskriminierung bedeutet, dass jemand schlechter behandelt wird, zum Beispiel wegen Herkunft, Hautfarbe, Religion, Geschlecht, Behinderung, Alter oder sexueller Orientierung. Sie kann offen oder versteckt passieren.",
   "info.infos.beleidigungen.title": "Beleidigungen",
   "info.infos.beleidigungen.text":
-    "Beleidigungen sind Äußerungen, die eine Person herabwürdigen. Sie können mündlich, schriftlich oder mit Bildern geschehen. Wie stark sie belasten, entscheidest nicht du allein an der Lautstärke – dein Empfinden zählt.",
+    "Beleidigungen sind Äußerungen, die eine Person herabwürdigen. Sie können mündlich, schriftlich oder mit Bildern geschehen. Wie stark sie belasten, entscheidest nicht du allein an der Lautstärke; dein Empfinden zählt.",
   "info.infos.bedrohungen.title": "Bedrohungen",
   "info.infos.bedrohungen.text":
-    "Bei Bedrohungen wird jemandem Schaden angekündigt. Wenn du dich unsicher fühlst, kannst du dir Unterstützung holen – etwa bei einer Vertrauensperson oder in einer akuten Situation beim Notruf 110.",
+    "Bei Bedrohungen wird jemandem Schaden angekündigt. Wenn du dich unsicher fühlst, kannst du dir Unterstützung holen, etwa bei einer Vertrauensperson oder in einer akuten Situation beim Notruf 110.",
   "info.infos.card.mobbing.title": "Ist das Mobbing?",
   "info.infos.card.mobbing.desc": "Fragen, die dir beim Einordnen helfen können",
   "info.infos.card.rechte.title": "Deine Rechte kennen",
@@ -36,19 +36,19 @@ const de: PageDict = {
     "Diese Informationen sind allgemein. Sie ersetzen keine rechtliche Beratung und treffen keine verbindlichen Entscheidungen.",
   "info.rechte.schule.title": "In der Schule",
   "info.rechte.schule.text":
-    "Schulen haben eine Fürsorgepflicht. Du kannst dich an Lehrkräfte, Vertrauenslehrerinnen, Schulsozialarbeit oder die Schulleitung wenden. Auch deine Eltern oder eine Schulpsychologin können einbezogen werden – wenn du das möchtest.",
+    "Schulen haben eine Fürsorgepflicht. Du kannst dich an Lehrkräfte, Vertrauenslehrerinnen, Schulsozialarbeit oder die Schulleitung wenden. Auch deine Eltern oder eine Schulpsychologin können einbezogen werden, wenn du das möchtest.",
   "info.rechte.arbeitsplatz.title": "Am Arbeitsplatz",
   "info.rechte.arbeitsplatz.text":
     "Arbeitgeber müssen Beschäftigte vor Benachteiligung und Belästigung schützen. Mögliche Ansprechpartner sind Vorgesetzte, Personalabteilung, Betriebs- oder Personalrat sowie die Beschwerdestelle nach dem Allgemeinen Gleichbehandlungsgesetz (AGG).",
   "info.rechte.agg.title": "Diskriminierungsschutz (AGG)",
   "info.rechte.agg.text":
-    "Das AGG schützt unter anderem vor Benachteiligung wegen Herkunft, Geschlecht, Religion, Behinderung, Alter oder sexueller Identität. Für Beschwerden gelten oft Fristen – eine Beratungsstelle kann dir sagen, was in deinem Fall gilt.",
+    "Das AGG schützt unter anderem vor Benachteiligung wegen Herkunft, Geschlecht, Religion, Behinderung, Alter oder sexueller Identität. Für Beschwerden gelten oft Fristen; eine Beratungsstelle kann dir sagen, was in deinem Fall gilt.",
   "info.rechte.online.title": "Online und im Chat",
   "info.rechte.online.text":
     "Plattformen bieten Melde- und Blockierfunktionen. Screenshots mit Datum können später hilfreich sein. Bei schweren Fällen ist eine Anzeige möglich.",
   "info.rechte.strafrecht.title": "Strafrechtlich relevant",
   "info.rechte.strafrecht.text":
-    "Beleidigung, Bedrohung, Nötigung oder das Verbreiten von Bildern ohne Einwilligung können Straftaten sein. Eine Anzeige kannst du bei jeder Polizeidienststelle oder online stellen – freiwillig und in deinem Tempo.",
+    "Beleidigung, Bedrohung, Nötigung oder das Verbreiten von Bildern ohne Einwilligung können Straftaten sein. Eine Anzeige kannst du bei jeder Polizeidienststelle oder online stellen, freiwillig und in deinem Tempo.",
 
   // Ist-das-Mobbing-Seite
   "info.mobbing.title": "Ist das Mobbing?",
